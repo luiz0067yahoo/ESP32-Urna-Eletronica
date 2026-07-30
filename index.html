@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urna Eletrônica</title>
     <script>
-        const PRIMEIRO_SLIDE=0;
-        const ULTIMO_SLIDE=5;
-        
+        const PRIMEIRO_SLIDE = 0;
+        const ULTIMO_SLIDE = 5;
+
         class Candidato {
-            constructor(numero, nome, partido,  fotoCandidato, vice, fotoVice) {
+            constructor(numero, nome, partido, fotoCandidato, vice, fotoVice) {
                 this.numero = numero;
                 this.nome = nome;
                 this.partido = partido;
@@ -17,358 +18,369 @@
                 this.vice = vice;
                 this.fotoVice = fotoVice;
             }
-        };
-        const DEPUTADOS_FEDERAIS = [
-            new Candidato("9101", "Psyduck", "PNM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"),
-            new Candidato("9102", "Eevee", "PNM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"),
-            new Candidato("9103", "Growlithe", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/58.png"),
-            new Candidato("9104", "Poliwag", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/60.png"), // Substituído Squirtle por Poliwag
-            new Candidato("9105", "Oddish", "PGR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/43.png"), // Substituído Bulbasaur por Oddish
-            new Candidato("9106", "Vulpix", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/37.png"), // Substituído Charmander por Vulpix
-            new Candidato("9107", "Meowth", "PNM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png"),
-            new Candidato("9108", "Slowpoke", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/79.png"), // Substituído Psyduck duplicado por Slowpoke
-            new Candidato("9109", "Machop", "PLT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"),
-            new Candidato("9110", "Geodude", "PPD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"),
-            new Candidato("9111", "Gastly", "PFT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png"),
-            new Candidato("9112", "Abra", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/63.png"),
-            new Candidato("9113", "Dratini", "PDR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/147.png"),
-            new Candidato("9114", "Poochyena", "PSB", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/261.png"),
-            new Candidato("9115", "Magnemite", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png"),
-            new Candidato("9116", "Clefairy", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png"),
-            new Candidato("9117", "Riolu", "PLT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/447.png"),
-            new Candidato("9118", "Zorua", "PSB", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/570.png"),
-            new Candidato("9119", "Axew", "PDR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/610.png"),
-            new Candidato("9120", "Mimikyu", "PFT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/778.png")
+        }; const DEPUTADOS_FEDERAIS = [
+            new Candidato("9101", "Psyduck", "POKPNOR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"),
+            new Candidato("9102", "Eevee", "POKPNOR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"),
+            new Candidato("9103", "Growlithe", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/58.png"),
+            new Candidato("9104", "Poliwag", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/60.png"),
+            new Candidato("9105", "Oddish", "POKPPLA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/43.png"),
+            new Candidato("9106", "Vulpix", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/37.png"),
+            new Candidato("9107", "Meowth", "POKPNOR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png"),
+            new Candidato("9108", "Slowpoke", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/79.png"),
+            new Candidato("9109", "Machop", "POKPLUT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"),
+            new Candidato("9110", "Geodude", "POKPPED", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"),
+            new Candidato("9111", "Gastly", "POKPFAN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png"),
+            new Candidato("9112", "Abra", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/63.png"),
+            new Candidato("9113", "Dratini", "POKPDRA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/147.png"),
+            new Candidato("9114", "Poochyena", "POKPSOM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/261.png"),
+            new Candidato("9115", "Magnemite", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png"),
+            new Candidato("9116", "Clefairy", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png"),
+            new Candidato("9117", "Riolu", "POKPLUT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/447.png"),
+            new Candidato("9118", "Zorua", "POKPSOM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/570.png"),
+            new Candidato("9119", "Axew", "POKPDRA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/610.png"),
+            new Candidato("9120", "Mimikyu", "POKPFAN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/778.png")
         ];
 
         const DEPUTADOS_ESTADUAIS = [
-            new Candidato("99101", "Ivysaur", "PGR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"),
-            new Candidato("99102", "Charmeleon", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"),
-            new Candidato("99103", "Wartortle", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png"),
-            new Candidato("99104", "Butterfree", "PIN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"),
-            new Candidato("99105", "Pidgeotto", "PVD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png"),
-            new Candidato("99106", "Raticate", "PNM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png"),
-            new Candidato("99107", "Arbok", "PVN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png"),
-            new Candidato("99108", "Sandslash", "PTR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/28.png"),
-            new Candidato("99109", "Nidorina", "PVN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/30.png"),
-            new Candidato("99110", "Nidorino", "PVN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/33.png"),
-            new Candidato("99111", "Clefable", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png"),
-            new Candidato("99112", "Golduck", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png"),
-            new Candidato("99113", "Kadabra", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/64.png"),
-            new Candidato("99114", "Machoke", "PLT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/67.png"),
-            new Candidato("99115", "Graveler", "PPD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"),
-            new Candidato("99116", "Magneton", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png"),
-            new Candidato("99117", "Haunter", "PFT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/93.png"),
-            new Candidato("99118", "Hypno", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/97.png"),
-            new Candidato("99119", "Electrode", "PEL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/101.png"),
-            new Candidato("99120", "Marowak", "PTR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png"),
-            new Candidato("99121", "Weezing", "PVN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/110.png"),
-            new Candidato("99122", "Rhydon", "PTR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/112.png"),
-            new Candidato("99123", "Seadra", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png"),
-            new Candidato("99124", "Starmie", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"),
-            new Candidato("99125", "Scyther", "PIN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png"),
-            new Candidato("99126", "Glaceon", "PGL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/471.png"),
-            new Candidato("99127", "Leafeon", "PGR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/470.png"), // Corrigido a grafia Leafeeon -> Leafeon
-            new Candidato("99128", "Umbreon", "PSB", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/197.png"),
-            new Candidato("99129", "Espeon", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/196.png"),
-            new Candidato("99130", "Sylveon", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/700.png")
+            new Candidato("99101", "Ivysaur", "POKPPLA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"),
+            new Candidato("99102", "Charmeleon", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"),
+            new Candidato("99103", "Wartortle", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png"),
+            new Candidato("99104", "Butterfree", "POKPINSE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"),
+            new Candidato("99105", "Pidgeotto", "POKPVOA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png"),
+            new Candidato("99106", "Raticate", "POKPNOR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png"),
+            new Candidato("99107", "Arbok", "POKPVEN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png"),
+            new Candidato("99108", "Sandslash", "POKPTER", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/28.png"),
+            new Candidato("99109", "Nidorina", "POKPVEN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/30.png"),
+            new Candidato("99110", "Nidorino", "POKPVEN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/33.png"),
+            new Candidato("99111", "Clefable", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png"),
+            new Candidato("99112", "Golduck", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png"),
+            new Candidato("99113", "Kadabra", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/64.png"),
+            new Candidato("99114", "Machoke", "POKPLUT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/67.png"),
+            new Candidato("99115", "Graveler", "POKPPED", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"),
+            new Candidato("99116", "Magneton", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png"),
+            new Candidato("99117", "Haunter", "POKPFAN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/93.png"),
+            new Candidato("99118", "Hypno", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/97.png"),
+            new Candidato("99119", "Electrode", "POKPELE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/101.png"),
+            new Candidato("99120", "Marowak", "POKPTER", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png"),
+            new Candidato("99121", "Weezing", "POKPVEN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/110.png"),
+            new Candidato("99122", "Rhydon", "POKPTER", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/112.png"),
+            new Candidato("99123", "Seadra", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png"),
+            new Candidato("99124", "Starmie", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"),
+            new Candidato("99125", "Scyther", "POKPINSE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png"),
+            new Candidato("99126", "Glaceon", "POKPGEL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/471.png"),
+            new Candidato("99127", "Leafeon", "POKPPLA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/470.png"),
+            new Candidato("99128", "Umbreon", "POKPSOM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/197.png"),
+            new Candidato("99129", "Espeon", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/196.png"),
+            new Candidato("99130", "Sylveon", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/700.png")
         ];
 
         const SENADORES_1 = [
-            new Candidato("701", "Alakazam", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png"),
-            new Candidato("702", "Gengar", "PFT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"),
-            new Candidato("703", "Dragonite", "PDR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png"),
-            new Candidato("704", "Tyranitar", "PPD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/248.png"),
-            new Candidato("705", "Metagross", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/376.png"),
-            new Candidato("706", "Garchomp", "PTR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"),
-            new Candidato("707", "Lucario", "PLT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png"),
-            new Candidato("708", "Gardevoir", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/282.png"),
-            new Candidato("709", "Meganium", "PGR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png"), // Substituído Venusaur por Meganium
-            new Candidato("710", "Machamp", "PLT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png"),
-            new Candidato("711", "Snorlax", "PNM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png"),
-            new Candidato("712", "Sceptile", "PGR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png"),
-            new Candidato("713", "Salamence", "PDR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/373.png"),
-            new Candidato("714", "Aggron", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/306.png"),
-            new Candidato("715", "Togekiss", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png"),
-            new Candidato("716", "Flygon", "PTR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/330.png"),
-            new Candidato("717", "Zoroark", "PSB", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/571.png"),
-            new Candidato("718", "Crobat", "PVN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/169.png"),
-            new Candidato("719", "Heracross", "PIN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/214.png"),
-            new Candidato("720", "Steelix", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/208.png")
+            new Candidato("701", "Alakazam", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png"),
+            new Candidato("702", "Gengar", "POKPFAN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"),
+            new Candidato("703", "Dragonite", "POKPDRA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png"),
+            new Candidato("704", "Tyranitar", "POKPPED", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/248.png"),
+            new Candidato("705", "Metagross", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/376.png"),
+            new Candidato("706", "Garchomp", "POKPTER", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"),
+            new Candidato("707", "Lucario", "POKPLUT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png"),
+            new Candidato("708", "Gardevoir", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/282.png"),
+            new Candidato("709", "Meganium", "POKPPLA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png"),
+            new Candidato("710", "Machamp", "POKPLUT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png"),
+            new Candidato("711", "Snorlax", "POKPNOR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png"),
+            new Candidato("712", "Sceptile", "POKPPLA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png"),
+            new Candidato("713", "Salamence", "POKPDRA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/373.png"),
+            new Candidato("714", "Aggron", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/306.png"),
+            new Candidato("715", "Togekiss", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png"),
+            new Candidato("716", "Flygon", "POKPTER", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/330.png"),
+            new Candidato("717", "Zoroark", "POKPSOM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/571.png"),
+            new Candidato("718", "Crobat", "POKPVEN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/169.png"),
+            new Candidato("719", "Heracross", "POKPINSE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/214.png"),
+            new Candidato("720", "Steelix", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/208.png")
         ];
 
         const SENADORES_2 = [
-            new Candidato("801", "Mewtwo", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"),
-            new Candidato("802", "Lugia", "PVD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png"),
-            new Candidato("803", "Ho-Oh", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png"),
-            new Candidato("804", "Rayquaza", "PDR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png"),
-            new Candidato("805", "Kyogre", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png"),
-            new Candidato("806", "Groudon", "PTR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png"),
-            new Candidato("807", "Dialga", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png"),
-            new Candidato("808", "Palkia", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png"),
-            new Candidato("809", "Giratina", "PFT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"),
-            new Candidato("810", "Darkrai", "PSB", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png"),
-            new Candidato("811", "Arceus", "PNM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"),
-            new Candidato("812", "Reshiram", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png"),
-            new Candidato("813", "Zekrom", "PEL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"),
-            new Candidato("814", "Xerneas", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/716.png"),
-            new Candidato("815", "Yveltal", "PSB", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/717.png"),
-            new Candidato("816", "Zygarde", "PDR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png"),
-            new Candidato("817", "Solgaleo", "PAC", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/791.png"),
-            new Candidato("818", "Lunala", "PPS", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png"),
-            new Candidato("819", "Zacian", "PFD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/888.png"),
-            new Candidato("820", "Zamazenta", "PLT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/889.png")
+            new Candidato("801", "Mewtwo", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"),
+            new Candidato("802", "Lugia", "POKPVOA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png"),
+            new Candidato("803", "Ho-Oh", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png"),
+            new Candidato("804", "Rayquaza", "POKPDRA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png"),
+            new Candidato("805", "Kyogre", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png"),
+            new Candidato("806", "Groudon", "POKPTER", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png"),
+            new Candidato("807", "Dialga", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png"),
+            new Candidato("808", "Palkia", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png"),
+            new Candidato("809", "Giratina", "POKPFAN", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"),
+            new Candidato("810", "Darkrai", "POKPSOM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png"),
+            new Candidato("811", "Arceus", "POKPNOR", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"),
+            new Candidato("812", "Reshiram", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png"),
+            new Candidato("813", "Zekrom", "POKPELE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"),
+            new Candidato("814", "Xerneas", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/716.png"),
+            new Candidato("815", "Yveltal", "POKPSOM", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/717.png"),
+            new Candidato("816", "Zygarde", "POKPDRA", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png"),
+            new Candidato("817", "Solgaleo", "POKPACO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/791.png"),
+            new Candidato("818", "Lunala", "POKPPSI", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png"),
+            new Candidato("819", "Zacian", "POKPFAD", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/888.png"),
+            new Candidato("820", "Zamazenta", "POKPLUT", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/889.png")
         ];
 
         const GOVERNADORES = [
             // ⚡ ELÉTRICOS
-            new Candidato("81", "Manectric", "PEL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/181.png", "Ampharos", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/181.png"), // Substituído Raichu por Manectric
-            new Candidato("82", "Zapdos", "PEL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png", "Jolteon", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png"),
-            new Candidato("83", "Luxray", "PEL", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/405.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png", "Electabuzz", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png"),
+            new Candidato("81", "Manectric", "POKPELE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/181.png", "Ampharos", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/181.png"),
+            new Candidato("82", "Zapdos", "POKPELE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png", "Jolteon", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png"),
+            new Candidato("83", "Luxray", "POKPELE", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/405.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png", "Electabuzz", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png"),
 
             // 🔥 FOGO
-            new Candidato("84", "Magmortar", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/467.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png", "Arcanine", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png"), // Substituído Charizard por Magmortar
-            new Candidato("85", "Blaziken", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png", "Ninetales", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png"),
-            new Candidato("86", "Infernape", "PFG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/392.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/157.png", "Typhlosion", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/157.png"),
+            new Candidato("84", "Magmortar", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/467.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png", "Arcanine", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png"),
+            new Candidato("85", "Blaziken", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png", "Ninetales", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png"),
+            new Candidato("86", "Infernape", "POKPFGO", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/392.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/157.png", "Typhlosion", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/157.png"),
 
             // 💧 ÁGUA
-            new Candidato("87", "Feraligatr", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png", "Gyarados", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png"), // Substituído Blastoise por Feraligatr
-            new Candidato("88", "Greninja", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png", "Vaporeon", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png"),
-            new Candidato("89", "Swampert", "PAG", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/260.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png", "Lapras", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png")
+            new Candidato("87", "Feraligatr", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png", "Gyarados", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png"),
+            new Candidato("88", "Greninja", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png", "Vaporeon", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png"),
+            new Candidato("89", "Swampert", "POKPAGU", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/260.png", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png", "Lapras", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png")
         ];
 
         const PRESIDENTES = [
-            // 1. Chapa Elétrica Coligada (PEL + PAG + PFG)
+            // 1. Chapa Elétrica Coligada
             new Candidato(
-                "65", 
-                "Pikachu", 
-                "PEL (Partido Elétrico - Coligação Energia & Vida)", 
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png", 
-                "Totodile", // Substituído Vice Squirtle por Totodile
+                "65",
+                "Pikachu",
+                "POKPELE (Partido Organizado Karvalho Professor Elétrico - Coligação Energia & Vida)",
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+                "Totodile",
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/158.png"
             ),
 
-            // 2. Chapa de Água Coligada (PAG + PGR + PCL)
+            // 2. Chapa de Água Coligada
             new Candidato(
-                "63", 
-                "Squirtle", 
-                "PAG (Partido da Água - Coligação Sustentabilidade)", 
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png", 
-                "Bulbasaur", 
+                "63",
+                "Squirtle",
+                "POKPAGU (Partido Organizado Karvalho Professor Água - Coligação Sustentabilidade)",
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
+                "Bulbasaur",
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
             ),
 
-            // 3. Chapa de Fogo Coligada (PFG + PTR + PTE)
+            // 3. Chapa de Fogo Coligada
             new Candidato(
-                "62", 
-                "Charmander", 
-                "PFG (Partido do Fogo - Coligação Progresso e Futuro)", 
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png", 
-                "Flareon", // Adicionado vice Flareon (substituindo a URL órfã da Eevee)
+                "62",
+                "Charmander",
+                "POKPFGO (Partido Organizado Karvalho Professor Fogo - Coligação Progresso e Futuro)",
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+                "Flareon",
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/136.png"
             )
         ];
+
         const partidos = [
-        {
-            sigla: "PEL",
-            nome: "Partido Elétrico",
-            slogan: "Energia para todos.",
-            propostas: [
-            "Isenção de impostos sobre energia solar.",
-            "Expansão da rede elétrica inteligente.",
-            "Wi-Fi gratuito em praças e escolas.",
-            "Incentivo à produção de baterias sustentáveis."
-            ]
-        },
-        {
-            sigla: "PFO",
-            nome: "Partido do Fogo",
-            slogan: "Energia que move o país.",
-            propostas: [
-            "Prevenção de incêndios florestais.",
-            "Incentivo à indústria de energia térmica limpa.",
-            "Cursos gratuitos para bombeiros.",
-            "Pesquisa em combustíveis renováveis."
-            ]
-        },
-        {
-            sigla: "PAG",
-            nome: "Partido da Água",
-            slogan: "Água é vida.",
-            propostas: [
-            "Universalizar o saneamento.",
-            "Recuperar rios e nascentes.",
-            "Combate ao desperdício de água.",
-            "Dessalinização em regiões secas."
-            ]
-        },
-        {
-            sigla: "PNG",
-            nome: "Partido da Natureza",
-            slogan: "Mais verde, mais futuro.",
-            propostas: [
-            "Plantio de árvores.",
-            "Agricultura sustentável.",
-            "Hortas escolares.",
-            "Preservação das florestas."
-            ]
-        },
-        {
-            sigla: "PIN",
-            nome: "Partido da Infraestrutura",
-            slogan: "Bases fortes para o futuro.",
-            propostas: [
-            "Pavimentação de estradas.",
-            "Construção de pontes.",
-            "Obras contra enchentes.",
-            "Incentivo à mineração responsável."
-            ]
-        },
-        {
-            sigla: "PMO",
-            nome: "Partido da Mobilidade",
-            slogan: "Conectando cidades.",
-            propostas: [
-            "Ampliação de aeroportos.",
-            "Drones para entregas médicas.",
-            "Ciclovias e transporte aéreo regional.",
-            "Incentivo ao turismo."
-            ]
-        },
-        {
-            sigla: "PCU",
-            nome: "Partido da Cultura",
-            slogan: "Nossa história nunca desaparece.",
-            propostas: [
-            "Restaurar museus.",
-            "Incentivar bibliotecas.",
-            "Preservar patrimônios históricos.",
-            "Festivais culturais."
-            ]
-        },
-        {
-            sigla: "PCI",
-            nome: "Partido da Ciência",
-            slogan: "Conhecimento transforma.",
-            propostas: [
-            "Investimento em universidades.",
-            "Pesquisa em Inteligência Artificial.",
-            "Bolsas para cientistas.",
-            "Laboratórios públicos."
-            ]
-        },
-        {
-            sigla: "PDN",
-            nome: "Partido da Defesa Nacional",
-            slogan: "Força com responsabilidade.",
-            propostas: [
-            "Modernização das forças de segurança.",
-            "Defesa cibernética.",
-            "Combate ao crime organizado.",
-            "Treinamento em proteção civil."
-            ]
-        },
-        {
-            sigla: "PTE",
-            nome: "Partido da Tecnologia",
-            slogan: "Inovação para todos.",
-            propostas: [
-            "Robótica nas escolas.",
-            "Cidades inteligentes.",
-            "Governo digital.",
-            "Incentivo às startups."
-            ]
-        },
-        {
-            sigla: "PCL",
-            nome: "Partido do Clima",
-            slogan: "Planejar hoje para proteger amanhã.",
-            propostas: [
-            "Monitoramento climático.",
-            "Combate ao aquecimento global.",
-            "Energia limpa.",
-            "Proteção das regiões polares."
-            ]
-        },
-        {
-            sigla: "PES",
-            nome: "Partido do Esporte",
-            slogan: "Saúde em movimento.",
-            propostas: [
-            "Academias públicas.",
-            "Centros esportivos.",
-            "Incentivo ao esporte escolar.",
-            "Combate ao sedentarismo."
-            ]
-        },
-        {
-            sigla: "PSP",
-            nome: "Partido da Saúde Pública",
-            slogan: "Prevenir é melhor que remediar.",
-            propostas: [
-            "Vacinação.",
-            "Controle de epidemias.",
-            "Pesquisa farmacêutica.",
-            "Fiscalização sanitária."
-            ]
-        },
-        {
-            sigla: "PAGR",
-            nome: "Partido da Agricultura",
-            slogan: "Produzir preservando.",
-            propostas: [
-            "Irrigação inteligente.",
-            "Recuperação de solos.",
-            "Incentivo ao pequeno produtor.",
-            "Agricultura de precisão."
-            ]
-        },
-        {
-            sigla: "PBI",
-            nome: "Partido da Biodiversidade",
-            slogan: "Toda vida importa.",
-            propostas: [
-            "Proteção dos insetos polinizadores.",
-            "Conservação da fauna.",
-            "Educação ambiental.",
-            "Combate às espécies invasoras."
-            ]
-        },
-        {
-            sigla: "PSD",
-            nome: "Partido da Segurança Digital",
-            slogan: "Protegendo seus dados.",
-            propostas: [
-            "Combate a golpes virtuais.",
-            "Privacidade digital.",
-            "Segurança bancária.",
-            "Educação em cibersegurança."
-            ]
-        },
-        {
-            sigla: "PINC",
-            nome: "Partido da Inclusão",
-            slogan: "Todos têm seu lugar.",
-            propostas: [
-            "Inclusão social.",
-            "Acessibilidade.",
-            "Combate ao bullying.",
-            "Apoio às pessoas com deficiência."
-            ]
-        },
-        {
-            sigla: "PCID",
-            nome: "Partido da Cidadania",
-            slogan: "O básico bem feito.",
-            propostas: [
-            "Simplificação de impostos.",
-            "Atendimento público eficiente.",
-            "Transparência.",
-            "Redução da burocracia."
-            ]
-        }
+            {
+                sigla: "POKPELE",
+                nome: "Partido Organizado Karvalho Professor Elétrico",
+                slogan: "Energia e inovação para todos.",
+                propostas: [
+                    "Isenção de impostos sobre energia solar.",
+                    "Expansão da rede elétrica inteligente.",
+                    "Wi-Fi gratuito em praças e escolas.",
+                    "Incentivo à produção de baterias sustentáveis."
+                ]
+            },
+            {
+                sigla: "POKPFGO",
+                nome: "Partido Organizado Karvalho Professor Fogo",
+                slogan: "Chama da mudança e energia que move o país.",
+                propostas: [
+                    "Prevenção de incêndios florestais.",
+                    "Incentivo à indústria de energia térmica limpa.",
+                    "Cursos gratuitos para bombeiros.",
+                    "Pesquisa em combustíveis renováveis."
+                ]
+            },
+            {
+                sigla: "POKPAGU",
+                nome: "Partido Organizado Karvalho Professor Água",
+                slogan: "Água é vida e preservação.",
+                propostas: [
+                    "Universalizar o saneamento básico.",
+                    "Recuperar rios e nascentes.",
+                    "Combate ao desperdício de água.",
+                    "Dessalinização em regiões secas."
+                ]
+            },
+            {
+                sigla: "POKPPLA",
+                nome: "Partido Organizado Karvalho Professor Planta",
+                slogan: "Mais verde, mais futuro sustentável.",
+                propostas: [
+                    "Plantio de árvores em áreas urbanas.",
+                    "Incentivo à agricultura orgânica.",
+                    "Hortas comunitárias escolares.",
+                    "Preservação das florestas e biomas."
+                ]
+            },
+            {
+                sigla: "POKPNOR",
+                nome: "Partido Organizado Karvalho Professor Normal",
+                slogan: "Equilíbrio, transparência e bom senso.",
+                propostas: [
+                    "Desburocratização dos serviços públicos.",
+                    "Apoio ao pequeno comércio local.",
+                    "Melhoria na iluminação pública.",
+                    "Gestão eficiente e transparente."
+                ]
+            },
+            {
+                sigla: "POKPLUT",
+                nome: "Partido Organizado Karvalho Professor Lutador",
+                slogan: "Determinação, esporte e superação.",
+                propostas: [
+                    "Incentivo às artes marciais nas escolas.",
+                    "Construção de centros esportivos comunitários.",
+                    "Bolsa-atleta para novos talentos.",
+                    "Programas de saúde e condicionamento."
+                ]
+            },
+            {
+                sigla: "POKPPED",
+                nome: "Partido Organizado Karvalho Professor Pedra",
+                slogan: "Bases sólidas para um futuro inabalável.",
+                propostas: [
+                    "Infraestrutura rodoviária resistente.",
+                    "Obras públicas duradouras.",
+                    "Mineração responsável e ecológica.",
+                    "Moradias populares seguras."
+                ]
+            },
+            {
+                sigla: "POKPFAN",
+                nome: "Partido Organizado Karvalho Professor Fantasma",
+                slogan: "Sabedoria, memória e visão do invisível.",
+                propostas: [
+                    "Preservação da memória e patrimônio histórico.",
+                    "Combate rigoroso à corrupção.",
+                    "Segurança cibernética avançada.",
+                    "Incentivo a projetos culturais noturnos."
+                ]
+            },
+            {
+                sigla: "POKPPSI",
+                nome: "Partido Organizado Karvalho Professor Psíquico",
+                slogan: "Conhecimento e mente aberta transformam.",
+                propostas: [
+                    "Investimento em ciência e inteligência.",
+                    "Saúde mental gratuita na rede pública.",
+                    "Bolsas de pesquisa científica.",
+                    "Laboratórios digitais nas escolas."
+                ]
+            },
+            {
+                sigla: "POKPDRA",
+                nome: "Partido Organizado Karvalho Professor Dragão",
+                slogan: "Coragem, liderança e visão de futuro.",
+                propostas: [
+                    "Fortalecimento do desenvolvimento econômico.",
+                    "Incentivo a grandes projetos de engenharia.",
+                    "Capacitação de novas lideranças.",
+                    "Segurança e proteção soberana."
+                ]
+            },
+            {
+                sigla: "POKPSOM",
+                nome: "Partido Organizado Karvalho Professor Sombrio",
+                slogan: "Estratégia e justiça para todos.",
+                propostas: [
+                    "Combate rigoroso ao crime organizado.",
+                    "Privacidade de dados dos cidadãos.",
+                    "Proteção dos direitos trabalhistas.",
+                    "Transparência em contratos públicos."
+                ]
+            },
+            {
+                sigla: "POKPACO",
+                nome: "Partido Organizado Karvalho Professor Aço",
+                slogan: "Resistência, tecnologia e desenvolvimento.",
+                propostas: [
+                    "Modernização da indústria nacional.",
+                    "Siderurgia ecológica e sustentável.",
+                    "Reforço na segurança estrutural urbana.",
+                    "Formação técnica e profissional."
+                ]
+            },
+            {
+                sigla: "POKPFAD",
+                nome: "Partido Organizado Karvalho Professor Fada",
+                slogan: "Harmonia, solidariedade e justiça social.",
+                propostas: [
+                    "Proteção dos animais e abrigos.",
+                    "Apoio à infância e terceira idade.",
+                    "Humanização no atendimento de saúde.",
+                    "Inclusão social e programas culturais."
+                ]
+            },
+            {
+                sigla: "POKPVEN",
+                nome: "Partido Organizado Karvalho Professor Veneno",
+                slogan: "Proteção, imunidade e prevenção sanitária.",
+                propostas: [
+                    "Vacinação universal e prevenção sanitária.",
+                    "Combate a pragas e zoonoses urbanas.",
+                    "Descontaminação de rios e solos.",
+                    "Investimento em pesquisa farmacêutica."
+                ]
+            },
+            {
+                sigla: "POKPTER",
+                nome: "Partido Organizado Karvalho Professor Terra",
+                slogan: "Firmeza no solo e desenvolvimento agrícola.",
+                propostas: [
+                    "Apoio ao pequeno produtor rural.",
+                    "Contenção de encostas e barragens.",
+                    "Mapeamento geológico de áreas de risco.",
+                    "Pavimentação de estradas rurais."
+                ]
+            },
+            {
+                sigla: "POKPVOA",
+                nome: "Partido Organizado Karvalho Professor Voador",
+                slogan: "Liberdade, conexão e voos mais altos.",
+                propostas: [
+                    "Ampliação de aviação regional.",
+                    "Monitoramento aéreo de queimadas.",
+                    "Incentivo ao turismo e integração.",
+                    "Internet via satélite em áreas remotas."
+                ]
+            },
+            {
+                sigla: "POKPGEL",
+                nome: "Partido Organizado Karvalho Professor Gelo",
+                slogan: "Mente serena e preservação climática.",
+                propostas: [
+                    "Cadeia de frio para conservar alimentos.",
+                    "Monitoramento do clima e temperatura.",
+                    "Eficiência em refrigeração pública.",
+                    "Proteção de nascentes de altitude."
+                ]
+            },
+            {
+                sigla: "POKPINSE",
+                nome: "Partido Organizado Karvalho Professor Inseto",
+                slogan: "Trabalho em equipe e resiliência.",
+                propostas: [
+                    "Proteção dos insetos polinizadores.",
+                    "Desenvolvimento de agricultura sustentável.",
+                    "Preservação da fauna e microfauna.",
+                    "Educação ecológica comunitária."
+                ]
+            },
+            {
+                sigla: "POKPINSE",
+                nome: "Partido Organizado Karvalho Professor - Cidadania",
+                slogan: "O básico bem feito.",
+                propostas: [
+                    "Simplificação de impostos.",
+                    "Atendimento público eficiente.",
+                    "Transparência.",
+                    "Redução da burocracia."
+                ]
+            }
         ];
-        const ARTES_DEPUTADOS_ESTADUAIS=[
+        const ARTES_DEPUTADOS_ESTADUAIS = [
             {
                 deputadoEstadual: "99101",
                 deputadoFederal: "9101",
@@ -613,7 +625,7 @@
         var candidatoAtual = null;
         let indiceSlide = 0;
         var slides = document.getElementsByClassName("slide");
-        class Voto{
+        class Voto {
             constructor(deputadoFederal, deputadoEstadual, senador1, senador2, governador, presidente) {
                 this.deputadoFederal = deputadoFederal;
                 this.deputadoEstadual = deputadoEstadual;
@@ -624,23 +636,23 @@
             }
         };
         var voto = new Voto(null, null, null, null, null, null);
-        function proximoSlide(){
-            if(indiceSlide<ULTIMO_SLIDE){
+        function proximoSlide() {
+            if (indiceSlide < ULTIMO_SLIDE) {
                 slides[indiceSlide].classList.add("d-none");
                 indiceSlide++;
                 slides[indiceSlide].classList.remove("d-none");
             }
-            else{
+            else {
                 finalizarVotacao();
             }
         }
-        function slideAnterior(){
-            if(indiceSlide>PRIMEIRO_SLIDE){
+        function slideAnterior() {
+            if (indiceSlide > PRIMEIRO_SLIDE) {
                 slides[indiceSlide].classList.add("d-none");
                 indiceSlide--;
                 slides[indiceSlide].classList.remove("d-none");
             }
-        }       
+        }
         const carregarCandidato = (numero) => {
             candidatoAtual = {};
             var candidatoBuscado = undefined;
@@ -664,7 +676,7 @@
                     candidatoBuscado = PRESIDENTES.find(c => c.numero === numero);
                     break;
             }
-            if (candidatoBuscado!=undefined) {
+            if (candidatoBuscado != undefined) {
                 candidatoAtual = candidatoBuscado;
                 const slide = slides[indiceSlide];
                 slide.querySelector('.nome').textContent = candidatoAtual.nome;
@@ -677,19 +689,19 @@
                     //console.error("Erro ao carregar informações do vice:", error);
                 }
             } else {
-                    loadMessageBox("Candidato não encontrado!", 'Por favor, tente novamente.', 'ok', () => {
-                        closeMessageBox();
-                    });
-                    setTimeout(() => {closeMessageBox();}, 2000);
+                loadMessageBox("Candidato não encontrado!", 'Por favor, tente novamente.', 'ok', () => {
+                    closeMessageBox();
+                });
+                setTimeout(() => { closeMessageBox(); }, 2000);
             }
         };
         const inserirDigito = (digito) => {
             const slide = slides[indiceSlide];
             const input = slide.querySelector('.numero-candidato');
             if (input.value.length < input.maxLength) {
-                input.value += digito;                
+                input.value += digito;
             }
-            else{
+            else {
                 carregarCandidato(input.value);
             }
         };
@@ -719,7 +731,7 @@
             }
         };
         const limpar = () => {
-            salvaCandidato(null); 
+            salvaCandidato(null);
             const slide = slides[indiceSlide];
             const input = slide.querySelector('.numero-candidato');
             input.value = '';
@@ -738,7 +750,7 @@
             proximoSlide();
         };
         const confirmaVoto = () => {
-            salvaCandidato(candidatoAtual);      
+            salvaCandidato(candidatoAtual);
             proximoSlide();
         };
         const finalizarVotacao = () => {
@@ -761,12 +773,12 @@
         const closeMessageBox = () => {
             const messageBox = document.querySelector('.message-box');
             messageBox.classList.add('d-none');
-             messageBox.classList.remove('d-none');
+            messageBox.classList.remove('d-none');
             messageBox.querySelector('.title').textContent = "";
             messageBox.querySelector('.body').textContent = "";
             const button = messageBox.querySelector('.btn');
             button.textContent = "";
-            button.onclick = () => {};
+            button.onclick = () => { };
         };
     </script>
     <script>
@@ -782,10 +794,10 @@
         let abaAtivaIndex = 0;
         let subIndiceAtual = 0;
 
-        function buscarCandidatoPorNumero(numero,cargo) {
+        function buscarCandidatoPorNumero(numero, cargo) {
             if (!numero) return null;
             let listaCandidatos = [];
-           
+
             switch (cargo) {
                 case "Dep. Estadual":
                     listaCandidatos = DEPUTADOS_ESTADUAIS;
@@ -806,7 +818,7 @@
                     listaCandidatos = PRESIDENTES;
                     break;
                 default:
-            }      
+            }
             let candidatoBuscado = listaCandidatos.find(c => c.numero === numero);
             return candidatoBuscado;
         }
@@ -815,122 +827,176 @@
             let relacao = null;
 
             if (tipoCargo === "estadual") {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.deputadoEstadual === candidato.numero);
+                relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.deputadoEstadual === candidato.numero);
             } else if (tipoCargo === "federal") {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.deputadoFederal === candidato.numero);
+                relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.deputadoFederal === candidato.numero);
             } else if (tipoCargo === "senador1") {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.senador1 === candidato.numero);
+                relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.senador1 === candidato.numero);
             } else if (tipoCargo === "senador2") {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.senador2 === candidato.numero);
+                relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.senador2 === candidato.numero);
             } else if (tipoCargo === "governador") {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.governador === candidato.numero);
+                relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.governador === candidato.numero);
             } else if (tipoCargo === "presidente") {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.presidente === candidato.numero);
+                relacao = ARTES_DEPUTADOS_ESTADUAIS.find(a => a.presidente === candidato.numero);
             }
 
             if (!relacao && ARTES_DEPUTADOS_ESTADUAIS.length > 0) {
-            relacao = ARTES_DEPUTADOS_ESTADUAIS[0];
+                relacao = ARTES_DEPUTADOS_ESTADUAIS[0];
             }
 
             if (!relacao) return [];
 
             const coligacaoItens = [];
-            
+
             if (tipoCargo !== "estadual" && relacao.deputadoEstadual) {
-            const cand = buscarCandidatoPorNumero(relacao.deputadoEstadual,"Dep. Estadual");
-            if (cand) coligacaoItens.push({ cargo: "Dep. Estadual", nome: cand.nome, numero: cand.numero, foto: cand.foto });
+                const cand = buscarCandidatoPorNumero(relacao.deputadoEstadual, "Dep. Estadual");
+                if (cand) coligacaoItens.push({ cargo: "Dep. Estadual", nome: cand.nome, numero: cand.numero, foto: cand.foto });
             }
             if (tipoCargo !== "federal" && relacao.deputadoFederal) {
-            const cand = buscarCandidatoPorNumero(relacao.deputadoFederal,"Dep. Federal");
-            if (cand) coligacaoItens.push({ cargo: "Dep. Federal", nome: cand.nome, numero: cand.numero, foto: cand.foto });
+                const cand = buscarCandidatoPorNumero(relacao.deputadoFederal, "Dep. Federal");
+                if (cand) coligacaoItens.push({ cargo: "Dep. Federal", nome: cand.nome, numero: cand.numero, foto: cand.foto });
             }
             if (tipoCargo !== "senador1" && relacao.senador1) {
-            const cand = buscarCandidatoPorNumero(relacao.senador1,"Senador 1");
-            if (cand) coligacaoItens.push({ cargo: "Senador 1", nome: cand.nome, numero: cand.numero, foto: cand.foto });
+                const cand = buscarCandidatoPorNumero(relacao.senador1, "Senador 1");
+                if (cand) coligacaoItens.push({ cargo: "Senador 1", nome: cand.nome, numero: cand.numero, foto: cand.foto });
             }
             if (tipoCargo !== "senador2" && relacao.senador2) {
-            const cand = buscarCandidatoPorNumero(relacao.senador2,"Senador 2");
-            if (cand) coligacaoItens.push({ cargo: "Senador 2", nome: cand.nome, numero: cand.numero, foto: cand.foto });
+                const cand = buscarCandidatoPorNumero(relacao.senador2, "Senador 2");
+                if (cand) coligacaoItens.push({ cargo: "Senador 2", nome: cand.nome, numero: cand.numero, foto: cand.foto });
             }
             if (tipoCargo !== "governador" && relacao.governador) {
-            const cand = buscarCandidatoPorNumero(relacao.governador,"Governador");
-            if (cand) coligacaoItens.push({ cargo: "Governador", nome: cand.nome, numero: cand.numero, foto: cand.foto });
+                const cand = buscarCandidatoPorNumero(relacao.governador, "Governador");
+                if (cand) coligacaoItens.push({ cargo: "Governador", nome: cand.nome, numero: cand.numero, foto: cand.foto });
             }
             if (tipoCargo !== "presidente" && relacao.presidente) {
-            const cand = buscarCandidatoPorNumero(relacao.presidente,"Presidente");
-            if (cand) coligacaoItens.push({ cargo: "Presidente", nome: cand.nome, numero: cand.numero, foto: cand.foto });
+                const cand = buscarCandidatoPorNumero(relacao.presidente, "Presidente");
+                if (cand) coligacaoItens.push({ cargo: "Presidente", nome: cand.nome, numero: cand.numero, foto: cand.foto });
             }
 
             return coligacaoItens;
         }
 
-        function renderizarApp() {
-            const containerPrincipal = document.getElementById('urna-santinhos-container');
-            
-            // Garante que o container esteja visível caso tenha sido fechado anteriormente
-            containerPrincipal.style.display = 'block';
-
-            containerPrincipal.innerHTML = `
-            <div class="us-box-overlay">
-                <!-- Botão X para fechar -->
-                <button type="button" class="us-btn-fechar" id="usBtnFechar" title="Fechar">&times;</button>
-                
-                <div class="us-nav-bar" id="usNavCargos"></div>
-                <div class="us-santinho-wrapper">
-                    <div class="us-grid-santinhos" id="usGridSantinhos"></div>
-                </div>
-            </div>
-            `;
-
-            // Ação do Botão X: Esconde a interface e limpa o conteúdo
-            document.getElementById('usBtnFechar').onclick = fecharSantinhos;
-
-            renderizarAbasEConteudo();
+        function abrirSantinhos() {
+            renderizarApp();
         }
 
-        // Função responsável por fechar/ocultar a modal de santinhos
         function fecharSantinhos() {
             const containerPrincipal = document.getElementById('urna-santinhos-container');
             if (containerPrincipal) {
+                containerPrincipal.classList.add('d-none');
                 containerPrincipal.style.display = 'none';
-                containerPrincipal.innerHTML = ''; // Limpa a árvore do DOM
             }
         }
-        function renderizarAbasEConteudo() {
-            const navContainer = document.getElementById('usNavCargos');
-            const gridContainer = document.getElementById('usGridSantinhos');
 
-            // 1. Renderiza as Abas dos Cargos
+        function renderizarApp() {
+            const containerPrincipal = document.getElementById('urna-santinhos-container');
+            if (!containerPrincipal) return;
+
+            containerPrincipal.classList.remove('d-none');
+            containerPrincipal.style.display = 'flex';
+
+            const btnFechar = document.getElementById('usBtnFechar');
+            if (btnFechar) {
+                btnFechar.onclick = fecharSantinhos;
+            }
+
+            renderizarAbasPrincipais();
+            renderizarSubAbasECandidato();
+        }
+
+        function renderizarAbasPrincipais() {
+            const navContainer = document.getElementById('usSlidesNav');
+            if (!navContainer) return;
             navContainer.innerHTML = '';
+
             abasCargos.forEach((aba, index) => {
                 const btn = document.createElement('button');
-                btn.className = `us-tab-btn ${index === abaAtivaIndex ? 'active' : ''}`;
+                btn.type = 'button';
+                btn.className = `us-tab-btn us-nav-tab ${index === abaAtivaIndex ? 'active' : ''}`;
                 btn.innerText = aba.nome;
                 btn.onclick = () => {
                     abaAtivaIndex = index;
-                    renderizarAbasEConteudo();
+                    subIndiceAtual = 0;
+                    renderizarAbasPrincipais();
+                    renderizarSubAbasECandidato();
                 };
                 navContainer.appendChild(btn);
             });
+        }
 
-            // 2. Renderiza apenas os candidatos do Cargo Selecionado
-            gridContainer.innerHTML = '';
-            const cargoAtual = abasCargos[abaAtivaIndex];
+        function obterInfoPartido(partidoStr) {
+            if (!partidoStr) return null;
+            const siglaLimpa = partidoStr.split(' ')[0].trim();
+            let partidoEncontrado = partidos.find(p => p.sigla === partidoStr || p.sigla === siglaLimpa);
+            if (!partidoEncontrado) {
+                partidoEncontrado = partidos.find(p => partidoStr.includes(p.sigla) || p.sigla.includes(siglaLimpa));
+            }
+            return partidoEncontrado;
+        }
 
-            if (!cargoAtual.lista || cargoAtual.lista.length === 0) {
-                gridContainer.innerHTML = '<div style="color:#fff; grid-column: 1/-1; text-align:center;">Nenhum candidato encontrado neste cargo.</div>';
+        function renderizarSubAbasECandidato() {
+            const subNavContainer = document.getElementById('usSubNav');
+            const wrapper = document.getElementById('usSantinhoWrapper');
+            if (!subNavContainer || !wrapper) return;
+
+            subNavContainer.innerHTML = '';
+            wrapper.innerHTML = '';
+
+            const abaAtual = abasCargos[abaAtivaIndex];
+            if (!abaAtual) return;
+            const listaCandidatos = abaAtual.lista;
+
+            if (!listaCandidatos || listaCandidatos.length === 0) {
+                wrapper.innerHTML = '<div style="color:#fff; grid-column: 1/-1; text-align:center; padding: 20px;">Nenhum candidato encontrado.</div>';
                 return;
             }
 
-            cargoAtual.lista.forEach(candidato => {
-                const coligacaoItens = obterDadosColigacao(candidato, cargoAtual.tipo);
+            // Sub-aba para exibir Todos os Candidatos do Cargo
+            const btnTodos = document.createElement('button');
+            btnTodos.type = 'button';
+            btnTodos.className = `us-sub-tab ${subIndiceAtual === 0 ? 'active' : ''}`;
+            btnTodos.innerText = `Todos (${listaCandidatos.length})`;
+            btnTodos.onclick = () => {
+                subIndiceAtual = 0;
+                renderizarSubAbasECandidato();
+            };
+            subNavContainer.appendChild(btnTodos);
+
+            // Sub-abas para cada candidato individual
+            listaCandidatos.forEach((cand, idx) => {
+                const subBtn = document.createElement('button');
+                subBtn.type = 'button';
+                subBtn.className = `us-sub-tab ${idx + 1 === subIndiceAtual ? 'active' : ''}`;
+                subBtn.innerText = `${cand.numero} - ${cand.nome}`;
+                subBtn.onclick = () => {
+                    subIndiceAtual = idx + 1;
+                    renderizarSubAbasECandidato();
+                };
+                subNavContainer.appendChild(subBtn);
+            });
+
+            // Determina se exibe todos ou um candidato específico
+            const candidatosExibir = (subIndiceAtual === 0)
+                ? listaCandidatos
+                : [listaCandidatos[subIndiceAtual - 1]];
+
+            candidatosExibir.forEach(candidatoSelecionado => {
+                if (!candidatoSelecionado) return;
+                const coligacaoItens = obterDadosColigacao(candidatoSelecionado, abaAtual.tipo);
+
+                const dadosPartido = obterInfoPartido(candidatoSelecionado.partido);
+                const nomePartidoExibir = dadosPartido ? `${dadosPartido.nome} (${dadosPartido.sigla})` : (candidatoSelecionado.partido || 'PARTIDO');
+                const sloganExibir = candidatoSelecionado.slogan || (dadosPartido ? dadosPartido.slogan : '');
+                const propostasLista = (candidatoSelecionado.propostas && candidatoSelecionado.propostas.length > 0)
+                    ? candidatoSelecionado.propostas
+                    : (dadosPartido ? dadosPartido.propostas : []);
 
                 let coligacaoHtml = '';
                 if (coligacaoItens.length > 0) {
                     const itensHtml = coligacaoItens.map(c => `
                         <div class="us-item-cargo">
                             <div class="us-info-mini">
-                                <img src="${buscarCandidatoPorNumero(c.numero, c.cargo)?.fotoCandidato || ''}" class="us-mini-foto" alt="${c.nome}">
+                                <img src="${buscarCandidatoPorNumero(c.numero, c.cargo)?.fotoCandidato || c.foto || ''}" class="us-mini-foto" alt="${c.nome}">
                                 <span>${c.cargo}: <b>${c.nome}</b></span>
                             </div>
                             <span class="us-numero-item">${c.numero}</span>
@@ -940,10 +1006,9 @@
                     coligacaoHtml = `<div class="us-lista-coligacao">${itensHtml}</div>`;
                 }
 
-                // Renderiza lista de propostas se existirem no objeto do candidato
                 let propostasHtml = '';
-                if (candidato.propostas && candidato.propostas.length > 0) {
-                    const itensPropostas = candidato.propostas.map(p => `<li>${p}</li>`).join('');
+                if (propostasLista && propostasLista.length > 0) {
+                    const itensPropostas = propostasLista.map(p => `<li>${p}</li>`).join('');
                     propostasHtml = `
                         <div class="us-propostas-box">
                             <div class="us-propostas-titulo">Principais Propostas:</div>
@@ -957,177 +1022,42 @@
                 santinhoDiv.innerHTML = `
                     <div class="us-header">COLIGAÇÃO ELEITORAL</div>
                     <div class="us-candidato-principal">
-                        <div class="us-cargo">${cargoAtual.nome}</div>
-                        <img src="${candidato.foto || candidato.fotoCandidato || ''}" alt="${candidato.nome}">
-                        <div class="us-nome-principal">${candidato.nome} (${candidato.partido || 'PARTIDO'})</div>
-                        
-                        ${candidato.slogan ? `<div class="us-slogan">"${candidato.slogan}"</div>` : ''}
-                        
-                        <div class="us-numero-principal">${candidato.numero}</div>
+                        <div class="us-cargo">${abaAtual.nome}</div>
+                        <img src="${candidatoSelecionado.fotoCandidato || candidatoSelecionado.foto || ''}" alt="${candidatoSelecionado.nome}">
+                        <div class="us-nome-principal">${candidatoSelecionado.nome}</div>
+                        <div class="us-numero-principal">${candidatoSelecionado.numero}</div>
+                        <div class="us-nome-partido">${nomePartidoExibir}</div>
+                        ${sloganExibir ? `<div class="us-slogan">"${sloganExibir}"</div>` : ''}
                     </div>
-                    
                     ${propostasHtml}
                     ${coligacaoHtml}
-                    
                     <div class="us-footer">Vote consciente • Eleições</div>
                 `;
 
-                gridContainer.appendChild(santinhoDiv);
+                wrapper.appendChild(santinhoDiv);
             });
-        }
-        function renderizarTodosSantinhos() {
-            const gridContainer = document.getElementById('usGridSantinhos');
-            gridContainer.innerHTML = '';
-
-            // Percorre cada tipo de cargo
-            abasCargos.forEach(cargo => {
-                cargo.lista.forEach(candidato => {
-                    const coligacaoItens = obterDadosColigacao(candidato, cargo.tipo);
-
-                    let coligacaoHtml = '';
-                    if (coligacaoItens.length > 0) {
-                        const itensHtml = coligacaoItens.map(c => `
-                            <div class="us-item-cargo">
-                                <div class="us-info-mini">
-                                    <img src="${buscarCandidatoPorNumero(c.numero,c.cargo)?.fotoCandidato }" class="us-mini-foto" alt="${c.nome}">
-                                    <span>${c.cargo}: <b>${c.nome}</b></span>
-                                </div>
-                                <span class="us-numero-item">${c.numero}</span>
-                            </div>
-                        `).join('');
-
-                        coligacaoHtml = `<div class="us-lista-coligacao">${itensHtml}</div>`;
-                    }
-
-                    const santinhoDiv = document.createElement('div');
-                    santinhoDiv.className = 'us-santinho';
-                    santinhoDiv.innerHTML = `
-                        <div class="us-header"></div>
-                        <div class="us-candidato-principal">
-                            <div class="us-cargo">${cargo.nome}</div>
-                            <img src="${candidato.foto || candidato.fotoCandidato || ''}" alt="${candidato.nome}">
-                            <div class="us-nome-principal">${candidato.nome} (${candidato.partido || 'PARTIDO'})</div>
-                            <div class="us-numero-principal">${candidato.numero}</div>
-                        </div>
-                        ${coligacaoHtml}
-                        <div class="us-footer">Vote consciente • Eleições</div>
-                    `;
-
-                    gridContainer.appendChild(santinhoDiv);
-                });
-            });
-        }
-        function renderizarAbasPrincipais() {
-            const navContainer = document.getElementById('usSlidesNav');
-            navContainer.innerHTML = '';
-
-            abasCargos.forEach((aba, index) => {
-            const btn = document.createElement('button');
-            btn.className = `us-nav-tab ${index === abaAtivaIndex ? 'active' : ''}`;
-            btn.innerText = aba.nome;
-            btn.onclick = () => {
-                abaAtivaIndex = index;
-                subIndiceAtual = 0;
-                renderizarApp();
-            };
-            navContainer.appendChild(btn);
-            });
-        }
-
-        function renderizarSubAbasECandidato() {
-            const subNavContainer = document.getElementById('usSubNav');
-            const wrapper = document.getElementById('usSantinhoWrapper');
-            
-            subNavContainer.innerHTML = '';
-            wrapper.innerHTML = '';
-
-            const abaAtual = abasCargos[abaAtivaIndex];
-            const listaCandidatos = abaAtual.lista;
-
-            if (!listaCandidatos || listaCandidatos.length === 0) {
-            wrapper.innerHTML = '<div style="color:#aaa;">Nenhum candidato encontrado.</div>';
-            return;
-            }
-
-            if (subIndiceAtual >= listaCandidatos.length) {
-            subIndiceAtual = 0;
-            }
-
-            listaCandidatos.forEach((cand, idx) => {
-            const subBtn = document.createElement('button');
-            subBtn.className = `us-sub-tab ${idx === subIndiceAtual ? 'active' : ''}`;
-            subBtn.innerText = `${cand.numero} - ${cand.nome}`;
-            subBtn.onclick = () => {
-                subIndiceAtual = idx;
-                renderizarSubAbasECandidato();
-            };
-            subNavContainer.appendChild(subBtn);
-            });
-
-            const candidatoSelecionado = listaCandidatos[subIndiceAtual];
-            const coligacaoItens = obterDadosColigacao(candidatoSelecionado, abaAtual.tipo);
-
-            let coligacaoHtml = '';
-            if (coligacaoItens.length > 0) {
-            const itensHtml = coligacaoItens.map(c => `
-                <div class="us-item-cargo">
-                <div class="us-info-mini">
-                    <img src="${c.foto}" class="us-mini-foto" alt="${c.nome}">
-                    <span>${c.cargo}: <b>${c.nome}</b></span>
-                </div>
-                <span class="us-numero-item">${c.numero}</span>
-                </div>
-            `).join('');
-
-            coligacaoHtml = `
-                <div class="us-lista-coligacao">
-                ${itensHtml}
-                </div>
-            `;
-            }
-
-            const santinhoDiv = document.createElement('div');
-            santinhoDiv.className = 'us-santinho';
-            santinhoDiv.innerHTML = `
-            <div class="us-header">COLIGAÇÃO ELEITORAL</div>
-            
-            <div class="us-candidato-principal">
-                <div class="us-cargo">${abaAtual.nome}</div>
-                <img src="${candidatoSelecionado.foto || candidatoSelecionado.fotoPrincipal}" alt="${candidatoSelecionado.nome}">
-                <div class="us-nome-principal">${candidatoSelecionado.nome} (${candidatoSelecionado.partido || 'PARTIDO'})</div>
-                <div class="us-numero-principal">${candidatoSelecionado.numero}</div>
-            </div>
-
-            ${coligacaoHtml}
-
-            <div class="us-footer">Vote consciente • Eleições</div>
-            `;
-
-            wrapper.appendChild(santinhoDiv);
         }
 
         function mudarAbaCargo(direcao) {
             abaAtivaIndex += direcao;
             if (abaAtivaIndex < 0) {
-            abaAtivaIndex = abasCargos.length - 1;
+                abaAtivaIndex = abasCargos.length - 1;
             } else if (abaAtivaIndex >= abasCargos.length) {
-            abaAtivaIndex = 0;
+                abaAtivaIndex = 0;
             }
             subIndiceAtual = 0;
-            renderizarApp();
+            renderizarAbasPrincipais();
+            renderizarSubAbasECandidato();
         }
 
         window.onload = () => {
-            if (!document.getElementById('urna-santinhos-container')) {
-            const mainDiv = document.createElement('div');
-            mainDiv.id = 'urna-santinhos-container';
-            document.body.appendChild(mainDiv);
-            }
-            renderizarApp();
+            renderizarAbasPrincipais();
+            renderizarSubAbasECandidato();
         };
     </script>
     <style>
-        html,body{
+        html,
+        body {
             width: 100%;
             height: 100%;
             padding: 0 0 0 0;
@@ -1136,61 +1066,116 @@
         }
 
 
-        .d-none{display: none!important;}
+        .d-none {
+            display: none !important;
+        }
 
 
         /* Colunas */
-        .col1 { grid-column: 1; }
-        .col2 { grid-column: 2; }
-        .col12 { grid-column: 1 / span 2; }
+        .col1 {
+            grid-column: 1;
+        }
+
+        .col2 {
+            grid-column: 2;
+        }
+
+        .col12 {
+            grid-column: 1 / span 2;
+        }
 
 
         /* Linhas */
-        .row1  { grid-row: 1; }
-        .row2  { grid-row: 2; }
-        .row3  { grid-row: 3; }
-        .row4  { grid-row: 4; }
-        .row5  { grid-row: 5; }
-        .row6  { grid-row: 6; }
-        .row7  { grid-row: 7; }
-        .row8  { grid-row: 8; }
-        .row9  { grid-row: 9; }
-        .row10 { grid-row: 10; }
-        .row11 { grid-row: 11; }
+        .row1 {
+            grid-row: 1;
+        }
+
+        .row2 {
+            grid-row: 2;
+        }
+
+        .row3 {
+            grid-row: 3;
+        }
+
+        .row4 {
+            grid-row: 4;
+        }
+
+        .row5 {
+            grid-row: 5;
+        }
+
+        .row6 {
+            grid-row: 6;
+        }
+
+        .row7 {
+            grid-row: 7;
+        }
+
+        .row8 {
+            grid-row: 8;
+        }
+
+        .row9 {
+            grid-row: 9;
+        }
+
+        .row10 {
+            grid-row: 10;
+        }
+
+        .row11 {
+            grid-row: 11;
+        }
 
 
         /* Span */
-        .row1x4 { grid-row: 1 / span 4; }
-        .row5x2 { grid-row: 5 / span 2; }
-        .row5x4 { grid-row: 5 / span 4; }
+        .row1x4 {
+            grid-row: 1 / span 4;
+        }
+
+        .row5x2 {
+            grid-row: 5 / span 2;
+        }
+
+        .row5x4 {
+            grid-row: 5 / span 4;
+        }
+
         div.urna {
-           width: 100%;
-           height: 100%;
-           display: flex;
-           background-color: #FFC;
-           padding: 40px 40px 40px 40px;
-           box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            background-color: #FFC;
+            padding: 40px 40px 40px 40px;
+            box-sizing: border-box;
         }
+
         div.tela {
-           width: 66%;
-           height: 100%;
-           margin-right: 40px;
-           border: 10px solid black;
-           font-size: 30px;
-           background-color: white;
-           
-           box-sizing: border-box;
+            width: 66%;
+            height: 100%;
+            margin-right: 40px;
+            border: 10px solid black;
+            font-size: 30px;
+            background-color: white;
+
+            box-sizing: border-box;
         }
-        .slide{
+
+        .slide {
             width: 100%;
             height: 100%;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             box-sizing: border-box;
         }
+
         /* Campo do número */
-        input.numero2{
-            width: 80px;              /* ajuste conforme o cargo */
+        input.numero2 {
+            width: 80px;
+            /* ajuste conforme o cargo */
             height: 45px;
 
 
@@ -1199,13 +1184,11 @@
 
 
             background:
-                repeating-linear-gradient(
-                    to right,
+                repeating-linear-gradient(to right,
                     transparent 0,
                     transparent 38px,
                     #000 38px,
-                    #000 40px
-                );
+                    #000 40px);
 
 
             letter-spacing: 18px;
@@ -1219,8 +1202,10 @@
             padding: 0;
             box-sizing: border-box;
         }
-        input.numero3{
-            width: 120px;              /* ajuste conforme o cargo */
+
+        input.numero3 {
+            width: 120px;
+            /* ajuste conforme o cargo */
             height: 45px;
 
 
@@ -1229,13 +1214,11 @@
 
 
             background:
-                repeating-linear-gradient(
-                    to right,
+                repeating-linear-gradient(to right,
                     transparent 0,
                     transparent 38px,
                     #000 38px,
-                    #000 40px
-                );
+                    #000 40px);
 
 
             letter-spacing: 18px;
@@ -1249,8 +1232,10 @@
             padding: 0;
             box-sizing: border-box;
         }
-        input.numero4{
-            width: 160px;              /* ajuste conforme o cargo */
+
+        input.numero4 {
+            width: 160px;
+            /* ajuste conforme o cargo */
             height: 45px;
 
 
@@ -1259,13 +1244,11 @@
 
 
             background:
-                repeating-linear-gradient(
-                    to right,
+                repeating-linear-gradient(to right,
                     transparent 0,
                     transparent 38px,
                     #000 38px,
-                    #000 40px
-                );
+                    #000 40px);
 
 
             letter-spacing: 18px;
@@ -1279,8 +1262,10 @@
             padding: 0;
             box-sizing: border-box;
         }
-        input.numero5{
-            width: 200px;              /* ajuste conforme o cargo */
+
+        input.numero5 {
+            width: 200px;
+            /* ajuste conforme o cargo */
             height: 45px;
 
 
@@ -1289,13 +1274,11 @@
 
 
             background:
-                repeating-linear-gradient(
-                    to right,
+                repeating-linear-gradient(to right,
                     transparent 0,
                     transparent 38px,
                     #000 38px,
-                    #000 40px
-                );
+                    #000 40px);
 
 
             letter-spacing: 18px;
@@ -1309,55 +1292,57 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         /* Remove setas em alguns navegadores */
         input.numero[type=number]::-webkit-inner-spin-button,
-        input.numero[type=number]::-webkit-outer-spin-button{
-            -webkit-appearance:none;
-            margin:0;
+        input.numero[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
 
-        input.numero[type=number]{
-            -moz-appearance:textfield;
+        input.numero[type=number] {
+            -moz-appearance: textfield;
         }
 
 
         /* Foto do candidato */
-        div.foto-candidato{
-            border:2px solid #000;
-            background:#EEE;
+        div.foto-candidato {
+            border: 2px solid #000;
+            background: #EEE;
 
 
-            display:grid;
-            place-items:center;
+            display: grid;
+            place-items: center;
 
 
-            width:100%;
-            height:100%;
-            justify-self:center;
-            align-self:start;
+            width: 100%;
+            height: 100%;
+            justify-self: center;
+            align-self: start;
         }
 
 
         /* Foto do vice */
 
-        div.foto-vice{
-            border:2px solid #000;
-            background:#EEE;
+        div.foto-vice {
+            border: 2px solid #000;
+            background: #EEE;
 
 
-            display:grid;
-            place-items:center;
+            display: grid;
+            place-items: center;
 
 
             margin-top: 20px;
-            width:80%;
-            height:80%;
+            width: 80%;
+            height: 80%;
 
 
-            justify-self:end;
-            align-self:start;
+            justify-self: end;
+            align-self: start;
         }
+
         div.teclado {
             margin-top: 60px;
             padding: 20px;
@@ -1376,31 +1361,34 @@
         }
 
 
-        div.teclado > button {
+        div.teclado>button {
             box-sizing: border-box;
             font-size: 30px;
         }
 
 
-        div.teclado > button.digito {            
+        div.teclado>button.digito {
             background-color: #000;
             color: #fff;
         }
 
 
-        div.teclado > button.branco {            
+        div.teclado>button.branco {
             background-color: #fff;
             color: #000;
         }
-        div.teclado >button.corrige {            
+
+        div.teclado>button.corrige {
             background-color: #f00;
             color: #FFF;
         }
-        div.teclado > button.confirma {            
+
+        div.teclado>button.confirma {
             background-color: #0f0;
             color: #000;
         }
-        .message-box{
+
+        .message-box {
             width: 100%;
             height: 100%;
             position: fixed;
@@ -1412,35 +1400,40 @@
             align-items: center;
             z-index: 1000;
         }
-        .message{
+
+        .message {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
         }
-        .message .title{
+
+        .message .title {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
         }
-        .message .body{
+
+        .message .body {
             font-size: 18px;
             margin-bottom: 20px;
         }
-        .message .btn{
+
+        .message .btn {
             padding: 10px 20px;
             font-size: 18px;
             cursor: pointer;
             border-radius: 10px;
-        }  
-        .message .btn-primary{
+        }
+
+        .message .btn-primary {
             background-color: #007bff;
             color: #fff;
             border: none;
         }
-    </style> 
+    </style>
     <style>
-        /* Container isolado para evitar conflitos */
+        /* Container isolado */
         #urna-santinhos-container {
             all: initial;
             font-family: 'Arial', sans-serif !important;
@@ -1451,6 +1444,7 @@
         }
 
         /* Overlay em tela cheia com rolagem vertical */
+        #urna-santinhos-container.us-box-overlay,
         #urna-santinhos-container .us-box-overlay {
             position: fixed;
             top: 0;
@@ -1460,24 +1454,152 @@
             background: rgba(0, 0, 0, 0.95);
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 30px 20px 20px 20px;
             z-index: 99999;
             overflow-y: auto;
+            box-sizing: border-box;
         }
 
         #urna-santinhos-container .us-santinho-wrapper {
             width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        /* Grid de 4 colunas para posicionar os santinhos lado a lado */
+        /* Botão Fechar (X) */
+        #urna-santinhos-container .us-btn-fechar {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-size: 26px;
+            font-weight: bold;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 100000;
+            line-height: 1;
+        }
+
+        #urna-santinhos-container .us-btn-fechar:hover {
+            background: #f44336;
+            color: #fff;
+            border-color: #f44336;
+            transform: scale(1.1);
+        }
+
+        /* Barra de Navegação por Abas Principais (us-slides-nav e us-nav-bar) */
+        #urna-santinhos-container .us-slides-nav,
+        #urna-santinhos-container .us-nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+
+        /* Barra de Navegação por Sub-Abas (us-sub-nav) */
+        #urna-santinhos-container .us-sub-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            position: relative;
+            z-index: 100;
+        }
+
+        /* Estilo dos Botões das Abas Principais */
+        #urna-santinhos-container .us-tab-btn,
+        #urna-santinhos-container .us-nav-tab {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+        }
+
+        #urna-santinhos-container .us-tab-btn:hover,
+        #urna-santinhos-container .us-nav-tab:hover {
+            background: #334155;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        #urna-santinhos-container .us-tab-btn.active,
+        #urna-santinhos-container .us-nav-tab.active {
+            background: #ffeb3b;
+            color: #000;
+            border-color: #f59e0b;
+            box-shadow: 0 4px 12px rgba(255, 235, 59, 0.4);
+            font-weight: 800;
+        }
+
+        /* Estilo dos Botões das Sub-Abas */
+        #urna-santinhos-container .us-sub-tab {
+            background: #0f172a;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            min-height: 32px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        #urna-santinhos-container .us-sub-tab:hover {
+            background: #1e293b;
+            color: #fff;
+        }
+
+        #urna-santinhos-container .us-sub-tab.active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+            font-weight: 700;
+        }
+
+        /* Grid de Santinhos */
         #urna-santinhos-container .us-grid-santinhos {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            gap: 20px;
             width: 100%;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Regras de responsividade para telas menores */
+        /* Responsividade */
         @media (max-width: 1200px) {
             #urna-santinhos-container .us-grid-santinhos {
                 grid-template-columns: repeat(2, 1fr);
@@ -1488,6 +1610,12 @@
             #urna-santinhos-container .us-grid-santinhos {
                 grid-template-columns: 1fr;
             }
+
+            #urna-santinhos-container .us-tab-btn,
+            #urna-santinhos-container .us-nav-tab {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
         }
 
         /* Card do Santinho */
@@ -1496,15 +1624,22 @@
             background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
             color: white;
             border-radius: 12px;
-            padding: 12px;
+            padding: 14px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             border: 2px solid #ffeb3b;
             animation: usFadeIn 0.3s ease-in-out;
         }
 
         @keyframes usFadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         #urna-santinhos-container .us-header {
@@ -1520,19 +1655,20 @@
             background: white;
             color: #333;
             border-radius: 8px;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
         #urna-santinhos-container .us-candidato-principal img {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             object-fit: contain;
             background: #f0f2f5;
             border-radius: 50%;
             padding: 2px;
             border: 2px solid #0d47a1;
+            margin: 6px 0;
         }
 
         #urna-santinhos-container .us-cargo {
@@ -1557,25 +1693,38 @@
             padding: 2px 8px;
             border-radius: 4px;
             display: inline-block;
-            margin-top: 2px;
+            margin-top: 4px;
             letter-spacing: 1px;
+        }
+
+        #urna-santinhos-container .us-nome-partido {
+            font-size: 11px;
+            font-weight: 800;
+            color: #0d47a1;
+            margin: 6px 0 4px 0;
+            padding: 4px 8px;
+            background: #e3f2fd;
+            border-radius: 6px;
+            border: 1px solid #90caf9;
+            text-align: center;
+            line-height: 1.3;
         }
 
         /* Lista da Coligação interna */
         #urna-santinhos-container .us-lista-coligacao {
-            margin-top: 8px;
+            margin-top: 10px;
             background: rgba(0, 0, 0, 0.25);
             border-radius: 6px;
-            padding: 6px;
+            padding: 8px;
         }
 
         #urna-santinhos-container .us-item-cargo {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 2px 0;
+            padding: 4px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            font-size: 10px;
+            font-size: 11px;
         }
 
         #urna-santinhos-container .us-item-cargo:last-child {
@@ -1585,12 +1734,12 @@
         #urna-santinhos-container .us-info-mini {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         #urna-santinhos-container .us-mini-foto {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             object-fit: cover;
             background: #fff;
@@ -1600,58 +1749,23 @@
             font-weight: bold;
             background: #ffeb3b;
             color: #000;
-            padding: 1px 4px;
+            padding: 1px 5px;
             border-radius: 3px;
         }
 
         #urna-santinhos-container .us-footer {
             text-align: center;
             font-size: 9px;
-            margin-top: 8px;
+            margin-top: 10px;
             color: #e0e0e0;
             font-style: italic;
         }
-        /* Barra de Navegação por Abas */
-        #urna-santinhos-container .us-nav-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
 
-        /* Estilo do Botão da Aba */
-        #urna-santinhos-container .us-tab-btn {
-            background: #1e293b;
-            color: #94a3b8;
-            border: 1px solid #334155;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-        }
-
-        #urna-santinhos-container .us-tab-btn:hover {
-            background: #334155;
-            color: #fff;
-        }
-
-        /* Aba Ativa */
-        #urna-santinhos-container .us-tab-btn.active {
-            background: #ffeb3b;
-            color: #000;
-            border-color: #f59e0b;
-            box-shadow: 0 2px 8px rgba(255, 235, 59, 0.3);
-        }
         /* Slogan do Candidato */
         #urna-santinhos-container .us-slogan {
             font-size: 12px;
             font-style: italic;
-            color: #e2e8f0;
+            color: black;
             margin: 4px 0 8px 0;
             text-align: center;
             padding: 0 8px;
@@ -1685,11 +1799,11 @@
         #urna-santinhos-container .us-propostas-box li {
             margin-bottom: 2px;
         }
-        
-    </style> 
+    </style>
 </head>
+
 <body>
-   <div class="urna">
+    <div class="urna">
         <div class="tela ">
             <div class="slide deputado-federal">
                 <div class="col1 row1">TREINAMENTO</div>
@@ -1700,12 +1814,8 @@
 
                 <div class="col1 row3">
                     Número:
-                    <input class="numero-candidato deputado-federal numero4"
-                        type="text"
-                        maxlength="4"
-                        autocomplete="off"
-                        onblur="carregarCandidato(this.value)"
-                        >
+                    <input class="numero-candidato deputado-federal numero4" type="text" maxlength="4"
+                        autocomplete="off" onblur="carregarCandidato(this.value)">
 
                 </div>
 
@@ -1720,13 +1830,13 @@
                 </div>
 
 
-              
+
 
 
                 <div class="col2 row1x4 foto-candidato"></div>
 
 
-               
+
 
                 <div class="col12 row8">
                     Aperte a tecla:
@@ -1758,12 +1868,8 @@
 
                 <div class="col1 row3">
                     Número:
-                    <input class="numero-candidato deputado-estadual numero5"
-                        type="text"
-                        maxlength="5"
-                                               autocomplete="off"
-                        onblur="carregarCandidato(this.value)"
-                        >
+                    <input class="numero-candidato deputado-estadual numero5" type="text" maxlength="5"
+                        autocomplete="off" onblur="carregarCandidato(this.value)">
 
                 </div>
 
@@ -1811,12 +1917,8 @@
 
                 <div class="col1 row3">
                     Número:
-                    <input class="numero-candidato 1-senador numero3"
-                        type="text"
-                        maxlength="3"
-                                               autocomplete="off"
-                        onblur="carregarCandidato(this.value)"
-                        >
+                    <input class="numero-candidato 1-senador numero3" type="text" maxlength="3" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
 
                 </div>
 
@@ -1828,7 +1930,7 @@
 
                 <div class="col1 row5">
                     Partido: <a class="partido"></a>
-                </div>              
+                </div>
 
                 <div class="col2 row1x4 foto-candidato"></div>
 
@@ -1863,12 +1965,8 @@
 
                 <div class="col1 row3">
                     Número:
-                    <input class="numero-candidato 2-senador numero3"
-                        type="text"
-                        maxlength="3"
-                                               autocomplete="off"
-                        onblur="carregarCandidato(this.value)"
-                        >
+                    <input class="numero-candidato 2-senador numero3" type="text" maxlength="3" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
 
                 </div>
 
@@ -1914,12 +2012,8 @@
 
                 <div class="col1 row3">
                     Número:
-                    <input class="numero-candidato governador numero2"
-                        type="text"
-                        maxlength="2"
-                                               autocomplete="off"
-                        onblur="carregarCandidato(this.value)"
-                        >
+                    <input class="numero-candidato governador numero2" type="text" maxlength="2" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
 
                 </div>
 
@@ -1975,12 +2069,8 @@
 
                 <div class="col1 row3">
                     Número:
-                    <input class="numero-candidato presidente numero2"
-                        type="text"
-                        maxlength="2"
-                        autocomplete="off"
-                        onblur="carregarCandidato(this.value)"
-                        >
+                    <input class="numero-candidato presidente numero2" type="text" maxlength="2" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
                 </div>
 
 
@@ -2027,7 +2117,7 @@
 
             </div>
         </div>
-       
+
         <div class="teclado">
             <button class="digito" onclick="inserirDigito('1')" ontouchstart="inserirDigito('1')">1</button>
             <button class="digito" onclick="inserirDigito('2')" ontouchstart="inserirDigito('2')">2</button>
@@ -2044,14 +2134,28 @@
             <button class="branco" onclick="slideAnterior()">BRANCO</button>
             <button class="corrige" onclick="corrigeVoto()">CORRIGE</button>
             <button class="confirma" onclick="proximoSlide()">CONFIRMA</button>
+            <button type="button" class="btn-santinhos-trigger" onclick="abrirSantinhos()"
+                style="grid-column: 1 / span 3; background: #0d47a1; color: #fff; border: 1px solid #ffeb3b; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 5px;">📋
+                SANTINHOS DE CANDIDATOS</button>
         </div>
-    </div>    
+    </div>
     <div class="message-box d-none">
         <div class="message">
             <h2 class="title"></h2>
             <div class="body"></div>
-            <button class="btn btn-primary" onclick=""></button>            
+            <button class="btn btn-primary" onclick=""></button>
+        </div>
+    </div>
+
+    <div id="urna-santinhos-container" class="us-box-overlay d-none">
+        <button type="button" class="us-btn-fechar" id="usBtnFechar" title="Fechar"
+            onclick="fecharSantinhos()">&times;</button>
+        <div class="us-santinho-wrapper">
+            <div class="us-slides-nav" id="usSlidesNav"></div>
+            <div class="us-sub-nav" id="usSubNav"></div>
+            <div class="us-grid-santinhos" id="usSantinhoWrapper"></div>
         </div>
     </div>
 </body>
+
 </html>
