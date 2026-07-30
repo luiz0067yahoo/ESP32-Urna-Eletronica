@@ -1,0 +1,6 @@
+# Variáveis de ambiente e credenciais sensíveis
+backend/.env
+.env
+
+# Logs
+*.log

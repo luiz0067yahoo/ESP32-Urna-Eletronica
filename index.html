@@ -756,6 +756,13 @@
         };
         const finalizarVotacao = () => {
             loadMessageBox('Voto Finalizado', 'Obrigado por participar do treinamento.', 'Reiniciar Treinamento', () => {
+                exibirResultado
+            });
+        };
+        const exibirResultado = () => {
+            Container = document.createElement("div");
+
+            loadMessageBox('Voto Finalizado', 'Obrigado por participar do treinamento.', 'Reiniciar Treinamento', () => {
                 location.reload();
             });
         };
