@@ -1,0 +1,166 @@
+const ARTES_DEPUTADOS_FEDERAIS = [
+    {
+        deputadoFederal: "9101",
+        deputadoEstadual: "99101",
+        senador1: "701",
+        senador2: "801",
+        governador: "81",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9102",
+        deputadoEstadual: "99102",
+        senador1: "702",
+        senador2: "802",
+        governador: "82",
+        presidente: "63"
+    },
+    {
+        deputadoFederal: "9103",
+        deputadoEstadual: "99103",
+        senador1: "703",
+        senador2: "803",
+        governador: "83",
+        presidente: "62"
+    },
+    {
+        deputadoFederal: "9104",
+        deputadoEstadual: "99104",
+        senador1: "704",
+        senador2: "804",
+        governador: "84",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9105",
+        deputadoEstadual: "99105",
+        senador1: "705",
+        senador2: "805",
+        governador: "85",
+        presidente: "63"
+    },
+    {
+        deputadoFederal: "9106",
+        deputadoEstadual: "99106",
+        senador1: "706",
+        senador2: "806",
+        governador: "86",
+        presidente: "62"
+    },
+    {
+        deputadoFederal: "9107",
+        deputadoEstadual: "99107",
+        senador1: "707",
+        senador2: "807",
+        governador: "87",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9108",
+        deputadoEstadual: "99108",
+        senador1: "708",
+        senador2: "808",
+        governador: "88",
+        presidente: "63"
+    },
+    {
+        deputadoFederal: "9109",
+        deputadoEstadual: "99109",
+        senador1: "709",
+        senador2: "809",
+        governador: "89",
+        presidente: "62"
+    },
+    {
+        deputadoFederal: "9110",
+        deputadoEstadual: "99110",
+        senador1: "710",
+        senador2: "810",
+        governador: "81",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9111",
+        deputadoEstadual: "99111",
+        senador1: "711",
+        senador2: "811",
+        governador: "82",
+        presidente: "63"
+    },
+    {
+        deputadoFederal: "9112",
+        deputadoEstadual: "99112",
+        senador1: "712",
+        senador2: "812",
+        governador: "83",
+        presidente: "62"
+    },
+    {
+        deputadoFederal: "9113",
+        deputadoEstadual: "99113",
+        senador1: "713",
+        senador2: "813",
+        governador: "84",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9114",
+        deputadoEstadual: "99114",
+        senador1: "714",
+        senador2: "814",
+        governador: "85",
+        presidente: "63"
+    },
+    {
+        deputadoFederal: "9115",
+        deputadoEstadual: "99115",
+        senador1: "715",
+        senador2: "815",
+        governador: "86",
+        presidente: "62"
+    },
+    {
+        deputadoFederal: "9116",
+        deputadoEstadual: "99116",
+        senador1: "716",
+        senador2: "816",
+        governador: "87",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9117",
+        deputadoEstadual: "99117",
+        senador1: "717",
+        senador2: "817",
+        governador: "88",
+        presidente: "63"
+    },
+    {
+        deputadoFederal: "9118",
+        deputadoEstadual: "99118",
+        senador1: "718",
+        senador2: "818",
+        governador: "89",
+        presidente: "62"
+    },
+    {
+        deputadoFederal: "9119",
+        deputadoEstadual: "99119",
+        senador1: "719",
+        senador2: "819",
+        governador: "81",
+        presidente: "65"
+    },
+    {
+        deputadoFederal: "9120",
+        deputadoEstadual: "99120",
+        senador1: "720",
+        senador2: "820",
+        governador: "82",
+        presidente: "63"
+    }
+];
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ARTES_DEPUTADOS_FEDERAIS;
+}

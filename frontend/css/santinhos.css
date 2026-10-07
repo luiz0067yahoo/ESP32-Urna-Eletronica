@@ -1,0 +1,370 @@
+/* ==========================================================================
+   ESTILOS DO MODAL DE SANTINHOS DE CANDIDATOS
+   ========================================================================== */
+
+/* Container isolado */
+#urna-santinhos-container {
+    all: initial;
+    font-family: 'Arial', sans-serif !important;
+}
+
+#urna-santinhos-container * {
+    box-sizing: border-box !important;
+}
+
+/* Overlay em tela cheia com rolagem vertical */
+#urna-santinhos-container.us-box-overlay,
+#urna-santinhos-container .us-box-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    padding: clamp(16px, 3vmin, 30px) clamp(10px, 2vmin, 20px);
+    z-index: 99999;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#urna-santinhos-container .us-santinho-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5vmin, 14px);
+}
+
+/* Botão Fechar (X) */
+#urna-santinhos-container .us-btn-fechar {
+    position: fixed;
+    top: clamp(8px, 1.8vmin, 16px);
+    right: clamp(10px, 2vmin, 20px);
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    font-size: clamp(20px, 3.5vmin, 28px);
+    font-weight: bold;
+    width: clamp(34px, 5.5vmin, 44px);
+    height: clamp(34px, 5.5vmin, 44px);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 100000;
+    line-height: 1;
+}
+
+#urna-santinhos-container .us-btn-fechar:hover {
+    background: #f44336;
+    color: #fff;
+    border-color: #f44336;
+    transform: scale(1.1);
+}
+
+/* Barra de Navegação por Abas Principais (us-slides-nav e us-nav-bar) */
+#urna-santinhos-container .us-slides-nav,
+#urna-santinhos-container .us-nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 100;
+}
+
+/* Barra de Navegação por Sub-Abas (us-sub-nav) */
+#urna-santinhos-container .us-sub-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    position: relative;
+    z-index: 100;
+}
+
+/* Estilo dos Botões das Abas Principais */
+#urna-santinhos-container .us-tab-btn,
+#urna-santinhos-container .us-nav-tab {
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1px solid #334155;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+}
+
+#urna-santinhos-container .us-tab-btn:hover,
+#urna-santinhos-container .us-nav-tab:hover {
+    background: #334155;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+#urna-santinhos-container .us-tab-btn.active,
+#urna-santinhos-container .us-nav-tab.active {
+    background: #ffeb3b;
+    color: #000;
+    border-color: #f59e0b;
+    box-shadow: 0 4px 12px rgba(255, 235, 59, 0.4);
+    font-weight: 800;
+}
+
+/* Estilo dos Botões das Sub-Abas */
+#urna-santinhos-container .us-sub-tab {
+    background: #0f172a;
+    color: #cbd5e1;
+    border: 1px solid #334155;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+}
+
+#urna-santinhos-container .us-sub-tab:hover {
+    background: #1e293b;
+    color: #fff;
+}
+
+#urna-santinhos-container .us-sub-tab.active {
+    background: #2563eb;
+    color: #fff;
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    font-weight: 700;
+}
+
+/* Grid de Santinhos */
+#urna-santinhos-container .us-grid-santinhos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    #urna-santinhos-container .us-grid-santinhos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    #urna-santinhos-container .us-grid-santinhos {
+        grid-template-columns: 1fr;
+    }
+
+    #urna-santinhos-container .us-tab-btn,
+    #urna-santinhos-container .us-nav-tab {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Card do Santinho */
+#urna-santinhos-container .us-santinho {
+    width: 100%;
+    background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 2px solid #ffeb3b;
+    animation: usFadeIn 0.3s ease-in-out;
+}
+
+@keyframes usFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#urna-santinhos-container .us-header {
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffeb3b;
+    margin-bottom: 6px;
+}
+
+#urna-santinhos-container .us-candidato-principal {
+    background: white;
+    color: #333;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#urna-santinhos-container .us-candidato-principal img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    background: #f0f2f5;
+    border-radius: 50%;
+    padding: 2px;
+    border: 2px solid #0d47a1;
+    margin: 6px 0;
+}
+
+#urna-santinhos-container .us-cargo {
+    font-size: 10px;
+    color: #666;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#urna-santinhos-container .us-nome-principal {
+    font-size: 16px;
+    font-weight: 900;
+    color: #0d47a1;
+    margin: 2px 0;
+}
+
+#urna-santinhos-container .us-numero-principal {
+    background-color: #2e7d32;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+#urna-santinhos-container .us-nome-partido {
+    font-size: 11px;
+    font-weight: 800;
+    color: #0d47a1;
+    margin: 6px 0 4px 0;
+    padding: 4px 8px;
+    background: #e3f2fd;
+    border-radius: 6px;
+    border: 1px solid #90caf9;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Lista da Coligação interna */
+#urna-santinhos-container .us-lista-coligacao {
+    margin-top: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 8px;
+}
+
+#urna-santinhos-container .us-item-cargo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 11px;
+}
+
+#urna-santinhos-container .us-item-cargo:last-child {
+    border-bottom: none;
+}
+
+#urna-santinhos-container .us-info-mini {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#urna-santinhos-container .us-mini-foto {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+}
+
+#urna-santinhos-container .us-numero-item {
+    font-weight: bold;
+    background: #ffeb3b;
+    color: #000;
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+#urna-santinhos-container .us-footer {
+    text-align: center;
+    font-size: 9px;
+    margin-top: 10px;
+    color: #e0e0e0;
+    font-style: italic;
+}
+
+/* Slogan do Candidato */
+#urna-santinhos-container .us-slogan {
+    font-size: 12px;
+    font-style: italic;
+    color: black;
+    margin: 4px 0 8px 0;
+    text-align: center;
+    padding: 0 8px;
+}
+
+/* Bloco de Propostas */
+#urna-santinhos-container .us-propostas-box {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 8px 0;
+    text-align: left;
+}
+
+#urna-santinhos-container .us-propostas-titulo {
+    font-size: 11px;
+    font-weight: bold;
+    color: #ffeb3b;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+#urna-santinhos-container .us-propostas-box ul {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 11px;
+    color: #cbd5e1;
+}
+
+#urna-santinhos-container .us-propostas-box li {
+    margin-bottom: 2px;
+}

@@ -1,0 +1,26 @@
+# ==============================================================================
+# Configuração Apache: Redirecionamento e entrega do Frontend
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Ignora regras de reescrita para o backend
+    RewriteRule ^backend/ - [L]
+
+    # 2. Redireciona a raiz para o index.html do frontend
+    RewriteRule ^$ frontend/index.html [L]
+
+    # 3. Não reescreve caso a requisição já tenha como destino a pasta frontend
+    RewriteRule ^frontend/ - [L]
+
+    # 4. Caso o recurso solicitado exista dentro da pasta frontend/, entrega-o
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/frontend/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/frontend/$1 -d
+    RewriteRule ^(.*)$ frontend/$1 [L]
+</IfModule>
+
+# Define a página inicial padrão apontando para frontend/index.html
+DirectoryIndex frontend/index.html index.html

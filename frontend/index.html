@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urna Eletrônica</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/urna.css">
+    <link rel="stylesheet" href="css/santinhos.css">
+
+    <!-- Classes e Listas de Candidatos por Cargo -->
+    <script src="js/candidatos/candidato.js"></script>
+    <script src="js/candidatos/deputados_federais.js"></script>
+    <script src="js/candidatos/deputados_estaduais.js"></script>
+    <script src="js/candidatos/senadores_1.js"></script>
+    <script src="js/candidatos/senadores_2.js"></script>
+    <script src="js/candidatos/governadores.js"></script>
+    <script src="js/candidatos/presidentes.js"></script>
+    <script src="js/partidos.js"></script>
+
+    <!-- Vetores de Artes e Coligações por Cargo -->
+    <script src="js/artes/ARTES_DEPUTADOS_ESTADUAIS.js"></script>
+    <script src="js/artes/ARTES_DEPUTADOS_FEDERAIS.js"></script>
+    <script src="js/artes/ARTES_SENADORES_1.js"></script>
+    <script src="js/artes/ARTES_SENADORES_2.js"></script>
+    <script src="js/artes/ARTES_GOVERNADORES.js"></script>
+    <script src="js/artes/ARTES_PRESIDENTES.js"></script>
+
+    <!-- Lógica da Urna Eletrônica e Santinhos -->
+    <script src="js/urna.js"></script>
+</head>
+
+<body>
+    <div class="urna">
+        <div class="tela ">
+            <div class="slide deputado-federal">
+                <div class="col1 row1">TREINAMENTO</div>
+
+
+                <div class="col1 row2">DEPUTADO FEDERAL</div>
+
+
+                <div class="col1 row3">
+                    Número:
+                    <input class="numero-candidato deputado-federal numero4" type="text" maxlength="4"
+                        autocomplete="off" onblur="carregarCandidato(this.value)">
+
+                </div>
+
+
+                <div class="col1 row4">
+                    Nome: <a class="nome"></a>
+                </div>
+
+
+                <div class="col1 row5">
+                    Partido: <a class="partido"></a>
+                </div>
+
+
+
+
+
+                <div class="col2 row1x4 foto-candidato"></div>
+
+
+
+
+                <div class="col12 row8">
+                    Aperte a tecla:
+                </div>
+
+
+                <div class="col12 row9">
+                    VERDE para CONFIRMAR este voto
+                </div>
+
+
+                <div class="col12 row10">
+                    VERMELHO para CORRIGIR este voto
+                </div>
+
+
+                <div class="col12 row11">
+                    BRANCO para votar em BRANCO
+                </div>
+
+
+            </div>
+            <div class="slide deputado-estadual d-none">
+                <div class="col1 row1">TREINAMENTO</div>
+
+
+                <div class="col1 row2">DEPUTADO ESTADUAL</div>
+
+
+                <div class="col1 row3">
+                    Número:
+                    <input class="numero-candidato deputado-estadual numero5" type="text" maxlength="5"
+                        autocomplete="off" onblur="carregarCandidato(this.value)">
+
+                </div>
+
+
+                <div class="col1 row4">
+                    Nome: <a class="nome"></a>
+                </div>
+
+
+                <div class="col1 row5">
+                    Partido: <a class="partido"></a>
+                </div>
+
+
+                <div class="col2 row1x4 foto-candidato"></div>
+
+
+                <div class="col12 row8">
+                    Aperte a tecla:
+                </div>
+
+
+                <div class="col12 row9">
+                    VERDE para CONFIRMAR este voto
+                </div>
+
+
+                <div class="col12 row10">
+                    VERMELHO para CORRIGIR este voto
+                </div>
+
+
+                <div class="col12 row11">
+                    BRANCO para votar em BRANCO
+                </div>
+
+
+            </div>
+            <div class="slide 1-senador d-none">
+                <div class="col1 row1">TREINAMENTO</div>
+
+
+                <div class="col1 row2">1º SENADOR</div>
+
+
+                <div class="col1 row3">
+                    Número:
+                    <input class="numero-candidato 1-senador numero3" type="text" maxlength="3" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
+
+                </div>
+
+
+                <div class="col1 row4">
+                    Nome: <a class="nome"></a>
+                </div>
+
+
+                <div class="col1 row5">
+                    Partido: <a class="partido"></a>
+                </div>
+
+                <div class="col2 row1x4 foto-candidato"></div>
+
+
+                <div class="col12 row8">
+                    Aperte a tecla:
+                </div>
+
+
+                <div class="col12 row9">
+                    VERDE para CONFIRMAR este voto
+                </div>
+
+
+                <div class="col12 row10">
+                    VERMELHO para CORRIGIR este voto
+                </div>
+
+
+                <div class="col12 row11">
+                    BRANCO para votar em BRANCO
+                </div>
+
+
+            </div>
+            <div class="slide 2-senador d-none">
+                <div class="col1 row1">TREINAMENTO</div>
+
+
+                <div class="col1 row2">2º SENADOR</div>
+
+
+                <div class="col1 row3">
+                    Número:
+                    <input class="numero-candidato 2-senador numero3" type="text" maxlength="3" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
+
+                </div>
+
+
+                <div class="col1 row4">
+                    Nome: <a class="nome"></a>
+                </div>
+
+
+                <div class="col1 row5">
+                    Partido: <a class="partido"></a>
+                </div>
+
+                <div class="col2 row1x4 foto-candidato"></div>
+
+                <div class="col12 row8">
+                    Aperte a tecla:
+                </div>
+
+
+                <div class="col12 row9">
+                    VERDE para CONFIRMAR este voto
+                </div>
+
+
+                <div class="col12 row10">
+                    VERMELHO para CORRIGIR este voto
+                </div>
+
+
+                <div class="col12 row11">
+                    BRANCO para votar em BRANCO
+                </div>
+
+
+            </div>
+            <div class="slide governador d-none">
+                <div class="col1 row1">TREINAMENTO</div>
+
+
+                <div class="col1 row2">GOVERNADOR</div>
+
+
+                <div class="col1 row3">
+                    Número:
+                    <input class="numero-candidato governador numero2" type="text" maxlength="2" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
+
+                </div>
+
+
+                <div class="col1 row4">
+                    Nome: <a class="nome"></a>
+                </div>
+
+
+                <div class="col1 row5">
+                    Partido: <a class="partido"></a>
+                </div>
+
+
+                <div class="col1 row6">
+                    Vice-governador: <a class="vice"></a>
+                </div>
+
+
+                <div class="col2 row1x4 foto-candidato"></div>
+
+
+                <div class="col2 row5x4 foto-vice"></div>
+
+
+                <div class="col12 row8">
+                    Aperte a tecla:
+                </div>
+
+
+                <div class="col12 row9">
+                    VERDE para CONFIRMAR este voto
+                </div>
+
+
+                <div class="col12 row10">
+                    VERMELHO para CORRIGIR este voto
+                </div>
+
+
+                <div class="col12 row11">
+                    BRANCO para votar em BRANCO
+                </div>
+
+
+            </div>
+            <div class="slide presidente d-none">
+                <div class="col1 row1">TREINAMENTO</div>
+
+
+                <div class="col1 row2">PRESIDENTE</div>
+
+
+                <div class="col1 row3">
+                    Número:
+                    <input class="numero-candidato presidente numero2" type="text" maxlength="2" autocomplete="off"
+                        onblur="carregarCandidato(this.value)">
+                </div>
+
+
+                <div class="col1 row4">
+                    Nome: <a class="nome"></a>
+                </div>
+
+
+                <div class="col1 row5">
+                    Partido: <a class="partido"></a>
+                </div>
+
+
+                <div class="col1 row6">
+                    Vice-presidente: <a class="vice"></a>
+                </div>
+
+
+                <div class="col2 row1x4 foto-candidato"></div>
+
+
+                <div class="col2 row5x4 foto-vice"></div>
+
+
+                <div class="col12 row8">
+                    Aperte a tecla:
+                </div>
+
+
+                <div class="col12 row9">
+                    VERDE para CONFIRMAR este voto
+                </div>
+
+
+                <div class="col12 row10">
+                    VERMELHO para CORRIGIR este voto
+                </div>
+
+
+                <div class="col12 row11">
+                    BRANCO para votar em BRANCO
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="teclado">
+            <button class="digito" onclick="inserirDigito('1')" ontouchstart="inserirDigito('1')">1</button>
+            <button class="digito" onclick="inserirDigito('2')" ontouchstart="inserirDigito('2')">2</button>
+            <button class="digito" onclick="inserirDigito('3')" ontouchstart="inserirDigito('3')">3</button>
+            <button class="digito" onclick="inserirDigito('4')" ontouchstart="inserirDigito('4')">4</button>
+            <button class="digito" onclick="inserirDigito('5')" ontouchstart="inserirDigito('5')">5</button>
+            <button class="digito" onclick="inserirDigito('6')" ontouchstart="inserirDigito('6')">6</button>
+            <button class="digito" onclick="inserirDigito('7')" ontouchstart="inserirDigito('7')">7</button>
+            <button class="digito" onclick="inserirDigito('8')" ontouchstart="inserirDigito('8')">8</button>
+            <button class="digito" onclick="inserirDigito('9')" ontouchstart="inserirDigito('9')">9</button>
+            <div></div>
+            <button class="digito" onclick="inserirDigito('0')" ontouchstart="inserirDigito('0')">0</button>
+            <div></div>
+            <button class="branco" onclick="limpar()">BRANCO</button>
+            <button class="corrige" onclick="corrigeVoto()">CORRIGE</button>
+            <button class="confirma" onclick="confirmaVoto()">CONFIRMA</button>
+            <button type="button" class="btn-santinhos-trigger" onclick="abrirSantinhos()"
+                style="grid-column: 1 / span 3; background: #0d47a1; color: #fff; border: 1px solid #ffeb3b; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 5px;">📋
+                SANTINHOS DE CANDIDATOS</button>
+        </div>
+    </div>
+    <div class="message-box d-none">
+        <div class="message">
+            <h2 class="title"></h2>
+            <div class="body"></div>
+            <div class="botoes-message">
+                <button class="btn btn-primary" onclick=""></button>
+                <a href="apuracao.html" class="btn btn-apuracao d-none">📊 Apuração dos Votos</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="urna-santinhos-container" class="us-box-overlay d-none">
+        <button type="button" class="us-btn-fechar" id="usBtnFechar" title="Fechar"
+            onclick="fecharSantinhos()">&times;</button>
+        <div class="us-santinho-wrapper">
+            <div class="us-slides-nav" id="usSlidesNav"></div>
+            <div class="us-sub-nav" id="usSubNav"></div>
+            <div class="us-grid-santinhos" id="usSantinhoWrapper"></div>
+        </div>
+    </div>
+</body>
+
+</html>

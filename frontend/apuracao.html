@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apuração Eleições Pokémon 2026 • Em Tempo Real</title>
+
+    <!-- Google Fonts: Bebas Neue, Oswald e Inter para reprodução fiel do layout eleitoral -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/apuracao.css">
+
+    <!-- Listas de Candidatos Pokémon e Partidos -->
+    <script src="js/candidatos/candidato.js"></script>
+    <script src="js/candidatos/deputados_federais.js"></script>
+    <script src="js/candidatos/deputados_estaduais.js"></script>
+    <script src="js/candidatos/senadores_1.js"></script>
+    <script src="js/candidatos/senadores_2.js"></script>
+    <script src="js/candidatos/governadores.js"></script>
+    <script src="js/candidatos/presidentes.js"></script>
+    <script src="js/partidos.js"></script>
+
+    <!-- Lógica de Apuração em Tempo Real com Layout Pokémon -->
+    <script src="js/apuracao.js"></script>
+</head>
+
+<body>
+    <!-- Barra Superior de Controle e Navegação Rápida -->
+    <header class="app-topbar">
+        <div class="topbar-container">
+            <div class="topbar-brand">
+                <span class="live-dot"></span>
+                <span class="live-text">AO VIVO <span id="lblContadorAuto" class="live-countdown">(5s)</span></span>
+            </div>
+
+            <!-- Seletor de Cargos em Pílulas -->
+            <nav class="cargos-nav" id="navCargos"></nav>
+
+            <div class="topbar-actions">
+                <button type="button" class="btn-topbar" onclick="carregarApuracao()" title="Atualizar dados agora">
+                    🔄 Atualizar
+                </button>
+                <a href="index.html" class="btn-topbar btn-destaque" title="Voltar para a Urna Eletrônica">
+                    🗳️ Ir para a Urna
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container Principal do Card de Apuração Visual (Layout Noticiário / Gráfico Eleitoral) -->
+    <main class="apuracao-wrapper">
+        <section class="tv-card" id="tvCard">
+            <!-- Cabeçalho do Card (Idêntico ao Layout do DN Diário) -->
+            <div class="tv-header">
+                <div class="tv-titulos">
+                    <div class="tv-cargo-nav">
+                        <button type="button" class="btn-nav-cargo prev" id="btnCargoAnterior" title="Cargo anterior">‹</button>
+                        <h1 class="tv-cargo-nome" id="tvCargoNome">PRESIDENTE DO BRASIL</h1>
+                        <button type="button" class="btn-nav-cargo next" id="btnCargoProximo" title="Próximo cargo">›</button>
+                    </div>
+                    <div class="tv-subtitulo" id="tvSubtitulo">APURAÇÃO EM TEMPO REAL - ELEIÇÕES 2026</div>
+                </div>
+
+                <!-- Selo de Noticiário no Canto Superior Direito -->
+                <div class="tv-badge">
+                    <span class="tv-badge-topo">DN</span>
+                    <span class="tv-badge-sub">Diário</span>
+                </div>
+            </div>
+
+            <!-- Gráfico de Barras Verticais dos Candidatos Pokémon -->
+            <div class="tv-chart-area" id="tvChartArea">
+                <div class="tv-colunas-candidatos" id="tvColunasCandidatos">
+                    <!-- Gerado dinamicamente via apuracao.js (avatar, pct, barra) -->
+                </div>
+                <div class="tv-chart-baseline"></div>
+                <div class="tv-colunas-nomes" id="tvColunasNomes">
+                    <!-- Gerado dinamicamente via apuracao.js (nome, partido, votos) -->
+                </div>
+            </div>
+
+            <!-- Seção Inferior: Percentual de Urnas Apuradas + Barra Verde -->
+            <div class="tv-urnas-area">
+                <div class="tv-urnas-texto">
+                    <span class="tv-urnas-pct" id="tvUrnasPct">100%</span>
+                    <span class="tv-urnas-rotulo" id="tvUrnasRotulo">DE URNAS APURADAS</span>
+                </div>
+                <div class="tv-progress-track">
+                    <div class="tv-progress-fill" id="tvProgressFill" style="width: 100%;"></div>
+                </div>
+                <div class="tv-resumo-votos" id="tvResumoVotos">
+                    <!-- Votos válidos, brancos e nulos -->
+                </div>
+            </div>
+
+            <!-- Timestamp com Horário em Destaque (ex: 19H06) -->
+            <div class="tv-timestamp" id="tvTimestamp">
+                19H06
+            </div>
+        </section>
+
+        <!-- Drawer / Seção Detalhada caso haja muitos candidatos (Governadores / Deputados / Senadores) -->
+        <section class="secao-detalhes" id="secaoDetalhes" style="display: none;">
+            <div class="detalhes-header">
+                <h3>Todos os Candidatos do Cargo</h3>
+                <span class="detalhes-total" id="detalhesTotalTexto">0 votos</span>
+            </div>
+            <div class="detalhes-lista" id="detalhesListaCandidatos"></div>
+        </section>
+    </main>
+</body>
+
+</html>
