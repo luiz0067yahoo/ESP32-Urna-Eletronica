@@ -78,6 +78,7 @@ ESP32-Urna-Eletronica/
 │
 ├── backend/                      # API RESTful em PHP e Conexão com Banco de Dados
 │   ├── index.php                 # Roteador central da API RESTful (rotas /votos e /apuracao)
+│   ├── route.php                 # Classe utilitária Route para gerenciamento e despacho de rotas HTTP
 │   ├── conecta.php               # Gerenciador de conexão PDO com MySQL com leitura de arquivo .env
 │   ├── .env                      # Arquivo de configuração de credenciais do banco (local/produção)
 │   ├── .env.example              # Exemplo de configuração de variáveis de ambiente
@@ -89,11 +90,20 @@ ESP32-Urna-Eletronica/
 │   └── votos/
 │       └── index.php             # Endpoint alternativo para registro e consulta de votos
 │
-├── db/                           # Scripts de Banco de Dados (Migração e Seed)
-│   ├── migrate.sql               # DDL de criação das tabelas 'votos', 'partidos' e 'candidatos'
-│   ├── seed.sql                  # DML de povoamento inicial de partidos, candidatos e votos de teste
-│   ├── migrate.php               # Script executável via CLI/Web para aplicar o migrate.sql
-│   └── seed.php                  # Script executável via CLI/Web para aplicar o seed.sql
+├── db/                           # Scripts PHP de Banco de Dados (Migração, Seed e Instalador)
+│   ├── install.php               # Instalador inteligente: verifica se já foi migrado e se o seed existe antes de executar
+│   ├── migrate.php               # Criação das tabelas 'votos', 'partidos' e 'candidatos' via string SQL
+│   └── seed.php                  # Povoamento inicial de partidos, candidatos e votos de teste via string SQL
+│
+├── devops/                       # Configurações Piku e Scripts Nativos (100% Sem Docker)
+│   ├── Procfile                  # Declaração dos processos gerenciados pelo Piku
+│   ├── ENV                       # Variáveis de ambiente padrão do Piku
+│   ├── nginx.conf                # Configuração do Nginx para servidor de produção / Piku
+│   ├── setup_db.sh / .bat        # Scripts para provisionamento automático do banco MySQL
+│   ├── start.sh / .bat           # Inicializadores em 1 clique (sobe MySQL, Frontend e Backend)
+│   └── README.md                 # Guia detalhado de deploy no Piku
+│
+├── Procfile                      # Procfile na raiz para deploy padrão com git push piku main
 │
 └── docs/                         # Capturas de tela e documentação visual
     ├── urna_eletronica.png       # Screenshot da cabine de votação
@@ -103,51 +113,55 @@ ESP32-Urna-Eletronica/
 
 ---
 
-## 🗄️ Banco de Dados (Migração e Povoamento)
+## 🗄️ Banco de Dados (Instalador Inteligente, Migração e Seed)
 
-A pasta `db/` fornece tanto os scripts SQL quanto executáveis em PHP para provisionar o banco de dados MySQL:
+A pasta `db/` fornece scripts em PHP contendo todo o código SQL armazenado em strings (`$sqlMigrate` e `$sqlSeed`), além do instalador idempotente `install.php`:
 
-### 1. Execução via CLI (Linha de comando PHP):
+### 1. Instalação e Verificação em 1 Passo (Recomendado):
+O arquivo `db/install.php` verifica automaticamente se as tabelas já foram criadas e se os registros de candidatos/partidos já foram semeados, evitando duplicações:
 ```bash
-# Executa a criação das tabelas (votos, partidos e candidatos)
+# Executa verificação, migração e seed automaticamente
+php db/install.php
+```
+Ou acesse pelo navegador: `http://localhost:8080/db/install.php` (adicione `?format=json` para resposta em JSON).
+
+### 2. Execução Individual dos Módulos:
+```bash
+# Executa apenas a criação das tabelas
 php db/migrate.php
 
-# Insere os partidos, candidatos oficiais e votos de demonstração
+# Executa apenas o povoamento dos candidatos e votos
 php db/seed.php
 ```
-
-### 2. Execução direta via MySQL / phpMyAdmin:
-- Importe o arquivo `db/migrate.sql` para criar as tabelas.
-- Importe o arquivo `db/seed.sql` para preencher os registros iniciais.
 
 ---
 
 ## 🚀 Como Executar Localmente
 
 ### Pré-requisitos:
-- Servidor Web Apache/Nginx com suporte a PHP 7.4+ ou 8.x (ex: XAMPP, WampServer ou Docker).
-- Banco de Dados MySQL / MariaDB.
+- Servidor Web Apache/Nginx ou PHP CLI 7.4+ / 8.x nativo (ex: XAMPP, WampServer ou inicializador nativo sem Docker).
+- Banco de Dados MySQL / MariaDB nativo.
 
 ### Passo a Passo:
-1. Clone este repositório no diretório público do seu servidor web (ex: `htdocs`):
+1. Clone este repositório no diretório do seu servidor web ou pasta de preferência:
    ```bash
    git clone https://github.com/luiz0067yahoo/ESP32-Urna-Eletronica.git
    ```
-2. Configure o arquivo `backend/.env` com as credenciais do seu banco de dados MySQL:
+2. Configure o arquivo `backend/.env` (o sistema utiliza preferencialmente `backend/.env`, com fallback automático para `backend/.env.example` caso não exista):
    ```env
    DB_HOST=localhost
    DB_USER=root
    DB_PASS=
    DB_NAME=urna_eletronica
    ```
-3. Execute as migrações:
+3. Execute o instalador do banco de dados (cria o schema e semeia os dados caso ainda não existam):
    ```bash
-   php db/migrate.php
-   php db/seed.php
+   php db/install.php
    ```
+   *(Ou no Windows via terminal/cmd executando `devops\setup_db.bat`)*
 4. Abra o navegador em:
-   - **Urna Eletrônica:** `http://localhost/ESP32-Urna-Eletronica/frontend/index.html`
-   - **Apuração dos Votos:** `http://localhost/ESP32-Urna-Eletronica/frontend/apuracao.html`
+   - **Urna Eletrônica:** `http://localhost:8080/frontend/index.html`
+   - **Apuração dos Votos:** `http://localhost:8080/frontend/apuracao.html`
 
 ---
 

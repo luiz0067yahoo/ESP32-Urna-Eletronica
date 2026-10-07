@@ -11,7 +11,11 @@ class Conexao {
     private $conn;
 
     public function __construct() {
-        $this->carregarEnv(__DIR__ . '/.env');
+        if (file_exists(__DIR__ . '/.env')) {
+            $this->carregarEnv(__DIR__ . '/.env');
+        } elseif (file_exists(__DIR__ . '/.env.example')) {
+            $this->carregarEnv(__DIR__ . '/.env.example');
+        }
 
         $this->host = getenv('DB_HOST');
         $this->username = getenv('DB_USER');

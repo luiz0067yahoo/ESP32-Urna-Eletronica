@@ -1,0 +1,11 @@
+# ==============================================================================
+# PIKU PROCFILE - URNA ELETRÔNICA POKÉMON (100% NATIVO SEM DOCKER)
+# Gerenciamento de processos para o PaaS Piku (equivalente ao Heroku/Dokku)
+# ==============================================================================
+
+# Servidor unificado: serve o frontend estático e executa a API RESTful do backend
+web: php -S 0.0.0.0:$PORT -t .
+
+# Alternativa caso queira processos dedicados com portas separadas:
+# frontend: php -S 0.0.0.0:8080 -t frontend
+# backend: php -S 0.0.0.0:8000 -t backend
