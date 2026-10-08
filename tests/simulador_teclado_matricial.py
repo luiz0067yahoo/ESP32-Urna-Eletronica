@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 =============================================================================
-⌨️ SIMULADOR DE HARDWARE • TECLADO MATRICIAL 4x4 DO ESP32
+⌨️ SIMULADOR DE HARDWARE • TECLADO MATRICIAL 4x4 DO POKE
 =============================================================================
 Emula o circuito de leitura matricial e debounce de GPIOs:
 - Varredura de linhas (Output) e leitura de colunas (Input com Pull-Up)
-- Tabela de pinos GPIO reais do ESP32
+- Tabela de pinos GPIO reais do POKE
 - Decodificação de teclas especiais da Urna:
     [1] [2] [3] [BRANCO]
     [4] [5] [6] [CORRIGE]
@@ -26,7 +26,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 
-# Mapeamento oficial dos pinos GPIO no ESP32 para o teclado matricial
+# Mapeamento oficial dos pinos GPIO no POKE para o teclado matricial
 PINOS_LINHAS = [13, 12, 14, 27]   # GPIOs de saída (Rows)
 PINOS_COLUNAS = [26, 25, 33, 32]  # GPIOs de entrada com Pull-Up (Cols)
 
@@ -38,7 +38,7 @@ MAPA_TECLAS = [
     ['*', '0', '#', 'EXTRA']
 ]
 
-class TecladoMatricialESP32:
+class TecladoMatricialPoke:
     def __init__(self, debounce_ms=20):
         self.debounce_ms = debounce_ms
         self.ultima_tecla = None
@@ -88,7 +88,7 @@ class TecladoMatricialESP32:
 
 def demonstrar_teclado():
     print("="*65)
-    print("  ⌨️ SIMULADOR DE TECLADO MATRICIAL 4x4 (ESP32 GPIO SCANNER)")
+    print("  ⌨️ SIMULADOR DE TECLADO MATRICIAL 4x4 (POKE GPIO SCANNER)")
     print("="*65)
     print(" Layout do Teclado da Urna:")
     for linha in MAPA_TECLAS:
@@ -97,7 +97,7 @@ def demonstrar_teclado():
     print(" Pinos Colunas (Pull-Up): GPIO " + ", ".join(map(str, PINOS_COLUNAS)))
     print("="*65 + "\n")
 
-    teclado = TecladoMatricialESP32()
+    teclado = TecladoMatricialPoke()
     sequencia_teste = ['6', '5', 'CONFIRMA']
 
     print("▶ Simulando digitação do voto para Presidente (Pikachu: 65)...")

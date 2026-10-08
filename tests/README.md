@@ -1,6 +1,6 @@
-# 🧪 Testes de Sistema & Simuladores • ESP32 Urna Eletrônica
+# 🧪 Testes de Sistema & Simuladores • POKE Urna Eletrônica
 
-Esta pasta contém o ecossistema completo de **testes de sistema**, **simuladores de hardware ESP32**, **testes de estresse/carga** e um **dashboard visual interativo** para a Urna Eletrônica Pokémon.
+Esta pasta contém o ecossistema completo de **testes de sistema**, **simuladores de hardware POKE**, **testes de estresse/carga** e um **dashboard visual interativo** para a Urna Eletrônica Pokémon.
 
 ---
 
@@ -9,9 +9,9 @@ Esta pasta contém o ecossistema completo de **testes de sistema**, **simuladore
 | Arquivo | Descrição |
 | :--- | :--- |
 | **`index.html`** | 🌐 **Dashboard Visual Interativo:** Painel completo no navegador com teclado matricial virtual, sons do TSE (Web Audio API), teste de carga com barra de progresso e apuração em tempo real. |
-| **`simulador_esp32.py`** | 🤖 **Simulador de Firmware ESP32:** Emula o microcontrolador ESP32 transmitindo votos via HTTP POST com Wi-Fi simulado, medição de latência e sons de buzzer. |
+| **`simulador_poke.py`** | 🤖 **Simulador de Firmware POKE:** Emula o microcontrolador POKE transmitindo votos via HTTP POST com Wi-Fi simulado, medição de latência e sons de buzzer. |
 | **`simulador_eleicao_massa.py`** | ⚡ **Simulador de Eleição em Massa (Teste de Carga):** Simula centenas de eleitores votando em paralelo via multithreading com cálculo de RPS, latência p95/p99 e taxa de sucesso. |
-| **`simulador_teclado_matricial.py`**| ⌨️ **Simulador de Hardware do Teclado 4x4:** Emula a varredura elétrica de linhas/colunas dos pinos GPIO do ESP32 com filtro de debounce e decodificação de teclas. |
+| **`simulador_teclado_matricial.py`**| ⌨️ **Simulador de Hardware do Teclado 4x4:** Emula a varredura elétrica de linhas/colunas dos pinos GPIO do POKE com filtro de debounce e decodificação de teclas. |
 | **`test_sistema_api.py`** | 🧪 **Suíte Automatizada de Testes de Sistema:** Validação completa de contratos da API RESTful (HTTP 200, 201, 400, 404, Zerésima eleitoral e re-seed). |
 | **`run_tests.bat`** | 🚀 **Menu Interativo (Windows):** Permite escolher e rodar qualquer teste em 1 clique. |
 | **`run_tests.sh`** | 🐧 **Menu Interativo (Linux/macOS):** Script executável para rodar a suíte no terminal. |
@@ -52,13 +52,13 @@ python tests/test_sistema_api.py http://localhost:8080
 ```
 > Executa 12 casos de teste cobrindo registro unitário, lote, filtros, apuração, zerésima e re-seed.
 
-#### B) Simulador de Firmware ESP32
+#### B) Simulador de Firmware POKE
 ```bash
 # Modo Interativo (permite escolher votar individual ou sessão completa):
-python tests/simulador_esp32.py
+python tests/simulador_poke.py
 
 # Modo Automático (executa 1 eleitor completo direto):
-python tests/simulador_esp32.py http://localhost:8080/backend/votos --auto
+python tests/simulador_poke.py http://localhost:8080/backend/votos --auto
 ```
 
 #### C) Teste de Carga e Eleição em Massa
@@ -71,4 +71,4 @@ python tests/simulador_eleicao_massa.py 50 10
 ```bash
 python tests/simulador_teclado_matricial.py
 ```
-> Mostra a tabela de GPIOs do ESP32 (Linhas: 13, 12, 14, 27 | Colunas: 26, 25, 33, 32) e os níveis lógicos (0/1).
+> Mostra a tabela de GPIOs do POKE (Linhas: 13, 12, 14, 27 | Colunas: 26, 25, 33, 32) e os níveis lógicos (0/1).

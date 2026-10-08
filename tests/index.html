@@ -232,7 +232,7 @@
       margin-bottom: 1.2rem;
     }
 
-    /* SIMULADOR ESP32 INTERATIVO */
+    /* SIMULADOR POKE INTERATIVO */
     .esp-hardware-box {
       background: #0f172a;
       border: 1px solid #1e293b;
@@ -581,15 +581,15 @@
 
   <!-- ABAS DE NAVEGAÇÃO -->
   <div class="tabs-nav">
-    <button class="tab-btn active" onclick="trocarAba('esp32')">🤖 Simulador ESP32</button>
+    <button class="tab-btn active" onclick="trocarAba('poke')">🤖 Simulador Poke</button>
     <button class="tab-btn" onclick="trocarAba('carga')">⚡ Teste de Carga & Massa</button>
     <button class="tab-btn" onclick="trocarAba('sistema')">🧪 Bateria de Testes API</button>
     <button class="tab-btn" onclick="trocarAba('apuracao')">📊 Apuração em Tempo Real</button>
   </div>
 
   <main>
-    <!-- ABA 1: SIMULADOR ESP32 -->
-    <div id="tab-esp32" class="tab-pane active">
+    <!-- ABA 1: SIMULADOR POKE -->
+    <div id="tab-poke" class="tab-pane active">
       <div class="dashboard-grid">
         <!-- LADO ESQUERDO: HARDWARE & GABINETE -->
         <div class="card">
@@ -597,7 +597,7 @@
 
           <div class="esp-hardware-box">
             <div>
-              <span>⚡ ESP32-WROOM-32 (Xtensa LX6)</span><br>
+              <span>⚡ POKE-WROOM-32 (Xtensa LX6)</span><br>
               <span style="color: #94a3b8; font-size: 0.75rem;">MAC: 24:6F:28:B1:C4:A8 | IP: 192.168.1.184</span>
             </div>
             <div class="esp-badge" id="wifiBadge">Wi-Fi: -54 dBm</div>
@@ -646,16 +646,16 @@
             <button class="key-btn" onclick="teclar('#')">#</button>
           </div>
 
-          <button class="btn-action" style="margin-top: 1rem;" onclick="simularSessaoCompletaESP32()">
+          <button class="btn-action" style="margin-top: 1rem;" onclick="simularSessaoCompletaPoke()">
             🚀 Simular Sessão Completa Automática (6 Cargos)
           </button>
         </div>
 
-        <!-- LADO DIREITO: LOGS E STATUS DO ESP32 -->
+        <!-- LADO DIREITO: LOGS E STATUS DO POKE -->
         <div class="card">
-          <div class="card-title">📜 Console Serial do ESP32 (UART0 • 115200 baud)</div>
-          <div class="terminal-console" id="espTerminal"></div>
-          <button class="key-btn" style="margin-top: 0.8rem; width: 100%; font-size: 0.85rem;" onclick="limparTerminal('espTerminal')">Limpar Console</button>
+          <div class="card-title">📜 Console Serial do POKE (UART0 • 115200 baud)</div>
+          <div class="terminal-console" id="pokeTerminal"></div>
+          <button class="key-btn" style="margin-top: 0.8rem; width: 100%; font-size: 0.85rem;" onclick="limparTerminal('pokeTerminal')">Limpar Console</button>
         </div>
       </div>
     </div>
@@ -748,7 +748,7 @@
   </main>
 
   <footer>
-    Urna Eletrônica Pokémon • Desenvolvido com integração ESP32, Docker, Podman e Kubernetes.
+    Urna Eletrônica Pokémon • Desenvolvido com integração POKE, Docker, Podman e Kubernetes.
   </footer>
 
   <script>
@@ -827,18 +827,18 @@
         if (res.ok) {
           dot.className = 'status-dot online';
           txt.innerText = 'Online (Conectado)';
-          logTerminal('espTerminal', '✔ Conexão com a API REST estabelecida com sucesso.', 'success');
+          logTerminal('pokeTerminal', '✔ Conexão com a API REST estabelecida com sucesso.', 'success');
         } else {
           throw new Error(`HTTP ${res.status}`);
         }
       } catch (e) {
         dot.className = 'status-dot offline';
         txt.innerText = 'Offline (Servidor desligado)';
-        logTerminal('espTerminal', `⚠️ Não foi possível conectar a ${getBaseUrl()}: ${e.message}`, 'error');
+        logTerminal('pokeTerminal', `⚠️ Não foi possível conectar a ${getBaseUrl()}: ${e.message}`, 'error');
       }
     }
 
-    // SIMULADOR DO TECLADO DO ESP32
+    // SIMULADOR DO TECLADO DO POKE
     let digitacaoAtual = '';
     let cargoAtual = 'PRESIDENTE';
 
@@ -847,7 +847,7 @@
         playBeep(440, 'sine', 0.1);
         digitacaoAtual = 'BRANCO';
         atualizarLcd();
-        logTerminal('espTerminal', `[TECLADO] Tecla [BRANCO] pressionada`);
+        logTerminal('pokeTerminal', `[TECLADO] Tecla [BRANCO] pressionada`);
         return;
       }
 
@@ -855,17 +855,17 @@
         playBeep(300, 'sawtooth', 0.15);
         digitacaoAtual = '';
         atualizarLcd();
-        logTerminal('espTerminal', `[TECLADO] Tecla [CORRIGE] - buffer reiniciado`);
+        logTerminal('pokeTerminal', `[TECLADO] Tecla [CORRIGE] - buffer reiniciado`);
         return;
       }
 
       if (tecla === 'CONFIRMA') {
         if (!digitacaoAtual) {
           playBeep(220, 'sawtooth', 0.2);
-          logTerminal('espTerminal', `[TECLADO] Voto vazio! Digite um número ou BRANCO antes de confirmar.`, 'warning');
+          logTerminal('pokeTerminal', `[TECLADO] Voto vazio! Digite um número ou BRANCO antes de confirmar.`, 'warning');
           return;
         }
-        enviarVotoESP32(cargoAtual, digitacaoAtual);
+        enviarVotoPoke(cargoAtual, digitacaoAtual);
         return;
       }
 
@@ -875,7 +875,7 @@
         playBeep(520, 'sine', 0.08);
         digitacaoAtual += tecla;
         atualizarLcd();
-        logTerminal('espTerminal', `[TECLADO] Tecla [${tecla}] pressionada -> Buffer: ${digitacaoAtual}`);
+        logTerminal('pokeTerminal', `[TECLADO] Tecla [${tecla}] pressionada -> Buffer: ${digitacaoAtual}`);
       }
     }
 
@@ -906,8 +906,8 @@
       }
     }
 
-    async function enviarVotoESP32(cargo, numero) {
-      logTerminal('espTerminal', `[TRANSMISSÃO] Enviando POST /backend/votos (${cargo}: ${numero})...`, 'info');
+    async function enviarVotoPoke(cargo, numero) {
+      logTerminal('pokeTerminal', `[TRANSMISSÃO] Enviando POST /backend/votos (${cargo}: ${numero})...`, 'info');
       try {
         const res = await fetch(`${getBaseUrl()}/backend/votos`, {
           method: 'POST',
@@ -917,20 +917,20 @@
 
         if (res.ok) {
           playUrnaFim();
-          logTerminal('espTerminal', `✔ Voto computado com SUCESSO! HTTP ${res.status}`, 'success');
+          logTerminal('pokeTerminal', `✔ Voto computado com SUCESSO! HTTP ${res.status}`, 'success');
           digitacaoAtual = '';
           atualizarLcd();
         } else {
           playBeep(220, 'sawtooth', 0.3);
-          logTerminal('espTerminal', `❌ Erro no envio: HTTP ${res.status}`, 'error');
+          logTerminal('pokeTerminal', `❌ Erro no envio: HTTP ${res.status}`, 'error');
         }
       } catch (e) {
         playBeep(220, 'sawtooth', 0.3);
-        logTerminal('espTerminal', `❌ Falha de rede: ${e.message}`, 'error');
+        logTerminal('pokeTerminal', `❌ Falha de rede: ${e.message}`, 'error');
       }
     }
 
-    async function simularSessaoCompletaESP32() {
+    async function simularSessaoCompletaPoke() {
       const cargos = [
         { cargo: "DEPUTADO ESTADUAL", num: "11101" },
         { cargo: "DEPUTADO FEDERAL", num: "9101" },
@@ -940,7 +940,7 @@
         { cargo: "PRESIDENTE", num: "65" }
       ];
 
-      logTerminal('espTerminal', '▶ INICIANDO SIMULAÇÃO DE SESSÃO ELEITORAL COMPLETA...', 'info');
+      logTerminal('pokeTerminal', '▶ INICIANDO SIMULAÇÃO DE SESSÃO ELEITORAL COMPLETA...', 'info');
 
       for (const item of cargos) {
         document.getElementById('lcdCargo').innerText = item.cargo;
@@ -949,12 +949,12 @@
         playBeep(480, 'sine', 0.08);
         await new Promise(r => setTimeout(r, 600));
 
-        await enviarVotoESP32(item.cargo, item.num);
+        await enviarVotoPoke(item.cargo, item.num);
         await new Promise(r => setTimeout(r, 800));
       }
 
       document.getElementById('lcdCargo').innerText = 'PRESIDENTE';
-      logTerminal('espTerminal', '🎉 SESSÃO COMPLETA FINALIZADA!', 'success');
+      logTerminal('pokeTerminal', '🎉 SESSÃO COMPLETA FINALIZADA!', 'success');
     }
 
     // TESTE DE CARGA

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # EXECUTOR DA SUÍTE DE TESTES E SIMULADORES (LINUX / MACOS)
-# Urna Eletrônica Pokémon • ESP32
+# Urna Eletrônica Pokémon • POKE
 # ==============================================================================
 
 set -e
@@ -13,7 +13,7 @@ echo "====================================================================="
 echo ""
 echo "Escolha o teste ou simulador que deseja executar:"
 echo " [1] 🧪 Executar Bateria Completa de Testes de Sistema (API REST)"
-echo " [2] 🤖 Executar Simulador de Firmware ESP32 (Votação Unitária)"
+echo " [2] 🤖 Executar Simulador de Firmware POKE (Votação Unitária)"
 echo " [3] ⚡ Executar Simulador de Eleição em Massa (Teste de Carga / 50 Eleitores)"
 echo " [4] ⌨️ Executar Simulador do Teclado Matricial 4x4 (Hardware Scanner)"
 echo " [5] 🌐 Abrir Dashboard Visual de Testes no Navegador (tests/index.html)"
@@ -28,8 +28,8 @@ case "$OPCAO" in
     python3 test_sistema_api.py "$@"
     ;;
   2)
-    echo -e "\n▶ Executando simulador de firmware ESP32..."
-    python3 simulador_esp32.py "$@"
+    echo -e "\n▶ Executando simulador de firmware POKE..."
+    python3 simulador_poke.py "$@"
     ;;
   3)
     echo -e "\n▶ Executando simulador de carga e estresse..."

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 =============================================================================
-🤖 SIMULADOR DE FIRMWARE ESP32 • URNA ELETRÔNICA POKÉMON
+🤖 SIMULADOR DE FIRMWARE POKE • URNA ELETRÔNICA POKÉMON
 =============================================================================
-Emula com precisão o comportamento do microcontrolador ESP32:
+Emula com precisão o comportamento do microcontrolador POKE:
 - Conexão Wi-Fi (status simulado, IP e RSSI)
 - Leitura do Teclado Matricial (digitação de números, BRANCO, CORRIGE, CONFIRMA)
 - Serial / Som Buzzer (bip curto para teclas, intermitente para confirma, trissono para FIM)
@@ -27,7 +27,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 DEFAULT_API_URL = "http://localhost:8080/backend/votos"
 
 # Candidatos Oficiais Pokémon por Cargo
-CANDIDATOS_ESP32 = {
+CANDIDATOS_POKE = {
     "DEPUTADO ESTADUAL": [
         {"numero": "11101", "nome": "Pichu (POKPELE)"},
         {"numero": "12101", "nome": "Cyndaquil (POKPFGO)"},
@@ -64,9 +64,9 @@ CANDIDATOS_ESP32 = {
     ]
 }
 
-def log_esp32(msg):
+def log_poke(msg):
     timestamp = time.strftime("%H:%M:%S")
-    print(f"[ESP32 | {timestamp}] {msg}")
+    print(f"[POKE | {timestamp}] {msg}")
 
 def buzzer_bip(tipo="curto"):
     sons = {
@@ -76,7 +76,7 @@ def buzzer_bip(tipo="curto"):
     }
     print(f"      {sons.get(tipo, '🔊 *BIP*')}")
 
-class ESP32Simulator:
+class PokeSimulator:
     def __init__(self, api_url=DEFAULT_API_URL):
         self.api_url = api_url
         self.mac = "24:6F:28:B1:C4:A8"
@@ -86,23 +86,23 @@ class ESP32Simulator:
 
     def inicializar_hardware(self):
         print("\n" + "="*65)
-        print("  ⚡ INICIALIZANDO ESP32 DUAL-CORE XTENSA LX6 • URNA ELETRÔNICA")
+        print("  ⚡ INICIALIZANDO POKE DUAL-CORE XTENSA LX6 • URNA ELETRÔNICA")
         print("="*65)
-        log_esp32("Clock: 240MHz | Flash: 4MB | Free Heap: 284KB")
-        log_esp32(f"MAC Address: {self.mac}")
-        log_esp32("Inicializando GPIOs do Teclado Matricial (Pinos 13, 12, 14, 27, 26, 25, 33, 32)... OK")
-        log_esp32("Inicializando Buzzer PWM no GPIO 18... OK")
+        log_poke("Clock: 240MHz | Flash: 4MB | Free Heap: 284KB")
+        log_poke(f"MAC Address: {self.mac}")
+        log_poke("Inicializando GPIOs do Teclado Matricial (Pinos 13, 12, 14, 27, 26, 25, 33, 32)... OK")
+        log_poke("Inicializando Buzzer PWM no GPIO 18... OK")
         
         # Simula conexão Wi-Fi
-        log_esp32("Conectando ao Wi-Fi 'TRE-URNA-REDE-SECRETA'...")
+        log_poke("Conectando ao Wi-Fi 'TRE-URNA-REDE-SECRETA'...")
         time.sleep(0.6)
         self.connected = True
-        log_esp32(f"✔ Wi-Fi Conectado! IP: {self.ip} | Sinal RSSI: {self.rssi} dBm")
-        log_esp32(f"Endpoint de Destino: {self.api_url}")
+        log_poke(f"✔ Wi-Fi Conectado! IP: {self.ip} | Sinal RSSI: {self.rssi} dBm")
+        log_poke(f"Endpoint de Destino: {self.api_url}")
         print("="*65 + "\n")
 
     def enviar_voto_http(self, cargo, numero):
-        """Envia um voto individual via HTTP POST como o ESP32 real"""
+        """Envia um voto individual via HTTP POST como o POKE real"""
         payload = {
             "cargo": cargo,
             "numero_candidato": str(numero)
@@ -110,8 +110,8 @@ class ESP32Simulator:
         data_json = json.dumps(payload).encode('utf-8')
         headers = {
             "Content-Type": "application/json",
-            "User-Agent": "ESP32-UrnaEletronica/1.0 (Xtend-LX6)",
-            "X-ESP32-MAC": self.mac
+            "User-Agent": "POKE-UrnaEletronica/1.0 (Xtend-LX6)",
+            "X-POKE-MAC": self.mac
         }
 
         req = urllib.request.Request(self.api_url, data=data_json, headers=headers, method="POST")
@@ -131,12 +131,12 @@ class ESP32Simulator:
 
     def simular_eleitor_completo(self, escolha="random"):
         """Simula a votação sequencial de um eleitor por todos os 6 cargos"""
-        log_esp32("▶ Novo eleitor entrou na cabine de votação.")
-        cargos = list(CANDIDATOS_ESP32.keys())
+        log_poke("▶ Novo eleitor entrou na cabine de votação.")
+        cargos = list(CANDIDATOS_POKE.keys())
         votos_sessao = []
 
         for cargo in cargos:
-            opcoes = CANDIDATOS_ESP32[cargo]
+            opcoes = CANDIDATOS_POKE[cargo]
             if escolha == "branco":
                 cand_num = "BRANCO"
                 cand_nome = "VOTO EM BRANCO"
@@ -157,31 +157,31 @@ class ESP32Simulator:
                     cand_num = candidato["numero"]
                     cand_nome = candidato["nome"]
 
-            log_esp32(f"Votando para {cargo}: digitando '{cand_num}' ({cand_nome})...")
+            log_poke(f"Votando para {cargo}: digitando '{cand_num}' ({cand_nome})...")
             buzzer_bip("curto")
             time.sleep(0.2)
             buzzer_bip("curto")
             
-            log_esp32("Pressionou [CONFIRMA]")
+            log_poke("Pressionou [CONFIRMA]")
             buzzer_bip("curto")
             
             sucesso, status, latencia, resposta = self.enviar_voto_http(cargo, cand_num)
             if sucesso:
-                log_esp32(f"   ✔ Voto para {cargo} transmitido! HTTP {status} ({latencia:.1f}ms)")
+                log_poke(f"   ✔ Voto para {cargo} transmitido! HTTP {status} ({latencia:.1f}ms)")
             else:
-                log_esp32(f"   ⚠️ Falha ao transmitir ({latencia:.1f}ms): Status={status} | Erro={resposta}")
+                log_poke(f"   ⚠️ Falha ao transmitir ({latencia:.1f}ms): Status={status} | Erro={resposta}")
 
             votos_sessao.append({"cargo": cargo, "numero": cand_num, "ok": sucesso})
             time.sleep(0.3)
 
         print("\n" + "-"*65)
-        log_esp32("🎉 VOTAÇÃO CONCLUÍDA PARA TODOS OS CARGOS!")
+        log_poke("🎉 VOTAÇÃO CONCLUÍDA PARA TODOS OS CARGOS!")
         buzzer_bip("fim")
         print("-"*65 + "\n")
         return votos_sessao
 
 def modo_interativo(sim):
-    print("=== MODO INTERATIVO ESP32 ===")
+    print("=== MODO INTERATIVO POKE ===")
     print("Escolha o tipo de teste:")
     print("1. Votar em um candidato individual")
     print("2. Simular uma sessão eleitoral completa (6 cargos)")
@@ -192,7 +192,7 @@ def modo_interativo(sim):
     escolha = input("\nDigite a opção desejada: ").strip()
     if escolha == "1":
         print("\nCargos disponíveis:")
-        cargos = list(CANDIDATOS_ESP32.keys())
+        cargos = list(CANDIDATOS_POKE.keys())
         for idx, c in enumerate(cargos, 1):
             print(f" {idx}. {c}")
         c_idx = int(input("Escolha o cargo (1-6): ")) - 1
@@ -209,7 +209,7 @@ def modo_interativo(sim):
 
 if __name__ == "__main__":
     url = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_API_URL
-    simulador = ESP32Simulator(api_url=url)
+    simulador = PokeSimulator(api_url=url)
     simulador.inicializar_hardware()
 
     if len(sys.argv) > 2 and sys.argv[2] == "--auto":

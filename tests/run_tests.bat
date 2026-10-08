@@ -1,7 +1,7 @@
 @echo off
 REM ==============================================================================
 REM EXECUTOR DA SUÍTE DE TESTES E SIMULADORES (WINDOWS)
-REM Urna Eletrônica Pokémon • ESP32
+REM Urna Eletrônica Pokémon • POKE
 REM ==============================================================================
 
 chcp 65001 >nul
@@ -14,7 +14,7 @@ echo.
 echo Escolha o teste ou simulador que deseja executar:
 echo.
 echo  [1] 🧪 Executar Bateria Completa de Testes de Sistema (API REST)
-echo  [2] 🤖 Executar Simulador de Firmware ESP32 (Votação Unitária)
+echo  [2] 🤖 Executar Simulador de Firmware POKE (Votação Unitária)
 echo  [3] ⚡ Executar Simulador de Eleição em Massa (Teste de Carga / 50 Eleitores)
 echo  [4] ⌨️ Executar Simulador do Teclado Matricial 4x4 (Hardware Scanner)
 echo  [5] 🌐 Abrir Dashboard Visual de Testes no Navegador (tests/index.html)
@@ -28,8 +28,8 @@ if "%OPCAO%"=="1" (
     python test_sistema_api.py %*
 ) else if "%OPCAO%"=="2" (
     echo.
-    echo ▶ Executando simulador de firmware ESP32...
-    python simulador_esp32.py %*
+    echo ▶ Executando simulador de firmware POKE...
+    python simulador_poke.py %*
 ) else if "%OPCAO%"=="3" (
     echo.
     echo ▶ Executando simulador de carga e estresse...
