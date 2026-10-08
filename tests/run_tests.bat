@@ -22,22 +22,32 @@ echo  [0] Sair
 echo.
 set /p OPCAO="Digite o número da opção (0-5): "
 
+set PHP_BIN=php
+where php >nul 2>nul
+if %ERRORLEVEL% NEQ 0 (
+    if exist "C:\xampp\php\php.exe" (
+        set PHP_BIN=C:\xampp\php\php.exe
+    ) else if exist "C:\laragon\bin\php\php.exe" (
+        set PHP_BIN=C:\laragon\bin\php\php.exe
+    )
+)
+
 if "%OPCAO%"=="1" (
     echo.
     echo ▶ Executando testes automatizados de sistema...
-    python test_sistema_api.py %*
+    %PHP_BIN% test_sistema_api.php %*
 ) else if "%OPCAO%"=="2" (
     echo.
-    echo ▶ Executando simulador de terminal eleitoral POKE...
-    python simulador_poke.py %*
+    echo ▶ Executando simulador de terminal eleitoral...
+    %PHP_BIN% simulador_poke.php %*
 ) else if "%OPCAO%"=="3" (
     echo.
     echo ▶ Executando simulador de carga e estresse...
-    python simulador_eleicao_massa.py 50 10 %*
+    %PHP_BIN% simulador_eleicao_massa.php 50 10 %*
 ) else if "%OPCAO%"=="4" (
     echo.
     echo ▶ Executando simulador de teclado virtual e validador de votos...
-    python simulador_teclado_matricial.py
+    %PHP_BIN% simulador_teclado_matricial.php
 ) else if "%OPCAO%"=="5" (
     echo.
     echo ▶ Abrindo Dashboard Visual no navegador padrão...

@@ -25,19 +25,19 @@ read -p "Digite o número da opção (0-5): " OPCAO
 case "$OPCAO" in
   1)
     echo -e "\n▶ Executando testes automatizados de sistema..."
-    python3 test_sistema_api.py "$@"
+    php test_sistema_api.php "$@"
     ;;
   2)
-    echo -e "\n▶ Executando simulador de terminal eleitoral POKE..."
-    python3 simulador_poke.py "$@"
+    echo -e "\n▶ Executando simulador de terminal eleitoral..."
+    php simulador_poke.php "$@"
     ;;
   3)
     echo -e "\n▶ Executando simulador de carga e estresse..."
-    python3 simulador_eleicao_massa.py 50 10 "$@"
+    php simulador_eleicao_massa.php 50 10 "$@"
     ;;
   4)
     echo -e "\n▶ Executando simulador de teclado virtual e validador de votos..."
-    python3 simulador_teclado_matricial.py
+    php simulador_teclado_matricial.php
     ;;
   5)
     echo -e "\n▶ Abrindo Dashboard Visual..."

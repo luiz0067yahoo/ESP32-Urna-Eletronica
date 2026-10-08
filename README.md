@@ -161,14 +161,14 @@ ESP32-Urna-Eletronica/
 │       ├── votos.php             # Script PHP de votos iniciais de demonstração
 │       └── index.php             # Executor PHP de todos os seeds
 │
-├── tests/                        # 🧪 Bateria de Testes, Simuladores e Auditoria
+├── tests/                        # 🧪 Bateria de Testes, Simuladores e Auditoria (100% PHP)
 │   ├── index.html                # Dashboard visual de testes com cabine interativa e estresse
-│   ├── test_sistema_api.py       # Suíte automatizada de testes de contrato da API REST
-│   ├── simulador_poke.py         # Simulador de Terminal Eleitoral Digital (emissor de votos)
-│   ├── simulador_eleicao_massa.py# Simulador de carga e estresse (multithread / alto tráfego)
-│   ├── simulador_teclado_matricial.py # Validador de regras de dígitos e debounce de software
-│   ├── run_tests.bat             # Menu interativo de testes para Windows
-│   ├── run_tests.sh              # Menu interativo de testes para Linux / macOS
+│   ├── test_sistema_api.php      # Suíte automatizada de testes de contrato da API REST (PHP)
+│   ├── simulador_poke.php        # Simulador de Terminal Eleitoral Digital (emissor de votos em PHP)
+│   ├── simulador_eleicao_massa.php # Simulador de carga e estresse (concorrência HTTP via curl_multi)
+│   ├── simulador_teclado_matricial.php # Validador de regras de dígitos e debounce de software
+│   ├── run_tests.bat             # Menu interativo de testes para Windows (PHP CLI)
+│   ├── run_tests.sh              # Menu interativo de testes para Linux / macOS (PHP CLI)
 │   └── README.md                 # Documentação detalhada da pasta de testes
 │
 ├── devops/                       # 🐳 Contêineres e Infraestrutura (Opcional)
@@ -362,12 +362,12 @@ O repositório inclui uma pasta dedicada [`tests/`](tests/) contendo simuladores
 | Arquivo | Descrição |
 | :--- | :--- |
 | **[`tests/index.html`](tests/index.html)** | 🌐 **Dashboard Visual:** Interface gráfica no navegador com terminal virtual, testes de carga com slider de eleitores e apuração em tempo real. |
-| **[`tests/test_sistema_api.py`](tests/test_sistema_api.py)** | 🧪 **Validador de Contratos:** 12 casos de teste automatizados cobrindo rotas HTTP 200, 201, 400, 404, filtros e zerésima. |
-| **[`tests/simulador_poke.py`](tests/simulador_poke.py)** | 🤖 **Simulador do Terminal Eleitoral:** Emula o cliente web realizando a sessão completa de votação com cálculo de latência e sons. |
-| **[`tests/simulador_eleicao_massa.py`](tests/simulador_eleicao_massa.py)** | ⚡ **Teste de Carga & Estresse:** Executa centenas de votos simultâneos em paralelo com métricas de RPS e latências p95/p99. |
-| **[`tests/simulador_teclado_matricial.py`](tests/simulador_teclado_matricial.py)**| ⌨️ **Validador do Teclado:** Valida as regras de negócio de contagem de dígitos por cargo, teclas especiais e debounce. |
-| **[`tests/run_tests.bat`](tests/run_tests.bat)** | 🚀 Menu interativo em 1 clique para ambiente Windows. |
-| **[`tests/run_tests.sh`](tests/run_tests.sh)** | 🐧 Menu interativo executável para ambiente Linux / macOS. |
+| **[`tests/test_sistema_api.php`](tests/test_sistema_api.php)** | 🧪 **Validador de Contratos:** 12 casos de teste automatizados cobrindo rotas HTTP 200, 201, 400, 404, filtros e zerésima (executado via PHP CLI ou navegador). |
+| **[`tests/simulador_poke.php`](tests/simulador_poke.php)** | 🤖 **Simulador do Terminal Eleitoral:** Emula o cliente web realizando a sessão completa de votação com cálculo de latência e feedback sonoro. |
+| **[`tests/simulador_eleicao_massa.php`](tests/simulador_eleicao_massa.php)** | ⚡ **Teste de Carga & Estresse:** Executa centenas de votos simultâneos em paralelo com `curl_multi`, métricas de RPS e latências. |
+| **[`tests/simulador_teclado_matricial.php`](tests/simulador_teclado_matricial.php)**| ⌨️ **Validador do Teclado:** Valida as regras de negócio de contagem de dígitos por cargo, teclas especiais e debounce. |
+| **[`tests/run_tests.bat`](tests/run_tests.bat)** | 🚀 Menu interativo em 1 clique para ambiente Windows (chama o interpretador PHP). |
+| **[`tests/run_tests.sh`](tests/run_tests.sh)** | 🐧 Menu interativo executável para ambiente Linux / macOS (chama o interpretador PHP). |
 
 ### Como Executar os Testes no Terminal:
 ```bash
