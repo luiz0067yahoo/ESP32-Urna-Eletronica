@@ -34,6 +34,29 @@ Desenvolvido em arquitetura 100% Web (HTML5, CSS3, JavaScript Vanilla + API REST
 
 ---
 
+## ⚡ Inicialização Rápida (start.bat / start.sh)
+
+O projeto possui um menu interativo unificado na raiz para você escolher com 1 clique como deseja rodar:
+
+- **No Windows:** Dê 2 cliques no arquivo [`start.bat`](start.bat) (ou execute `start.bat` no CMD/PowerShell).
+- **No Linux / macOS:** Execute no terminal:
+  ```bash
+  chmod +x start.sh
+  ./start.sh
+  ```
+
+O menu permite selecionar dinamicamente:
+```
+ [1] 🐳 Docker Compose      (Sobe Apache + PHP + MariaDB + phpMyAdmin)
+ [2] 🦭 Podman Compose      (Contêineres via Podman)
+ [3] ☸️ Kubernetes          (Deploy de Manifestos K8s / Ingress)
+ [4] 🐘 PHP + MySQL Local   (Servidor Embutido do PHP / XAMPP)
+ [5] 🛑 Parar Serviços      (Derruba Docker, Podman ou PHP Local)
+ [0] ❌ Sair
+```
+
+---
+
 ## 🔍 Visão Geral
 
 A **Urna Eletrônica Pokémon** reproduz com fidelidade milimétrica a experiência cívica de votar em uma eleição oficial brasileira:
@@ -83,6 +106,8 @@ A **Urna Eletrônica Pokémon** reproduz com fidelidade milimétrica a experiên
 ```text
 ESP32-Urna-Eletronica/
 │
+├── start.bat                     # ⚡ Inicializador Central Windows (Docker, Podman, K8s, PHP Local)
+├── start.sh                      # 🐧 Inicializador Central Linux/macOS
 ├── index.php                     # 🚀 Ponto de entrada raiz (redireciona para frontend/index.html)
 ├── apuracao.php                  # 📊 Atalho raiz para o painel de apuração ao vivo
 ├── .htaccess                     # ⚙️ Regras do Apache (DirectoryIndex, MIME types e proteção de .env)
