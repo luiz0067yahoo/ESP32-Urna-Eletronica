@@ -108,9 +108,7 @@ ESP32-Urna-Eletronica/
 │
 ├── start.bat                     # ⚡ Inicializador Central Windows (Docker, Podman, K8s, PHP Local)
 ├── start.sh                      # 🐧 Inicializador Central Linux/macOS
-├── index.php                     # 🚀 Ponto de entrada raiz (redireciona para frontend/index.html)
-├── apuracao.php                  # 📊 Atalho raiz para o painel de apuração ao vivo
-├── .htaccess                     # ⚙️ Regras do Apache (DirectoryIndex, MIME types e proteção de .env)
+├── .htaccess                     # ⚙️ Regras do Apache (Roteamento automático para frontend/ e segurança)
 ├── README.md                     # 📖 Documentação oficial completa
 │
 ├── frontend/                     # 🌐 Aplicação Web do Usuário (Cliente)
@@ -224,8 +222,8 @@ Não é necessário importar nenhum arquivo SQL. A criação de tabelas e o cada
   ```
 
 ### Passo 5: Acessar a Aplicação
-- 🗳️ **Cabine de Votação (Urna):** `https://seusite.com.br/` *(ou `/frontend/index.html`)*
-- 📊 **Apuração ao Vivo:** `https://seusite.com.br/apuracao.php` *(ou `/frontend/apuracao.html`)*
+- 🗳️ **Cabine de Votação (Urna):** `https://seusite.com.br/` *(roteado via `.htaccess` para `/frontend/index.html`)*
+- 📊 **Apuração ao Vivo:** `https://seusite.com.br/apuracao` *(ou `/frontend/apuracao.html`)*
 - 🔌 **API RESTful de Votos:** `https://seusite.com.br/backend/votos`
 
 ---
@@ -405,7 +403,7 @@ Acesse e teste a Urna Eletrônica Pokémon diretamente no ambiente de produção
 👉 **[http://urna.gamer.free](http://urna.gamer.free)**
 
 - 🗳️ **Cabine de Votação (Urna):** [http://urna.gamer.free](http://urna.gamer.free) *(ou [http://urna.gamer.free/frontend/index.html](http://urna.gamer.free/frontend/index.html))*
-- 📊 **Apuração em Tempo Real:** [http://urna.gamer.free/apuracao.php](http://urna.gamer.free/apuracao.php) *(ou [http://urna.gamer.free/frontend/apuracao.html](http://urna.gamer.free/frontend/apuracao.html))*
+- 📊 **Apuração em Tempo Real:** [http://urna.gamer.free/apuracao](http://urna.gamer.free/apuracao) *(ou [http://urna.gamer.free/frontend/apuracao.html](http://urna.gamer.free/frontend/apuracao.html))*
 - 🔌 **API REST de Votos:** [http://urna.gamer.free/backend/votos](http://urna.gamer.free/backend/votos)
 
 ---
