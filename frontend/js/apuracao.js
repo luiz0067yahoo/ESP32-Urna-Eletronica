@@ -12,14 +12,16 @@ const ORDEM_CARGOS = [
     "DEPUTADO ESTADUAL"
 ];
 
-const NOMES_EXIBICAO_CARGO = {
-    "PRESIDENTE": "PRESIDENTE DO BRASIL",
-    "GOVERNADOR": "GOVERNADOR DO ESTADO",
-    "1º SENADOR": "1º SENADOR DA REPÚBLICA",
-    "2º SENADOR": "2º SENADOR DA REPÚBLICA",
-    "DEPUTADO FEDERAL": "DEPUTADO FEDERAL",
-    "DEPUTADO ESTADUAL": "DEPUTADO ESTADUAL"
-};
+function obterNomeExibicaoCargo(cargo) {
+    const c = (cargo || '').toUpperCase();
+    if (c.includes('PRESIDENTE')) return typeof _t === 'function' ? _t('cargo_nome_presidente_br') : 'PRESIDENTE DO BRASIL';
+    if (c.includes('GOVERNADOR')) return typeof _t === 'function' ? _t('cargo_nome_governador_est') : 'GOVERNADOR DO ESTADO';
+    if (c.includes('1º SENADOR') || c.includes('SENADOR 1')) return typeof _t === 'function' ? _t('cargo_nome_senador_1_rep') : '1º SENADOR DA REPÚBLICA';
+    if (c.includes('2º SENADOR') || c.includes('SENADOR 2')) return typeof _t === 'function' ? _t('cargo_nome_senador_2_rep') : '2º SENADOR DA REPÚBLICA';
+    if (c.includes('FEDERAL')) return typeof _t === 'function' ? _t('cargo_nome_deputado_fed') : 'DEPUTADO FEDERAL';
+    if (c.includes('ESTADUAL')) return typeof _t === 'function' ? _t('cargo_nome_deputado_est') : 'DEPUTADO ESTADUAL';
+    return cargo;
+}
 
 let dadosApuracaoAtual = null;
 let cargoFiltroAtivo = 'PRESIDENTE';
@@ -253,7 +255,7 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
     // Atualiza Título e Subtítulo
     const lblCargoNome = document.getElementById('tvCargoNome');
     if (lblCargoNome) {
-        lblCargoNome.innerText = NOMES_EXIBICAO_CARGO[cargoItem.cargo] || cargoItem.cargo.toUpperCase();
+        lblCargoNome.innerText = obterNomeExibicaoCargo(cargoItem.cargo);
     }
 
     // Configura botões de navegação anterior/próximo
@@ -263,6 +265,7 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
 
     const btnPrev = document.getElementById('btnCargoAnterior');
     if (btnPrev) {
+        btnPrev.title = typeof _t === 'function' ? _t('cargo_anterior') : 'Cargo anterior';
         btnPrev.onclick = () => {
             cargoFiltroAtivo = prevCargo.cargo;
             renderizarPainelApuracao(dadosApuracaoAtual || { apuracao: apuracaoCompleta });
@@ -271,6 +274,7 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
 
     const btnNext = document.getElementById('btnCargoProximo');
     if (btnNext) {
+        btnNext.title = typeof _t === 'function' ? _t('proximo_cargo') : 'Próximo cargo';
         btnNext.onclick = () => {
             cargoFiltroAtivo = nextCargo.cargo;
             renderizarPainelApuracao(dadosApuracaoAtual || { apuracao: apuracaoCompleta });
@@ -281,14 +285,7 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
     const listaCandidatos = consolidarCandidatosDoCargo(cargoItem);
 
     // Define quantos candidatos exibir nas colunas verticais principais
-    // Para PRESIDENTE: 3 candidatos cabem perfeitamente lado a lado
-    // Para outros cargos com muitos candidatos: exibe os top 2 a 3 no gráfico e os demais na lista expansível
-    let qtdNoGrafico = 3;
-    if (cargoItem.cargo.toUpperCase().includes('PRESIDENTE')) {
-        qtdNoGrafico = Math.min(3, listaCandidatos.length);
-    } else {
-        qtdNoGrafico = Math.min(3, listaCandidatos.length);
-    }
+    let qtdNoGrafico = Math.min(3, listaCandidatos.length);
 
     const candidatosGrafico = listaCandidatos.slice(0, qtdNoGrafico);
     const candidatosRestantes = listaCandidatos.slice(qtdNoGrafico);
@@ -335,12 +332,13 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
 
             // 2. Coluna inferior (Nome do Pokémon, Partido e Votos)
             if (containerNomes) {
+                const rotVoto = cand.votos === 1 ? (typeof _t === 'function' ? _t('voto_singular') : 'voto') : (typeof _t === 'function' ? _t('votos_plural') : 'votos');
                 const colBase = document.createElement('div');
                 colBase.className = 'cand-col-base';
                 colBase.innerHTML = `
                     <div class="cand-nome">${cand.nome}</div>
                     <div class="cand-numero-partido">${cand.numero} • ${cand.partido}</div>
-                    <div class="cand-votos-qtd">${cand.votos.toLocaleString('pt-BR')} ${cand.votos === 1 ? 'voto' : 'votos'}</div>
+                    <div class="cand-votos-qtd">${cand.votos.toLocaleString()} ${rotVoto}</div>
                 `;
                 containerNomes.appendChild(colBase);
             }
@@ -357,7 +355,6 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
     const elProgressFill = document.getElementById('tvProgressFill');
     const elResumoVotos = document.getElementById('tvResumoVotos');
 
-    // Se há votos computados, define o percentual de apuração
     let pctApuradas = totalVotos > 0 ? 100 : 0;
 
     if (elUrnasPct) {
@@ -368,11 +365,16 @@ function renderizarCardNoticiario(cargoItem, apuracaoCompleta) {
     }
     if (elResumoVotos) {
         const pctVal = totalVotos > 0 ? ((votosValidos / totalVotos) * 100).toFixed(1) : "0.0";
+        const rotValidos = typeof _t === 'function' ? _t('resumo_validos') : 'Válidos:';
+        const rotBrancos = typeof _t === 'function' ? _t('resumo_brancos') : 'Brancos:';
+        const rotNulos = typeof _t === 'function' ? _t('resumo_nulos') : 'Nulos:';
+        const rotTotal = typeof _t === 'function' ? _t('resumo_total') : 'Total:';
+
         elResumoVotos.innerHTML = `
-            <span>Válidos: <b>${votosValidos} (${pctVal}%)</b></span>
-            <span>Brancos: <b>${brancos}</b></span>
-            <span>Nulos: <b>${nulos}</b></span>
-            <span>Total: <b>${totalVotos}</b></span>
+            <span>${rotValidos} <b>${votosValidos} (${pctVal}%)</b></span>
+            <span>${rotBrancos} <b>${brancos}</b></span>
+            <span>${rotNulos} <b>${nulos}</b></span>
+            <span>${rotTotal} <b>${totalVotos}</b></span>
         `;
     }
 
@@ -394,7 +396,8 @@ function renderizarSecaoDetalhes(candidatosGrafico, candidatosRestantes, cargoIt
 
     const lblTotal = document.getElementById('detalhesTotalTexto');
     if (lblTotal) {
-        lblTotal.innerText = `${cargoItem.total_votos || 0} votos apurados no total`;
+        const rotVotos = typeof _t === 'function' ? _t('votos_plural') : 'votos';
+        lblTotal.innerText = `${cargoItem.total_votos || 0} ${rotVotos}`;
     }
 
     const listaContainer = document.getElementById('detalhesListaCandidatos');
@@ -402,7 +405,6 @@ function renderizarSecaoDetalhes(candidatosGrafico, candidatosRestantes, cargoIt
 
     listaContainer.innerHTML = '';
 
-    // Junta todos os candidatos para o ranking completo
     const todos = [...candidatosGrafico, ...candidatosRestantes];
 
     todos.forEach((cand, idx) => {
@@ -410,6 +412,7 @@ function renderizarSecaoDetalhes(candidatosGrafico, candidatosRestantes, cargoIt
         item.className = 'item-detalhe-cand';
 
         const fotoSrc = cand.foto || 'https://via.placeholder.com/60?text=PKMN';
+        const rotVoto = cand.votos === 1 ? (typeof _t === 'function' ? _t('voto_singular') : 'voto') : (typeof _t === 'function' ? _t('votos_plural') : 'votos');
 
         item.innerHTML = `
             <div class="item-detalhe-pos">#${idx + 1}</div>
@@ -420,7 +423,7 @@ function renderizarSecaoDetalhes(candidatosGrafico, candidatosRestantes, cargoIt
             </div>
             <div class="item-detalhe-votos">
                 <div class="item-detalhe-pct">${formatarPercentual(cand.percentual_validos)}</div>
-                <div class="item-detalhe-qtd">${cand.votos} ${cand.votos === 1 ? 'voto' : 'votos'}</div>
+                <div class="item-detalhe-qtd">${cand.votos} ${rotVoto}</div>
             </div>
         `;
 
@@ -458,4 +461,14 @@ window.addEventListener('DOMContentLoaded', () => {
     iniciarRelogio();
     carregarApuracao();
     iniciarCicloAtualizacao();
+
+    if (typeof i18n !== 'undefined') {
+        i18n.aoMudarIdioma(() => {
+            if (dadosApuracaoAtual) {
+                renderizarPainelApuracao(dadosApuracaoAtual);
+            } else {
+                renderizarPainelComDadosLocais();
+            }
+        });
+    }
 });

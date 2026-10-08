@@ -36,13 +36,13 @@ const salvarVotoAtual = () => {
     } else if (numDigitado === '' || numDigitado.toUpperCase() === 'BRANCO') {
         infoVoto = {
             numero: 'BRANCO',
-            nome: 'VOTO EM BRANCO',
+            nome: (typeof _t === 'function' ? _t('voto_em_branco') : 'VOTO EM BRANCO'),
             partido: ''
         };
     } else {
         infoVoto = {
             numero: numDigitado,
-            nome: 'VOTO NULO',
+            nome: (typeof _t === 'function' ? _t('voto_nulo') : 'VOTO NULO'),
             partido: ''
         };
     }
@@ -288,7 +288,11 @@ const finalizarVotacao = () => {
     const dadosVotos = coletarDadosVotacao();
     enviarVotosBackend(dadosVotos);
 
-    loadMessageBox('Voto Finalizado', 'Obrigado por participar do treinamento.', 'Reiniciar Treinamento', () => {
+    const titulo = typeof _t === 'function' ? _t('voto_finalizado_titulo') : 'Voto Finalizado';
+    const msg = typeof _t === 'function' ? _t('voto_finalizado_msg') : 'Obrigado por participar do treinamento.';
+    const btnReiniciar = typeof _t === 'function' ? _t('btn_reiniciar') : 'Reiniciar Treinamento';
+
+    loadMessageBox(titulo, msg, btnReiniciar, () => {
         resetarUrna();
     }, true);
 };
@@ -309,6 +313,9 @@ const loadMessageBox = (title, body, buttonText, buttonAction, mostrarApuracao =
 
     const btnApuracao = messageBox.querySelector('.btn-apuracao');
     if (btnApuracao) {
+        if (typeof _t === 'function') {
+            btnApuracao.textContent = _t('btn_apuracao');
+        }
         if (mostrarApuracao) {
             btnApuracao.classList.remove('d-none');
         } else {
@@ -338,14 +345,18 @@ const closeMessageBox = () => {
 // MODAL DE SANTINHOS E COLIGAÇÕES
 // ==========================================================================
 
-const abasCargos = [
-    { id: "estadual", nome: "Deputados Estaduais", lista: DEPUTADOS_ESTADUAIS, tipo: "estadual" },
-    { id: "federal", nome: "Deputados Federais", lista: DEPUTADOS_FEDERAIS, tipo: "federal" },
-    { id: "senador1", nome: "Senador 1", lista: SENADORES_1, tipo: "senador1" },
-    { id: "senador2", nome: "Senador 2", lista: SENADORES_2, tipo: "senador2" },
-    { id: "governador", nome: "Governador", lista: GOVERNADORES, tipo: "governador" },
-    { id: "presidente", nome: "Presidente", lista: PRESIDENTES, tipo: "presidente" }
-];
+function obterAbasCargos() {
+    return [
+        { id: "estadual", nome: typeof _t === 'function' ? _t('tab_deputados_estaduais') : "Deputados Estaduais", lista: DEPUTADOS_ESTADUAIS, tipo: "estadual" },
+        { id: "federal", nome: typeof _t === 'function' ? _t('tab_deputados_federais') : "Deputados Federais", lista: DEPUTADOS_FEDERAIS, tipo: "federal" },
+        { id: "senador1", nome: typeof _t === 'function' ? _t('tab_senador_1') : "1º Senador", lista: SENADORES_1, tipo: "senador1" },
+        { id: "senador2", nome: typeof _t === 'function' ? _t('tab_senador_2') : "2º Senador", lista: SENADORES_2, tipo: "senador2" },
+        { id: "governador", nome: typeof _t === 'function' ? _t('tab_governador') : "Governador", lista: GOVERNADORES, tipo: "governador" },
+        { id: "presidente", nome: typeof _t === 'function' ? _t('tab_presidente') : "Presidente", lista: PRESIDENTES, tipo: "presidente" }
+    ];
+}
+
+let abasCargos = obterAbasCargos();
 
 let abaAtivaIndex = 0;
 let subIndiceAtual = 0;
@@ -613,6 +624,15 @@ function mudarAbaCargo(direcao) {
 
 window.onload = () => {
     slides = document.getElementsByClassName("slide");
+    abasCargos = obterAbasCargos();
     renderizarAbasPrincipais();
     renderizarSubAbasECandidato();
+
+    if (typeof i18n !== 'undefined') {
+        i18n.aoMudarIdioma(() => {
+            abasCargos = obterAbasCargos();
+            renderizarAbasPrincipais();
+            renderizarSubAbasECandidato();
+        });
+    }
 };

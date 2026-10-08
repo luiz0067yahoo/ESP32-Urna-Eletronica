@@ -13,6 +13,9 @@
 
     <link rel="stylesheet" href="css/apuracao.css">
 
+    <!-- Motor de Internacionalização (i18n com 4 idiomas e detecção automática) -->
+    <script src="js/i18n.js"></script>
+
     <!-- Listas de Candidatos Pokémon e Partidos -->
     <script src="js/candidatos/candidato.js"></script>
     <script src="js/candidatos/deputados_federais.js"></script>
@@ -27,23 +30,34 @@
     <script src="js/apuracao.js"></script>
 </head>
 
-<body>
+<body data-i18n-title="page_title_apuracao">
     <!-- Barra Superior de Controle e Navegação Rápida -->
     <header class="app-topbar">
         <div class="topbar-container">
             <div class="topbar-brand">
                 <span class="live-dot"></span>
-                <span class="live-text">AO VIVO <span id="lblContadorAuto" class="live-countdown">(5s)</span></span>
+                <span class="live-text"><span data-i18n="ao_vivo">AO VIVO</span> <span id="lblContadorAuto" class="live-countdown">(5s)</span></span>
             </div>
 
             <!-- Seletor de Cargos em Pílulas -->
             <nav class="cargos-nav" id="navCargos"></nav>
 
             <div class="topbar-actions">
-                <button type="button" class="btn-topbar" onclick="carregarApuracao()" title="Atualizar dados agora">
+                <!-- Seletor de Idioma Integrado na Barra Superior -->
+                <div class="topbar-lang-box" style="display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15);">
+                    <span style="font-size: 14px;">🌐</span>
+                    <select class="urna-lang-select" aria-label="Select Language" onchange="i18n.definirIdioma(this.value)" style="background: transparent; color: #fff; border: none; font-size: 13px; font-weight: 600; cursor: pointer; outline: none;">
+                        <option value="en" style="background: #1e293b; color: #fff;">🇺🇸 EN</option>
+                        <option value="pt" style="background: #1e293b; color: #fff;">🇧🇷 PT</option>
+                        <option value="es" style="background: #1e293b; color: #fff;">🇪🇸 ES</option>
+                        <option value="it" style="background: #1e293b; color: #fff;">🇮🇹 IT</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn-topbar" onclick="carregarApuracao()" title="Atualizar dados agora" data-i18n="btn_atualizar">
                     🔄 Atualizar
                 </button>
-                <a href="index.html" class="btn-topbar btn-destaque" title="Voltar para a Urna Eletrônica">
+                <a href="index.html" class="btn-topbar btn-destaque" title="Voltar para a Urna Eletrônica" data-i18n="btn_ir_urna">
                     🗳️ Ir para a Urna
                 </a>
             </div>
@@ -61,7 +75,7 @@
                         <h1 class="tv-cargo-nome" id="tvCargoNome">PRESIDENTE DO BRASIL</h1>
                         <button type="button" class="btn-nav-cargo next" id="btnCargoProximo" title="Próximo cargo">›</button>
                     </div>
-                    <div class="tv-subtitulo" id="tvSubtitulo">APURAÇÃO EM TEMPO REAL - ELEIÇÕES 2026</div>
+                    <div class="tv-subtitulo" id="tvSubtitulo" data-i18n="subtitulo_apuracao">APURAÇÃO EM TEMPO REAL - ELEIÇÕES 2026</div>
                 </div>
 
                 <!-- Selo de Noticiário no Canto Superior Direito -->
@@ -86,7 +100,7 @@
             <div class="tv-urnas-area">
                 <div class="tv-urnas-texto">
                     <span class="tv-urnas-pct" id="tvUrnasPct">100%</span>
-                    <span class="tv-urnas-rotulo" id="tvUrnasRotulo">DE URNAS APURADAS</span>
+                    <span class="tv-urnas-rotulo" id="tvUrnasRotulo" data-i18n="urnas_apuradas">DE URNAS APURADAS</span>
                 </div>
                 <div class="tv-progress-track">
                     <div class="tv-progress-fill" id="tvProgressFill" style="width: 100%;"></div>
@@ -105,7 +119,7 @@
         <!-- Drawer / Seção Detalhada caso haja muitos candidatos (Governadores / Deputados / Senadores) -->
         <section class="secao-detalhes" id="secaoDetalhes" style="display: none;">
             <div class="detalhes-header">
-                <h3>Todos os Candidatos do Cargo</h3>
+                <h3 data-i18n="todos_candidatos">Todos os Candidatos do Cargo</h3>
                 <span class="detalhes-total" id="detalhesTotalTexto">0 votos</span>
             </div>
             <div class="detalhes-lista" id="detalhesListaCandidatos"></div>

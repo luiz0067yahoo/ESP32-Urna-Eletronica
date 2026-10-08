@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urna Eletrônica</title>
+    <title>Urna Eletrônica • Eleições Pokémon</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/urna.css">
     <link rel="stylesheet" href="css/santinhos.css">
+
+    <!-- Motor de Internacionalização (i18n com 4 idiomas e detecção automática) -->
+    <script src="js/i18n.js"></script>
 
     <!-- Classes e Listas de Candidatos por Cargo -->
     <script src="js/candidatos/candidato.js"></script>
@@ -31,319 +34,227 @@
     <script src="js/urna.js"></script>
 </head>
 
-<body>
+<body data-i18n-title="page_title_urna">
     <div class="urna">
         <div class="tela ">
+            <!-- SLIDE 1: DEPUTADO FEDERAL -->
             <div class="slide deputado-federal">
-                <div class="col1 row1">TREINAMENTO</div>
-
-
-                <div class="col1 row2">DEPUTADO FEDERAL</div>
-
+                <div class="col1 row1" data-i18n="treinamento">TREINAMENTO</div>
+                <div class="col1 row2" data-i18n="cargo_deputado_federal">DEPUTADO FEDERAL</div>
 
                 <div class="col1 row3">
-                    Número:
+                    <span data-i18n="rotulo_numero">Número:</span>
                     <input class="numero-candidato deputado-federal numero4" type="text" maxlength="4"
                         autocomplete="off" onblur="carregarCandidato(this.value)">
-
                 </div>
-
 
                 <div class="col1 row4">
-                    Nome: <a class="nome"></a>
+                    <span data-i18n="rotulo_nome">Nome:</span> <a class="nome"></a>
                 </div>
-
 
                 <div class="col1 row5">
-                    Partido: <a class="partido"></a>
+                    <span data-i18n="rotulo_partido">Partido:</span> <a class="partido"></a>
                 </div>
-
-
-
-
 
                 <div class="col2 row1x4 foto-candidato"></div>
 
-
-
-
-                <div class="col12 row8">
+                <div class="col12 row8" data-i18n="instrucao_aperte">
                     Aperte a tecla:
                 </div>
-
-
-                <div class="col12 row9">
+                <div class="col12 row9" data-i18n="instrucao_verde">
                     VERDE para CONFIRMAR este voto
                 </div>
-
-
-                <div class="col12 row10">
-                    VERMELHO para CORRIGIR este voto
+                <div class="col12 row10" data-i18n="instrucao_vermelho">
+                    LARANJA para CORRIGIR este voto
                 </div>
-
-
-                <div class="col12 row11">
+                <div class="col12 row11" data-i18n="instrucao_branco">
                     BRANCO para votar em BRANCO
                 </div>
-
-
             </div>
+
+            <!-- SLIDE 2: DEPUTADO ESTADUAL -->
             <div class="slide deputado-estadual d-none">
-                <div class="col1 row1">TREINAMENTO</div>
-
-
-                <div class="col1 row2">DEPUTADO ESTADUAL</div>
-
+                <div class="col1 row1" data-i18n="treinamento">TREINAMENTO</div>
+                <div class="col1 row2" data-i18n="cargo_deputado_estadual">DEPUTADO ESTADUAL</div>
 
                 <div class="col1 row3">
-                    Número:
+                    <span data-i18n="rotulo_numero">Número:</span>
                     <input class="numero-candidato deputado-estadual numero5" type="text" maxlength="5"
                         autocomplete="off" onblur="carregarCandidato(this.value)">
-
                 </div>
-
 
                 <div class="col1 row4">
-                    Nome: <a class="nome"></a>
+                    <span data-i18n="rotulo_nome">Nome:</span> <a class="nome"></a>
                 </div>
-
 
                 <div class="col1 row5">
-                    Partido: <a class="partido"></a>
+                    <span data-i18n="rotulo_partido">Partido:</span> <a class="partido"></a>
                 </div>
-
 
                 <div class="col2 row1x4 foto-candidato"></div>
 
-
-                <div class="col12 row8">
+                <div class="col12 row8" data-i18n="instrucao_aperte">
                     Aperte a tecla:
                 </div>
-
-
-                <div class="col12 row9">
+                <div class="col12 row9" data-i18n="instrucao_verde">
                     VERDE para CONFIRMAR este voto
                 </div>
-
-
-                <div class="col12 row10">
-                    VERMELHO para CORRIGIR este voto
+                <div class="col12 row10" data-i18n="instrucao_vermelho">
+                    LARANJA para CORRIGIR este voto
                 </div>
-
-
-                <div class="col12 row11">
+                <div class="col12 row11" data-i18n="instrucao_branco">
                     BRANCO para votar em BRANCO
                 </div>
-
-
             </div>
+
+            <!-- SLIDE 3: 1º SENADOR -->
             <div class="slide 1-senador d-none">
-                <div class="col1 row1">TREINAMENTO</div>
-
-
-                <div class="col1 row2">1º SENADOR</div>
-
+                <div class="col1 row1" data-i18n="treinamento">TREINAMENTO</div>
+                <div class="col1 row2" data-i18n="cargo_senador_1">1º SENADOR</div>
 
                 <div class="col1 row3">
-                    Número:
+                    <span data-i18n="rotulo_numero">Número:</span>
                     <input class="numero-candidato 1-senador numero3" type="text" maxlength="3" autocomplete="off"
                         onblur="carregarCandidato(this.value)">
-
                 </div>
-
 
                 <div class="col1 row4">
-                    Nome: <a class="nome"></a>
+                    <span data-i18n="rotulo_nome">Nome:</span> <a class="nome"></a>
                 </div>
 
-
                 <div class="col1 row5">
-                    Partido: <a class="partido"></a>
+                    <span data-i18n="rotulo_partido">Partido:</span> <a class="partido"></a>
                 </div>
 
                 <div class="col2 row1x4 foto-candidato"></div>
 
-
-                <div class="col12 row8">
+                <div class="col12 row8" data-i18n="instrucao_aperte">
                     Aperte a tecla:
                 </div>
-
-
-                <div class="col12 row9">
+                <div class="col12 row9" data-i18n="instrucao_verde">
                     VERDE para CONFIRMAR este voto
                 </div>
-
-
-                <div class="col12 row10">
-                    VERMELHO para CORRIGIR este voto
+                <div class="col12 row10" data-i18n="instrucao_vermelho">
+                    LARANJA para CORRIGIR este voto
                 </div>
-
-
-                <div class="col12 row11">
+                <div class="col12 row11" data-i18n="instrucao_branco">
                     BRANCO para votar em BRANCO
                 </div>
-
-
             </div>
+
+            <!-- SLIDE 4: 2º SENADOR -->
             <div class="slide 2-senador d-none">
-                <div class="col1 row1">TREINAMENTO</div>
-
-
-                <div class="col1 row2">2º SENADOR</div>
-
+                <div class="col1 row1" data-i18n="treinamento">TREINAMENTO</div>
+                <div class="col1 row2" data-i18n="cargo_senador_2">2º SENADOR</div>
 
                 <div class="col1 row3">
-                    Número:
+                    <span data-i18n="rotulo_numero">Número:</span>
                     <input class="numero-candidato 2-senador numero3" type="text" maxlength="3" autocomplete="off"
                         onblur="carregarCandidato(this.value)">
-
                 </div>
-
 
                 <div class="col1 row4">
-                    Nome: <a class="nome"></a>
+                    <span data-i18n="rotulo_nome">Nome:</span> <a class="nome"></a>
                 </div>
 
-
                 <div class="col1 row5">
-                    Partido: <a class="partido"></a>
+                    <span data-i18n="rotulo_partido">Partido:</span> <a class="partido"></a>
                 </div>
 
                 <div class="col2 row1x4 foto-candidato"></div>
 
-                <div class="col12 row8">
+                <div class="col12 row8" data-i18n="instrucao_aperte">
                     Aperte a tecla:
                 </div>
-
-
-                <div class="col12 row9">
+                <div class="col12 row9" data-i18n="instrucao_verde">
                     VERDE para CONFIRMAR este voto
                 </div>
-
-
-                <div class="col12 row10">
-                    VERMELHO para CORRIGIR este voto
+                <div class="col12 row10" data-i18n="instrucao_vermelho">
+                    LARANJA para CORRIGIR este voto
                 </div>
-
-
-                <div class="col12 row11">
+                <div class="col12 row11" data-i18n="instrucao_branco">
                     BRANCO para votar em BRANCO
                 </div>
-
-
             </div>
+
+            <!-- SLIDE 5: GOVERNADOR -->
             <div class="slide governador d-none">
-                <div class="col1 row1">TREINAMENTO</div>
-
-
-                <div class="col1 row2">GOVERNADOR</div>
-
+                <div class="col1 row1" data-i18n="treinamento">TREINAMENTO</div>
+                <div class="col1 row2" data-i18n="cargo_governador">GOVERNADOR</div>
 
                 <div class="col1 row3">
-                    Número:
+                    <span data-i18n="rotulo_numero">Número:</span>
                     <input class="numero-candidato governador numero2" type="text" maxlength="2" autocomplete="off"
                         onblur="carregarCandidato(this.value)">
-
                 </div>
-
 
                 <div class="col1 row4">
-                    Nome: <a class="nome"></a>
+                    <span data-i18n="rotulo_nome">Nome:</span> <a class="nome"></a>
                 </div>
-
 
                 <div class="col1 row5">
-                    Partido: <a class="partido"></a>
+                    <span data-i18n="rotulo_partido">Partido:</span> <a class="partido"></a>
                 </div>
-
 
                 <div class="col1 row6">
-                    Vice-governador: <a class="vice"></a>
+                    <span data-i18n="rotulo_vice_governador">Vice-governador:</span> <a class="vice"></a>
                 </div>
-
 
                 <div class="col2 row1x4 foto-candidato"></div>
-
-
                 <div class="col2 row5x4 foto-vice"></div>
 
-
-                <div class="col12 row8">
+                <div class="col12 row8" data-i18n="instrucao_aperte">
                     Aperte a tecla:
                 </div>
-
-
-                <div class="col12 row9">
+                <div class="col12 row9" data-i18n="instrucao_verde">
                     VERDE para CONFIRMAR este voto
                 </div>
-
-
-                <div class="col12 row10">
-                    VERMELHO para CORRIGIR este voto
+                <div class="col12 row10" data-i18n="instrucao_vermelho">
+                    LARANJA para CORRIGIR este voto
                 </div>
-
-
-                <div class="col12 row11">
+                <div class="col12 row11" data-i18n="instrucao_branco">
                     BRANCO para votar em BRANCO
                 </div>
-
-
             </div>
+
+            <!-- SLIDE 6: PRESIDENTE -->
             <div class="slide presidente d-none">
-                <div class="col1 row1">TREINAMENTO</div>
-
-
-                <div class="col1 row2">PRESIDENTE</div>
-
+                <div class="col1 row1" data-i18n="treinamento">TREINAMENTO</div>
+                <div class="col1 row2" data-i18n="cargo_presidente">PRESIDENTE</div>
 
                 <div class="col1 row3">
-                    Número:
+                    <span data-i18n="rotulo_numero">Número:</span>
                     <input class="numero-candidato presidente numero2" type="text" maxlength="2" autocomplete="off"
                         onblur="carregarCandidato(this.value)">
                 </div>
 
-
                 <div class="col1 row4">
-                    Nome: <a class="nome"></a>
+                    <span data-i18n="rotulo_nome">Nome:</span> <a class="nome"></a>
                 </div>
-
 
                 <div class="col1 row5">
-                    Partido: <a class="partido"></a>
+                    <span data-i18n="rotulo_partido">Partido:</span> <a class="partido"></a>
                 </div>
-
 
                 <div class="col1 row6">
-                    Vice-presidente: <a class="vice"></a>
+                    <span data-i18n="rotulo_vice_presidente">Vice-presidente:</span> <a class="vice"></a>
                 </div>
-
 
                 <div class="col2 row1x4 foto-candidato"></div>
-
-
                 <div class="col2 row5x4 foto-vice"></div>
 
-
-                <div class="col12 row8">
+                <div class="col12 row8" data-i18n="instrucao_aperte">
                     Aperte a tecla:
                 </div>
-
-
-                <div class="col12 row9">
+                <div class="col12 row9" data-i18n="instrucao_verde">
                     VERDE para CONFIRMAR este voto
                 </div>
-
-
-                <div class="col12 row10">
-                    VERMELHO para CORRIGIR este voto
+                <div class="col12 row10" data-i18n="instrucao_vermelho">
+                    LARANJA para CORRIGIR este voto
                 </div>
-
-
-                <div class="col12 row11">
+                <div class="col12 row11" data-i18n="instrucao_branco">
                     BRANCO para votar em BRANCO
                 </div>
-
-
             </div>
         </div>
 
@@ -360,27 +271,30 @@
             <div></div>
             <button class="digito" onclick="inserirDigito('0')" ontouchstart="inserirDigito('0')">0</button>
             <div></div>
-            <button class="branco" onclick="limpar()">BRANCO</button>
-            <button class="corrige" onclick="corrigeVoto()">CORRIGE</button>
-            <button class="confirma" onclick="confirmaVoto()">CONFIRMA</button>
-            <button type="button" class="btn-santinhos-trigger" onclick="abrirSantinhos()"
+            <button class="branco" onclick="limpar()" data-i18n="btn_branco">BRANCO</button>
+            <button class="corrige" onclick="corrigeVoto()" data-i18n="btn_corrige">CORRIGE</button>
+            <button class="confirma" onclick="confirmaVoto()" data-i18n="btn_confirma">CONFIRMA</button>
+            <button type="button" class="btn-santinhos-trigger" onclick="abrirSantinhos()" data-i18n="btn_santinhos"
                 style="grid-column: 1 / span 3; background: #0d47a1; color: #fff; border: 1px solid #ffeb3b; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 5px;">📋
                 SANTINHOS DE CANDIDATOS</button>
         </div>
     </div>
+
+    <!-- Caixa de Diálogo de Fim de Voto -->
     <div class="message-box d-none">
         <div class="message">
             <h2 class="title"></h2>
             <div class="body"></div>
             <div class="botoes-message">
                 <button class="btn btn-primary" onclick=""></button>
-                <a href="apuracao.html" class="btn btn-apuracao d-none">📊 Apuração dos Votos</a>
+                <a href="apuracao.html" class="btn btn-apuracao d-none" data-i18n="btn_apuracao">📊 Apuração dos Votos</a>
             </div>
         </div>
     </div>
 
+    <!-- Modal de Santinhos -->
     <div id="urna-santinhos-container" class="us-box-overlay d-none">
-        <button type="button" class="us-btn-fechar" id="usBtnFechar" title="Fechar"
+        <button type="button" class="us-btn-fechar" id="usBtnFechar" title="Fechar" data-i18n-attr="title" data-i18n="santinhos_fechar"
             onclick="fecharSantinhos()">&times;</button>
         <div class="us-santinho-wrapper">
             <div class="us-slides-nav" id="usSlidesNav"></div>

@@ -135,3 +135,47 @@ body {
         height: 100% !important;
     }
 }
+
+/* ==============================================================================
+   SELETOR DE IDIOMAS FLUTUANTE (i18n)
+   ============================================================================== */
+.urna-i18n-widget {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 99999;
+}
+
+.i18n-widget-inner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    padding: 4px 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.i18n-globe-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.urna-lang-select {
+    background: transparent;
+    color: #f8fafc;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 2px 0;
+}
+
+.urna-lang-select option {
+    background: #1e293b;
+    color: #f8fafc;
+}
