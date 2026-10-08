@@ -1,0 +1,33 @@
+# ==============================================================================
+# Containerfile para Podman - Urna Eletrônica Pokémon
+# ==============================================================================
+FROM docker.io/library/php:8.2-apache
+
+# Habilita mod_rewrite
+RUN a2enmod rewrite
+
+# Instala extensões PDO MySQL
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Habilita .htaccess
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
+WORKDIR /var/www/html
+
+# Copia código-fonte
+COPY . /var/www/html/
+
+# Copia e configura entrypoint
+COPY devops/podman/podman-entrypoint.sh /usr/local/bin/podman-entrypoint.sh
+RUN chmod +x /usr/local/bin/podman-entrypoint.sh
+
+# Remove arquivos de infraestrutura da raiz web pública
+RUN rm -rf /var/www/html/devops
+
+# Ajusta permissões
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
+
+ENTRYPOINT ["/usr/local/bin/podman-entrypoint.sh"]
+CMD ["apache2-foreground"]

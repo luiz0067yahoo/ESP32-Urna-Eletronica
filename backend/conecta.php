@@ -45,9 +45,12 @@ class Conexao {
                 $key = trim($key);
                 $val = trim($val, " \t\n\r\0\x0B\"'");
                 
-                putenv("{$key}={$val}");
-                $_ENV[$key] = $val;
-                $_SERVER[$key] = $val;
+                // Só define se a variável ainda não estiver definida no ambiente (ex: Docker, K8s, SO)
+                if (getenv($key) === false || getenv($key) === '') {
+                    putenv("{$key}={$val}");
+                    $_ENV[$key] = $val;
+                    $_SERVER[$key] = $val;
+                }
             }
         }
     }
@@ -60,9 +63,11 @@ class Conexao {
     public function conectar() {
         $this->conn = null;
 
+        $port = getenv('DB_PORT') ?: '3306';
+
         try {
             $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
+                "mysql:host=" . $this->host . ";port=" . $port . ";dbname=" . $this->db_name . ";charset=utf8mb4",
                 $this->username,
                 $this->password,
                 [

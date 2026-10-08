@@ -1,0 +1,111 @@
+name: Deploy Automático - Docker
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - 'db/**'
+      - 'devops/docker/**'
+      - '.dockerignore'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Formatar nome da imagem (minúsculas)
+        id: repo
+        run: |
+          echo "image=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+
+      - name: 🧪 Teste Automatizado do Ambiente Docker (Compose + MariaDB + App)
+        run: |
+          cd devops/docker
+          echo "1. Subindo containers com Docker Compose..."
+          docker compose up -d --build
+          
+          echo "2. Aguardando inicialização completa do MariaDB e aplicação..."
+          timeout 60 bash -c 'until docker compose ps | grep -q "(healthy)"; do sleep 2; done' || true
+          sleep 6
+
+          echo "3. Status dos containers:"
+          docker compose ps
+
+          echo "4. Testando Frontend (HTTP 200)..."
+          HTTP_FRONT=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/frontend/index.html)
+          echo "Status Frontend: $HTTP_FRONT"
+          if [ "$HTTP_FRONT" != "200" ]; then
+            echo "❌ Falha no carregamento do Frontend!"
+            docker compose logs
+            exit 1
+          fi
+
+          echo "5. Testando Banco e Migração (db/install.php)..."
+          INSTALL_RES=$(curl -s http://localhost:8080/db/install.php?format=json)
+          echo "Resposta do Instalador: $INSTALL_RES"
+          if ! echo "$INSTALL_RES" | grep -q '"status": "success"'; then
+            echo "❌ Falha no instalador do banco!"
+            docker compose logs
+            exit 1
+          fi
+
+          echo "6. Testando API Backend (/backend/apuracao)..."
+          APURACAO_RES=$(curl -s http://localhost:8080/backend/apuracao)
+          echo "Resposta Apuração: $APURACAO_RES"
+
+          echo "✔ Todos os testes do Docker foram concluídos com SUCESSO!"
+          docker compose down -v
+
+      - name: Autenticar no GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extrair metadados da imagem Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ steps.repo.outputs.image }}
+          tags: |
+            type=sha,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build e Push da Imagem Docker para o GHCR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: devops/docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Deploy no Servidor via SSH (Opcional - se secrets configuradas)
+        if: env.DEPLOY_HOST != ''
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || '22' }}
+        run: |
+          echo "Deploying via SSH to $DEPLOY_HOST..."
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST << 'EOF'
+            cd /var/www/urna-eletronica/devops/docker
+            ./deploy-git.sh main
+          EOF

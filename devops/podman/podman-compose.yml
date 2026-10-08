@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: docker.io/library/mariadb:10.11
+    container_name: urna_podman_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-urna}
+      MYSQL_USER: ${DB_USER:-urna}
+      MYSQL_PASSWORD: ${DB_PASS:-urna123}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+    volumes:
+      - urna_podman_db_data:/var/lib/mysql:Z
+    networks:
+      - urna_podman_network
+
+  app:
+    build:
+      context: ../..
+      dockerfile: devops/podman/Containerfile
+    container_name: urna_podman_app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-urna}
+      DB_USER: ${DB_USER:-urna}
+      DB_PASS: ${DB_PASS:-urna123}
+    depends_on:
+      - db
+    networks:
+      - urna_podman_network
+
+volumes:
+  urna_podman_db_data:
+
+networks:
+  urna_podman_network:

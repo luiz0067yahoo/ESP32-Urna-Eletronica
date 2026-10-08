@@ -1,0 +1,12 @@
+.git
+.gitignore
+.gitattributes
+*.log
+backend/.env
+.env
+devops/kubernetes
+devops/docker/*
+!devops/docker/docker-entrypoint.sh
+devops/podman/*
+!devops/podman/podman-entrypoint.sh
+

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urna-app
+  namespace: urna-eletronica
+  labels:
+    app.kubernetes.io/name: urna-eletronica
+    app.kubernetes.io/component: web-frontend-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: urna-app
+  template:
+    metadata:
+      labels:
+        app: urna-app
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Aguardando banco de dados urna-db:3306 ficar disponível..."
+              until nc -z -w 2 urna-db 3306; do
+                echo "Banco de dados ainda não disponível, aguardando 2s..."
+                sleep 2
+              done
+              echo "Banco de dados pronto!"
+      containers:
+        - name: app
+          image: urna-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: urna-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: urna-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: urna-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: urna-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: urna-secret
+                  key: DB_PASS
+          readinessProbe:
+            httpGet:
+              path: /frontend/index.html
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /frontend/index.html
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi

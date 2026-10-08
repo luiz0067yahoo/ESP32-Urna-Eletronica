@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: urna-app-service
+  namespace: urna-eletronica
+  labels:
+    app.kubernetes.io/name: urna-eletronica
+    app.kubernetes.io/component: web-frontend-backend
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+      name: http
+  selector:
+    app: urna-app

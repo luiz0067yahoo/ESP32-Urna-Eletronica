@@ -1,0 +1,27 @@
+# ==============================================================================
+# GITOPS COM ARGOCD - SINCRONIZAÇÃO AUTOMÁTICA VIA GIT
+# Qualquer 'git push' na branch main dispara a atualização no Kubernetes
+# ==============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: urna-eletronica
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/luiz0067yahoo/ESP32-Urna-Eletronica.git'
+    targetRevision: main
+    path: devops/kubernetes
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: urna-eletronica
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

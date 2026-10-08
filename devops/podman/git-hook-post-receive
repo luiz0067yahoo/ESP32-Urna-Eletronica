@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# GIT HOOK: post-receive (DEPLOY AUTOMÁTICO PODMAN VIA GIT PUSH)
+# Coloque em: <seu-repositorio-bare.git>/hooks/post-receive
+# Torne executável: chmod +x <seu-repositorio-bare.git>/hooks/post-receive
+# ==============================================================================
+
+set -e
+
+TARGET_DIR="/var/www/urna-eletronica"
+BRANCH="main"
+
+echo "=========================================================="
+echo "  📦 RECEBIDO GIT PUSH NO SERVIDOR - INICIANDO DEPLOY PODMAN"
+echo "=========================================================="
+
+mkdir -p "$TARGET_DIR"
+git --work-tree="$TARGET_DIR" --git-dir="$(pwd)" checkout -f "$BRANCH"
+
+cd "$TARGET_DIR/devops/podman"
+chmod +x deploy-git.sh start-pod.sh stop-pod.sh start-compose.sh stop-compose.sh podman-entrypoint.sh
+./deploy-git.sh "$BRANCH"
+
+echo "✔ Deploy finalizado com sucesso via Git Push no Podman!"
+echo "=========================================================="

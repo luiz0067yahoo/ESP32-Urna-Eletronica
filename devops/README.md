@@ -1,67 +1,64 @@
-# 🛠️ DevOps • Piku & Execução Nativa (100% Sem Docker)
+# 🛠️ DevOps • Guia Unificado de Infraestrutura
 
-Esta pasta contém as configurações para o **Piku** (PaaS minimalista que executa aplicações diretamente no sistema operacional sem necessidade de Docker/containers) e scripts de inicialização completa do **Frontend**, **Backend** e **Banco de Dados MySQL**.
-
----
-
-## 📁 Arquivos da Pasta DevOps
-
-| Arquivo | Função |
-| :--- | :--- |
-| `Procfile` | Declaração dos processos que o **Piku** gerencia nativamente (`web: php -S 0.0.0.0:$PORT -t .`). |
-| `ENV` | Variáveis de ambiente lidas pelo Piku na inicialização (`PORT`, `DB_HOST`, `DB_NAME`, etc.). |
-| `nginx.conf` | VirtualHost para Nginx em servidores de produção com suporte a PHP-FPM e rotas da API REST. |
-| `setup_db.sh` | Script Linux/macOS para criar o banco de dados MySQL e rodar `db/migrate.sql` e `db/seed.sql`. |
-| `setup_db.bat` | Script Windows para provisionar o banco de dados MySQL local. |
-| `start.sh` | Inicializador em 1 clique para Linux/macOS: checa MySQL, executa seed e inicia o servidor web na porta `8080`. |
-| `start.bat` | Inicializador em 1 clique para Windows: verifica MySQL e inicia o servidor web abrindo o navegador. |
+Este diretório contém soluções completas de infraestrutura e orquestração para a **Urna Eletrônica Pokémon**, organizadas em pastas modulares para atender a qualquer cenário de implantação:
 
 ---
 
-## 🚀 Como Iniciar Tudo Localmente (Sem Docker)
+## 📂 Pastas e Abordagens Disponíveis
 
-### No Windows:
-Basta dar dois cliques no arquivo:
-```cmd
-devops\start.bat
-```
-Ou via Prompt / PowerShell:
-```powershell
-.\devops\start.bat
-```
+### 1. [🐳 Docker (`devops/docker/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/docker/README.md)
+- **Tecnologias:** Docker, Docker Compose, Apache + PHP 8.2, MariaDB 10.11, phpMyAdmin.
+- **Destaques:** Inicia tudo em 1 comando, healthchecks automáticos, inicialização inteligente com migrações e seed via `docker-entrypoint.sh`.
+- **Como rodar:**
+  - Windows: `devops\docker\start.bat`
+  - Linux/macOS: `./devops/docker/start.sh`
 
-### No Linux / macOS:
-```bash
-chmod +x devops/*.sh
-./devops/start.sh
-```
+### 2. [🦭 Podman (`devops/podman/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/podman/README.md)
+- **Tecnologias:** Podman (Rootless, Daemonless), `Containerfile`, Pods Nativos Podman, `podman-compose`.
+- **Destaques:** Suporte nativo a Pods compartilhando `localhost`, compatibilidade com SELinux (`:Z`), exportador para Kubernetes (`podman generate kube`).
+- **Como rodar:**
+  - Pod Nativo (Linux/macOS): `./devops/podman/start-pod.sh`
+  - Pod Nativo (Windows): `devops\podman\start-pod.bat`
+  - Podman Compose: `./devops/podman/start-compose.sh`
 
-O comando irá:
-1. Verificar e conectar ao serviço MySQL local.
-2. Executar as migrações e o seed de candidatos se necessário.
-3. Subir o servidor unificado em `http://localhost:8080/`.
+### 3. [☸️ Kubernetes (`devops/kubernetes/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/kubernetes/README.md)
+- **Tecnologias:** Kubernetes, Kustomize, PVC, ConfigMap, Secret, Deployments, NodePort Service, Ingress.
+- **Destaques:** Namespace isolado (`urna-eletronica`), 2 réplicas com alta disponibilidade, `initContainers` para sincronismo de banco, probes de prontidão (`readiness`) e vivacidade (`liveness`).
+- **Como rodar:**
+  - Windows: `devops\kubernetes\deploy.bat`
+  - Linux/macOS: `./devops/kubernetes/deploy.sh`
+  - Manual: `kubectl apply -k devops/kubernetes/`
+
+### 4. [⚙️ Piku / Nativo (`devops/config/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/config/README.md)
+- **Tecnologias:** Piku (PaaS minimalista), Nginx VHost nativo, scripts shell/batch para execução direta no host sem containers.
+- **Como rodar:**
+  - Windows: `devops\config\start.bat`
+  - Linux/macOS: `./devops/config/start.sh`
 
 ---
 
-## ☁️ Deploy no Piku (PaaS Sem Docker)
+## 🌐 Portas Padrão de Acesso
 
-O [Piku](https://github.com/piku/piku) funciona como um Heroku/Dokku próprio que roda em qualquer VPS Linux ou Raspberry Pi sem Docker, consumindo pouquíssima memória.
+| Serviço | Porta | URL |
+| :--- | :--- | :--- |
+| **Urna Eletrônica (Frontend)** | `8080` (ou `30080` no K8s) | `http://localhost:8080/frontend/index.html` |
+| **Apuração ao Vivo (Frontend)** | `8080` (ou `30080` no K8s) | `http://localhost:8080/frontend/apuracao.html` |
+| **API REST Backend** | `8080` (ou `30080` no K8s) | `http://localhost:8080/backend/apuracao` |
+| **phpMyAdmin (DB Web UI)** | `8081` | `http://localhost:8081` |
 
-### 1. Criar o aplicativo no servidor Piku:
-```bash
-ssh piku@seu-servidor.com apps:create urna-eletronica
-```
+---
 
-### 2. Configurar as variáveis de ambiente:
-```bash
-ssh piku@seu-servidor.com config:set urna-eletronica DB_HOST=localhost DB_NAME=urna_eletronica DB_USER=root DB_PASS=suasenha PORT=8080
-```
+## 🔄 Deploy Automático via Git em Todos os Ambientes
 
-### 3. Fazer o Deploy via Git:
-No seu repositório local:
-```bash
-git remote add piku piku@seu-servidor.com:urna-eletronica
-git push piku main
-```
+Todos os três ambientes contam com 3 mecanismos de deploy contínuo via Git:
 
-O Piku lerá automaticamente o arquivo `Procfile` e o arquivo `ENV`, subindo o serviço de forma nativa e gerenciando os processos em segundo plano!
+| Ambiente | 1. Script Automático (`deploy-git`) | 2. Git Hook no Servidor (`git push`) | 3. GitHub Actions CI/CD | 4. GitOps |
+| :--- | :--- | :--- | :--- | :--- |
+| **Docker** | `devops/docker/deploy-git.sh` | `devops/docker/git-hook-post-receive` | `.github/workflows/docker-ci-cd.yml` | - |
+| **Podman** | `devops/podman/deploy-git.sh` | `devops/podman/git-hook-post-receive` | `.github/workflows/podman-ci-cd.yml` | - |
+| **Kubernetes** | `devops/kubernetes/deploy-git.sh` | `devops/kubernetes/git-hook-post-receive` | `.github/workflows/kubernetes-ci-cd.yml` | `devops/kubernetes/gitops-argocd.yaml` |
+
+- **GitHub Actions:** Ao realizar `git push origin main`, as imagens são automaticamente compiladas, versionadas com a hash do commit e publicadas no GitHub Container Registry (GHCR).
+- **Git Push Direto (Bare Repo):** Em servidores VPS/Cloud, ao adicionar `git remote add production ...` e rodar `git push production main`, o hook `post-receive` executa o checkout e recarrega os containers/pods sem parada de serviço.
+- **GitOps (ArgoCD no Kubernetes):** O cluster monitora o repositório Git em tempo real e sincroniza qualquer novo commit automaticamente.
+

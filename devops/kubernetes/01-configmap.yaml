@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: urna-config
+  namespace: urna-eletronica
+  labels:
+    app.kubernetes.io/name: urna-eletronica
+data:
+  DB_HOST: "urna-db"
+  DB_PORT: "3306"
+  DB_NAME: "urna"
+  APP_ENV: "production"
+  PORT: "80"

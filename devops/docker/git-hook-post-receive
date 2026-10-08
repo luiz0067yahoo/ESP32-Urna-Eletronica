@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# GIT HOOK: post-receive (DEPLOY AUTOMÁTICO EM SERVIDOR VIA GIT PUSH)
+# Coloque este arquivo em: <seu-repositorio-bare.git>/hooks/post-receive
+# E torne executável: chmod +x <seu-repositorio-bare.git>/hooks/post-receive
+# ==============================================================================
+
+set -e
+
+# Diretório onde o código em produção deve residir
+TARGET_DIR="/var/www/urna-eletronica"
+BRANCH="main"
+
+echo "=========================================================="
+echo "  📦 RECEBIDO GIT PUSH NO SERVIDOR - INICIANDO DEPLOY DOCKER"
+echo "=========================================================="
+
+# Garante que a pasta alvo existe
+mkdir -p "$TARGET_DIR"
+
+# Faz o checkout da branch main para o diretório de produção
+git --work-tree="$TARGET_DIR" --git-dir="$(pwd)" checkout -f "$BRANCH"
+
+# Executa o script de deploy automatizado do Docker
+cd "$TARGET_DIR/devops/docker"
+chmod +x deploy-git.sh start.sh stop.sh docker-entrypoint.sh
+./deploy-git.sh "$BRANCH"
+
+echo "✔ Deploy finalizado com sucesso via Git Push!"
+echo "=========================================================="
