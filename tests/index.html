@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧪 Centro de Testes & Simuladores • Urna Eletrônica Pokémon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #121826;
+      --bg-card: rgba(22, 30, 49, 0.75);
+      --bg-card-hover: rgba(30, 41, 66, 0.9);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(59, 130, 246, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --lcd-bg: #1e293b;
+      --lcd-text: #38bdf8;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at 15% 15%, #131b2e 0%, var(--bg-primary) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .brand-icon {
+      font-size: 2rem;
+      filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+    }
+
+    .brand h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .server-config {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+    }
+
+    .server-status {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-yellow);
+      box-shadow: 0 0 8px var(--accent-yellow);
+      transition: all 0.3s ease;
+    }
+
+    .status-dot.online {
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    .status-dot.offline {
+      background: var(--accent-red);
+      box-shadow: 0 0 10px var(--accent-red);
+    }
+
+    .server-input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+      width: 220px;
+    }
+
+    /* TABS */
+    .tabs-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 1.2rem 2rem 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.75rem 1.4rem;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+      border-color: var(--accent-blue);
+      color: #93c5fd;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+
+    /* CONTAINER PRINCIPAL */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem 3rem;
+      width: 100%;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* GRID DE CARDS */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      opacity: 0.7;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    /* SIMULADOR ESP32 INTERATIVO */
+    .esp-hardware-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #38bdf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .esp-badge {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+    }
+
+    .lcd-screen {
+      background: #090e17;
+      border: 2px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.2rem;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .lcd-header {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .lcd-candidate-preview {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0.8rem 0;
+    }
+
+    .lcd-avatar {
+      width: 70px;
+      height: 70px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(56, 189, 248, 0.3);
+      overflow: hidden;
+    }
+
+    .lcd-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .lcd-digits {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      letter-spacing: 6px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .lcd-info {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .lcd-info strong {
+      color: #e2e8f0;
+    }
+
+    /* TECLADO MATRICIAL */
+    .keypad-matrix {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-top: 1.2rem;
+    }
+
+    .key-btn {
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #f8fafc;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 0.9rem 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 0 #0f172a;
+    }
+
+    .key-btn:hover {
+      background: #334155;
+      transform: translateY(-1px);
+    }
+
+    .key-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #0f172a;
+    }
+
+    .key-btn.btn-branco {
+      background: #f8fafc;
+      color: #0f172a;
+      font-size: 0.8rem;
+    }
+
+    .key-btn.btn-corrige {
+      background: #dc2626;
+      color: white;
+      font-size: 0.8rem;
+    }
+
+    .key-btn.btn-confirma {
+      background: #16a34a;
+      color: white;
+      font-size: 0.85rem;
+      grid-row: span 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* TERMINAL LOG CONSOLE */
+    .terminal-console {
+      background: #070a12;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      height: 380px;
+      overflow-y: auto;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .terminal-line {
+      display: flex;
+      gap: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .terminal-time {
+      color: #64748b;
+    }
+
+    .terminal-success { color: #34d399; }
+    .terminal-error { color: #f87171; }
+    .terminal-info { color: #60a5fa; }
+    .terminal-warning { color: #fbbf24; }
+
+    /* TESTE DE CARGA */
+    .controls-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    .slider-input {
+      width: 100%;
+      accent-color: var(--accent-blue);
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+      width: 100%;
+    }
+
+    .btn-action:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem;
+      margin: 1.2rem 0;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.8rem;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #60a5fa;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 0.2rem;
+    }
+
+    /* BARRA DE PROGRESSO */
+    .progress-bar-container {
+      background: #1e293b;
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+      height: 100%;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    /* LISTA DE TESTES DE SISTEMA */
+    .tests-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .test-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .test-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .test-info h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .test-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .test-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      background: #334155;
+      color: #94a3b8;
+    }
+
+    .test-badge.pass { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+    .test-badge.fail { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+    .test-badge.running { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 1.2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: rgba(10, 14, 23, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🗳️</div>
+      <div>
+        <h1>CENTRO DE TESTES & SIMULADORES</h1>
+        <span>Urna Eletrônica Pokémon • Test Suite v2.0</span>
+      </div>
+    </div>
+
+    <div class="server-config">
+      <div class="server-status">
+        <div id="statusDot" class="status-dot"></div>
+        <span id="statusText">Verificando...</span>
+      </div>
+      <input type="text" id="apiUrlInput" class="server-input" value="http://localhost:8080" title="URL do Backend API">
+      <button class="key-btn" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; border-radius: 6px;" onclick="testarConexao()">Testar</button>
+    </div>
+  </header>
+
+  <!-- ABAS DE NAVEGAÇÃO -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="trocarAba('esp32')">🤖 Simulador ESP32</button>
+    <button class="tab-btn" onclick="trocarAba('carga')">⚡ Teste de Carga & Massa</button>
+    <button class="tab-btn" onclick="trocarAba('sistema')">🧪 Bateria de Testes API</button>
+    <button class="tab-btn" onclick="trocarAba('apuracao')">📊 Apuração em Tempo Real</button>
+  </div>
+
+  <main>
+    <!-- ABA 1: SIMULADOR ESP32 -->
+    <div id="tab-esp32" class="tab-pane active">
+      <div class="dashboard-grid">
+        <!-- LADO ESQUERDO: HARDWARE & GABINETE -->
+        <div class="card">
+          <div class="card-title">📱 Emulador de Hardware & Teclado Matricial</div>
+
+          <div class="esp-hardware-box">
+            <div>
+              <span>⚡ ESP32-WROOM-32 (Xtensa LX6)</span><br>
+              <span style="color: #94a3b8; font-size: 0.75rem;">MAC: 24:6F:28:B1:C4:A8 | IP: 192.168.1.184</span>
+            </div>
+            <div class="esp-badge" id="wifiBadge">Wi-Fi: -54 dBm</div>
+          </div>
+
+          <!-- VISOR LCD -->
+          <div class="lcd-screen" id="lcdScreen">
+            <div class="lcd-header" id="lcdCargo">PRESIDENTE</div>
+            
+            <div class="lcd-candidate-preview">
+              <div class="lcd-avatar" id="lcdAvatar">
+                <span style="font-size: 1.5rem;">❓</span>
+              </div>
+              <div>
+                <div class="lcd-digits" id="lcdDigits">__</div>
+                <div class="lcd-info" id="lcdInfo">Digite o número do candidato</div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.75rem; color: #64748b; display: flex; justify-content: space-between;">
+              <span>[BRANCO] Voto Branco</span>
+              <span>[CORRIGE] Reinicia</span>
+              <span>[CONFIRMA] Grava Voto</span>
+            </div>
+          </div>
+
+          <!-- TECLADO MATRICIAL 4x4 -->
+          <div class="keypad-matrix">
+            <button class="key-btn" onclick="teclar('1')">1</button>
+            <button class="key-btn" onclick="teclar('2')">2</button>
+            <button class="key-btn" onclick="teclar('3')">3</button>
+            <button class="key-btn btn-branco" onclick="teclar('BRANCO')">BRANCO</button>
+
+            <button class="key-btn" onclick="teclar('4')">4</button>
+            <button class="key-btn" onclick="teclar('5')">5</button>
+            <button class="key-btn" onclick="teclar('6')">6</button>
+            <button class="key-btn btn-corrige" onclick="teclar('CORRIGE')">CORRIGE</button>
+
+            <button class="key-btn" onclick="teclar('7')">7</button>
+            <button class="key-btn" onclick="teclar('8')">8</button>
+            <button class="key-btn" onclick="teclar('9')">9</button>
+            <button class="key-btn btn-confirma" onclick="teclar('CONFIRMA')">CONFIRMA</button>
+
+            <button class="key-btn" onclick="teclar('*')">*</button>
+            <button class="key-btn" onclick="teclar('0')">0</button>
+            <button class="key-btn" onclick="teclar('#')">#</button>
+          </div>
+
+          <button class="btn-action" style="margin-top: 1rem;" onclick="simularSessaoCompletaESP32()">
+            🚀 Simular Sessão Completa Automática (6 Cargos)
+          </button>
+        </div>
+
+        <!-- LADO DIREITO: LOGS E STATUS DO ESP32 -->
+        <div class="card">
+          <div class="card-title">📜 Console Serial do ESP32 (UART0 • 115200 baud)</div>
+          <div class="terminal-console" id="espTerminal"></div>
+          <button class="key-btn" style="margin-top: 0.8rem; width: 100%; font-size: 0.85rem;" onclick="limparTerminal('espTerminal')">Limpar Console</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 2: TESTE DE CARGA -->
+    <div id="tab-carga" class="tab-pane">
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-title">⚡ Parâmetros do Teste de Carga</div>
+
+          <div class="controls-row">
+            <div class="input-group">
+              <label>Qtd. de Eleitores Virtuais: <strong id="lblEleitores">50</strong></label>
+              <input type="range" id="rngEleitores" class="slider-input" min="10" max="300" step="10" value="50" oninput="document.getElementById('lblEleitores').innerText = this.value">
+            </div>
+            <div class="input-group">
+              <label>Concorrência (Threads): <strong id="lblConcorrencia">5</strong></label>
+              <input type="range" id="rngConcorrencia" class="slider-input" min="1" max="15" step="1" value="5" oninput="document.getElementById('lblConcorrencia').innerText = this.value">
+            </div>
+          </div>
+
+          <button id="btnIniciarCarga" class="btn-action" onclick="iniciarTesteCarga()">
+            ▶ Disparar Teste de Estresse Eleitoral
+          </button>
+
+          <div class="progress-bar-container">
+            <div id="cargaProgress" class="progress-bar-fill"></div>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-val" id="metricTotal">0</div>
+              <div class="metric-lbl">Votos Enviados</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="metricSucesso" style="color: var(--accent-green);">0%</div>
+              <div class="metric-lbl">Taxa de Sucesso</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="metricLatencia">0 ms</div>
+              <div class="metric-lbl">Latência Média</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="metricRPS">0</div>
+              <div class="metric-lbl">Throughput (votos/s)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📊 Log de Execução de Carga</div>
+          <div class="terminal-console" id="cargaTerminal"></div>
+          <button class="key-btn" style="margin-top: 0.8rem; width: 100%; font-size: 0.85rem;" onclick="limparTerminal('cargaTerminal')">Limpar Console</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 3: TESTES DE SISTEMA -->
+    <div id="tab-sistema" class="tab-pane">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+          <div class="card-title" style="margin: 0;">🧪 Bateria de Validação da API REST & Integridade</div>
+          <button class="btn-action" style="width: auto; padding: 0.6rem 1.5rem;" onclick="executarTestesSistema()">
+            ▶ Executar Todos os Testes
+          </button>
+        </div>
+
+        <div class="tests-list" id="testsList">
+          <!-- Gerado dinamicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 4: APURAÇÃO -->
+    <div id="tab-apuracao" class="tab-pane">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+          <div class="card-title" style="margin: 0;">📊 Apuração de Votos Consolidada</div>
+          <div style="display: flex; gap: 0.6rem;">
+            <button class="key-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="carregarApuracao()">Atualizar Agora</button>
+            <button class="key-btn btn-corrige" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="executarZeresima()">Zerar Banco (Zerésima)</button>
+          </div>
+        </div>
+
+        <div id="apuracaoContent" style="display: flex; flex-direction: column; gap: 1.2rem;">
+          <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Carregando apuração...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Urna Eletrônica Pokémon • Desenvolvido com integração ESP32, Docker, Podman e Kubernetes.
+  </footer>
+
+  <script>
+    // CANDIDATOS CADASTRADOS
+    const DB_CANDIDATOS = {
+      "65": { nome: "Pikachu", partido: "POKPELE", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" },
+      "63": { nome: "Squirtle", partido: "POKPAGU", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png" },
+      "62": { nome: "Charmander", partido: "POKPFGO", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png" },
+      "81": { nome: "Manectric", partido: "POKPELE", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png" },
+      "85": { nome: "Blaziken", partido: "POKPFGO", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png" },
+      "88": { nome: "Greninja", partido: "POKPAGU", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png" },
+      "701": { nome: "Alakazam", partido: "POKPPSI", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png" },
+      "751": { nome: "Mewtwo", partido: "POKPPSI", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" },
+      "9101": { nome: "Raichu", partido: "POKPELE", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png" },
+      "11101": { nome: "Pichu", partido: "POKPELE", foto: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/172.png" }
+    };
+
+    // Áudio com Web Audio API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 440, type = 'sine', duration = 0.1) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playUrnaFim() {
+      playBeep(440, 'triangle', 0.2);
+      setTimeout(() => playBeep(554, 'triangle', 0.2), 150);
+      setTimeout(() => playBeep(659, 'triangle', 0.8), 300);
+    }
+
+    // NAVEGAÇÃO DE ABAS
+    function trocarAba(aba) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(`tab-${aba}`).classList.add('active');
+      if (aba === 'apuracao') carregarApuracao();
+    }
+
+    function getBaseUrl() {
+      return document.getElementById('apiUrlInput').value.trim().replace(/\/$/, '');
+    }
+
+    function logTerminal(id, msg, type = 'info') {
+      const el = document.getElementById(id);
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      line.innerHTML = `<span class="terminal-time">[${time}]</span> <span class="terminal-${type}">${msg}</span>`;
+      el.appendChild(line);
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function limparTerminal(id) {
+      document.getElementById(id).innerHTML = '';
+    }
+
+    // STATUS DO SERVIDOR
+    async function testarConexao() {
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusText');
+      dot.className = 'status-dot';
+      txt.innerText = 'Testando...';
+
+      try {
+        const res = await fetch(`${getBaseUrl()}/backend/votos`, { method: 'GET' });
+        if (res.ok) {
+          dot.className = 'status-dot online';
+          txt.innerText = 'Online (Conectado)';
+          logTerminal('espTerminal', '✔ Conexão com a API REST estabelecida com sucesso.', 'success');
+        } else {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch (e) {
+        dot.className = 'status-dot offline';
+        txt.innerText = 'Offline (Servidor desligado)';
+        logTerminal('espTerminal', `⚠️ Não foi possível conectar a ${getBaseUrl()}: ${e.message}`, 'error');
+      }
+    }
+
+    // SIMULADOR DO TECLADO DO ESP32
+    let digitacaoAtual = '';
+    let cargoAtual = 'PRESIDENTE';
+
+    function teclar(tecla) {
+      if (tecla === 'BRANCO') {
+        playBeep(440, 'sine', 0.1);
+        digitacaoAtual = 'BRANCO';
+        atualizarLcd();
+        logTerminal('espTerminal', `[TECLADO] Tecla [BRANCO] pressionada`);
+        return;
+      }
+
+      if (tecla === 'CORRIGE') {
+        playBeep(300, 'sawtooth', 0.15);
+        digitacaoAtual = '';
+        atualizarLcd();
+        logTerminal('espTerminal', `[TECLADO] Tecla [CORRIGE] - buffer reiniciado`);
+        return;
+      }
+
+      if (tecla === 'CONFIRMA') {
+        if (!digitacaoAtual) {
+          playBeep(220, 'sawtooth', 0.2);
+          logTerminal('espTerminal', `[TECLADO] Voto vazio! Digite um número ou BRANCO antes de confirmar.`, 'warning');
+          return;
+        }
+        enviarVotoESP32(cargoAtual, digitacaoAtual);
+        return;
+      }
+
+      // Dígitos normais
+      if (digitacaoAtual === 'BRANCO') digitacaoAtual = '';
+      if (digitacaoAtual.length < 5) {
+        playBeep(520, 'sine', 0.08);
+        digitacaoAtual += tecla;
+        atualizarLcd();
+        logTerminal('espTerminal', `[TECLADO] Tecla [${tecla}] pressionada -> Buffer: ${digitacaoAtual}`);
+      }
+    }
+
+    function atualizarLcd() {
+      const lcdDigits = document.getElementById('lcdDigits');
+      const lcdInfo = document.getElementById('lcdInfo');
+      const lcdAvatar = document.getElementById('lcdAvatar');
+
+      if (!digitacaoAtual) {
+        lcdDigits.innerText = '__';
+        lcdInfo.innerHTML = 'Digite o número do candidato';
+        lcdAvatar.innerHTML = '<span style="font-size: 1.5rem;">❓</span>';
+        return;
+      }
+
+      lcdDigits.innerText = digitacaoAtual;
+      const cand = DB_CANDIDATOS[digitacaoAtual];
+
+      if (digitacaoAtual === 'BRANCO') {
+        lcdInfo.innerHTML = '<strong>VOTO EM BRANCO</strong>';
+        lcdAvatar.innerHTML = '<span style="font-size: 1.5rem;">⚪</span>';
+      } else if (cand) {
+        lcdInfo.innerHTML = `<strong>${cand.nome}</strong> (${cand.partido})`;
+        lcdAvatar.innerHTML = `<img src="${cand.foto}" alt="${cand.nome}">`;
+      } else {
+        lcdInfo.innerHTML = '<strong style="color: #f87171;">NÚMERO ERRADO (VOTO NULO)</strong>';
+        lcdAvatar.innerHTML = '<span style="font-size: 1.5rem;">❌</span>';
+      }
+    }
+
+    async function enviarVotoESP32(cargo, numero) {
+      logTerminal('espTerminal', `[TRANSMISSÃO] Enviando POST /backend/votos (${cargo}: ${numero})...`, 'info');
+      try {
+        const res = await fetch(`${getBaseUrl()}/backend/votos`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cargo, numero_candidato: numero })
+        });
+
+        if (res.ok) {
+          playUrnaFim();
+          logTerminal('espTerminal', `✔ Voto computado com SUCESSO! HTTP ${res.status}`, 'success');
+          digitacaoAtual = '';
+          atualizarLcd();
+        } else {
+          playBeep(220, 'sawtooth', 0.3);
+          logTerminal('espTerminal', `❌ Erro no envio: HTTP ${res.status}`, 'error');
+        }
+      } catch (e) {
+        playBeep(220, 'sawtooth', 0.3);
+        logTerminal('espTerminal', `❌ Falha de rede: ${e.message}`, 'error');
+      }
+    }
+
+    async function simularSessaoCompletaESP32() {
+      const cargos = [
+        { cargo: "DEPUTADO ESTADUAL", num: "11101" },
+        { cargo: "DEPUTADO FEDERAL", num: "9101" },
+        { cargo: "1º SENADOR", num: "701" },
+        { cargo: "2º SENADOR", num: "751" },
+        { cargo: "GOVERNADOR", num: "81" },
+        { cargo: "PRESIDENTE", num: "65" }
+      ];
+
+      logTerminal('espTerminal', '▶ INICIANDO SIMULAÇÃO DE SESSÃO ELEITORAL COMPLETA...', 'info');
+
+      for (const item of cargos) {
+        document.getElementById('lcdCargo').innerText = item.cargo;
+        digitacaoAtual = item.num;
+        atualizarLcd();
+        playBeep(480, 'sine', 0.08);
+        await new Promise(r => setTimeout(r, 600));
+
+        await enviarVotoESP32(item.cargo, item.num);
+        await new Promise(r => setTimeout(r, 800));
+      }
+
+      document.getElementById('lcdCargo').innerText = 'PRESIDENTE';
+      logTerminal('espTerminal', '🎉 SESSÃO COMPLETA FINALIZADA!', 'success');
+    }
+
+    // TESTE DE CARGA
+    let emCarga = false;
+    async function iniciarTesteCarga() {
+      if (emCarga) return;
+      emCarga = true;
+      const btn = document.getElementById('btnIniciarCarga');
+      btn.disabled = true;
+      btn.innerText = 'Executando teste de carga...';
+
+      const eleitores = parseInt(document.getElementById('rngEleitores').value);
+      const progressBar = document.getElementById('cargaProgress');
+      let concluidos = 0;
+      let sucessos = 0;
+      let latencias = [];
+      const t0 = performance.now();
+
+      logTerminal('cargaTerminal', `▶ Disparando ${eleitores} eleitores virtuais...`, 'info');
+
+      for (let i = 1; i <= eleitores; i++) {
+        const tStart = performance.now();
+        const candNum = ["65", "63", "62", "BRANCO", "00"][Math.floor(Math.random() * 5)];
+
+        try {
+          const res = await fetch(`${getBaseUrl()}/backend/votos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cargo: "PRESIDENTE", numero_candidato: candNum })
+          });
+          const tEnd = performance.now();
+          const lat = tEnd - tStart;
+          latencias.push(lat);
+
+          if (res.ok) {
+            sucessos++;
+            logTerminal('cargaTerminal', `Eleitor #${i}: Voto registrado (${candNum}) em ${lat.toFixed(0)}ms`, 'success');
+          } else {
+            logTerminal('cargaTerminal', `Eleitor #${i}: Falha HTTP ${res.status}`, 'error');
+          }
+        } catch (e) {
+          logTerminal('cargaTerminal', `Eleitor #${i}: Erro de rede (${e.message})`, 'error');
+        }
+
+        concluidos++;
+        const pct = (concluidos / eleitores) * 100;
+        progressBar.style.width = `${pct}%`;
+        document.getElementById('metricTotal').innerText = concluidos;
+        document.getElementById('metricSucesso').innerText = `${((sucessos / concluidos) * 100).toFixed(0)}%`;
+        const mediaLat = latencias.reduce((a, b) => a + b, 0) / latencias.length;
+        document.getElementById('metricLatencia').innerText = `${mediaLat.toFixed(0)} ms`;
+        const durSeg = (performance.now() - t0) / 1000;
+        document.getElementById('metricRPS').innerText = (concluidos / durSeg).toFixed(1);
+
+        await new Promise(r => setTimeout(r, 40));
+      }
+
+      logTerminal('cargaTerminal', `✔ Teste de estresse concluído! ${sucessos}/${eleitores} votos salvos com sucesso.`, 'success');
+      btn.disabled = false;
+      btn.innerText = '▶ Disparar Teste de Estresse Eleitoral';
+      emCarga = false;
+    }
+
+    // BATERIA DE TESTES DE SISTEMA
+    const CASOS_DE_TESTE = [
+      { id: 1, nome: "Conectividade básica do servidor", endpoint: "/backend/votos", method: "GET" },
+      { id: 2, nome: "Registro de voto válido (Pikachu: 65)", endpoint: "/backend/votos", method: "POST", body: { cargo: "PRESIDENTE", numero_candidato: "65" } },
+      { id: 3, nome: "Registro de voto BRANCO", endpoint: "/backend/votos", method: "POST", body: { cargo: "GOVERNADOR", numero_candidato: "BRANCO" } },
+      { id: 4, nome: "Registro de voto NULO", endpoint: "/backend/votos", method: "POST", body: { cargo: "GOVERNADOR", numero_candidato: "00" } },
+      { id: 5, nome: "Listagem detalhada de votos", endpoint: "/backend/votos", method: "GET" },
+      { id: 6, nome: "Listagem agrupada em resumo", endpoint: "/backend/votos?tipo=resumo", method: "GET" },
+      { id: 7, nome: "Filtro por cargo de Presidente", endpoint: "/backend/votos?cargo=PRESIDENTE", method: "GET" },
+      { id: 8, nome: "Consulta da apuração consolidada", endpoint: "/backend/apuracao", method: "GET" },
+      { id: 9, nome: "Validação de erro 400 (Parâmetros ausentes)", endpoint: "/backend/votos", method: "POST", body: { cargo: "PRESIDENTE" }, expectFail: 400 },
+      { id: 10, nome: "Validação de rota inexistente 404", endpoint: "/backend/rota_fantasma", method: "GET", expectFail: 404 }
+    ];
+
+    function renderizarListaTestes() {
+      const container = document.getElementById('testsList');
+      container.innerHTML = CASOS_DE_TESTE.map(t => `
+        <div class="test-item" id="testRow-${t.id}">
+          <div class="test-info">
+            <h4>${t.id}. ${t.nome}</h4>
+            <p>${t.method} ${t.endpoint}</p>
+          </div>
+          <div class="test-badge" id="testBadge-${t.id}">PENDENTE</div>
+        </div>
+      `).join('');
+    }
+
+    async function executarTestesSistema() {
+      for (const t of CASOS_DE_TESTE) {
+        const badge = document.getElementById(`testBadge-${t.id}`);
+        badge.className = 'test-badge running';
+        badge.innerText = 'EXECUTANDO';
+
+        try {
+          const opts = { method: t.method };
+          if (t.body) {
+            opts.headers = { 'Content-Type': 'application/json' };
+            opts.body = JSON.stringify(t.body);
+          }
+          const res = await fetch(`${getBaseUrl()}${t.endpoint}`, opts);
+          const ok = t.expectFail ? (res.status === t.expectFail) : res.ok;
+
+          if (ok) {
+            badge.className = 'test-badge pass';
+            badge.innerText = `PASSOU (${res.status})`;
+          } else {
+            badge.className = 'test-badge fail';
+            badge.innerText = `FALHOU (${res.status})`;
+          }
+        } catch (e) {
+          badge.className = 'test-badge fail';
+          badge.innerText = 'ERRO REDE';
+        }
+
+        await new Promise(r => setTimeout(r, 200));
+      }
+    }
+
+    // APURAÇÃO
+    async function carregarApuracao() {
+      const c = document.getElementById('apuracaoContent');
+      try {
+        const res = await fetch(`${getBaseUrl()}/backend/apuracao`);
+        const data = await res.json();
+        const cargos = data.cargos || {};
+
+        let html = '';
+        for (const [cargoNome, cargoInfo] of Object.entries(cargos)) {
+          html += `
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem;">
+              <h3 style="font-size: 1.1rem; color: #38bdf8; margin-bottom: 0.8rem;">${cargoNome} (Total: ${cargoInfo.total_votos} votos)</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                ${(cargoInfo.candidatos || []).map(cand => `
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem;">
+                    <span><strong>${cand.nome}</strong> (${cand.numero})</span>
+                    <span><strong>${cand.votos}</strong> votos (${cand.percentual?.toFixed(1) || 0}%)</span>
+                  </div>
+                  <div style="background: #1e293b; height: 6px; border-radius: 99px; overflow: hidden;">
+                    <div style="background: #3b82f6; width: ${cand.percentual || 0}%; height: 100%;"></div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+        c.innerHTML = html || '<div style="color: #94a3b8; text-align: center;">Nenhum voto computado ainda.</div>';
+      } catch (e) {
+        c.innerHTML = `<div style="color: #f87171; text-align: center;">Não foi possível carregar a apuração: ${e.message}</div>`;
+      }
+    }
+
+    async function executarZeresima() {
+      if (!confirm('Deseja realmente zerar todos os votos (ZERÉSIMA)?')) return;
+      try {
+        const res = await fetch(`${getBaseUrl()}/backend/votos`, { method: 'DELETE' });
+        if (res.ok) {
+          alert('Zerésima realizada com sucesso! Todos os votos foram zerados.');
+          carregarApuracao();
+        } else {
+          alert('Falha ao zerar banco: ' + res.status);
+        }
+      } catch (e) {
+        alert('Erro ao executar Zerésima: ' + e.message);
+      }
+    }
+
+    // Inicialização
+    renderizarListaTestes();
+    testarConexao();
+  </script>
+</body>
+</html>
