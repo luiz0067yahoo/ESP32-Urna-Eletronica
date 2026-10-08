@@ -11,16 +11,19 @@ class Conexao {
     private $conn;
 
     public function __construct() {
+        if (file_exists(__DIR__ . '/config.php')) {
+            require_once __DIR__ . '/config.php';
+        }
         if (file_exists(__DIR__ . '/.env')) {
             $this->carregarEnv(__DIR__ . '/.env');
         } elseif (file_exists(__DIR__ . '/.env.example')) {
             $this->carregarEnv(__DIR__ . '/.env.example');
         }
 
-        $this->host = getenv('DB_HOST');
-        $this->username = getenv('DB_USER');
-        $this->password = getenv('DB_PASS');
-        $this->db_name = getenv('DB_NAME');
+        $this->host = defined('DB_HOST') ? DB_HOST : (getenv('DB_HOST') ?: 'localhost');
+        $this->username = defined('DB_USER') ? DB_USER : (getenv('DB_USER') ?: 'root');
+        $this->password = defined('DB_PASS') ? DB_PASS : (getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+        $this->db_name = defined('DB_NAME') ? DB_NAME : (getenv('DB_NAME') ?: 'urna');
     }
 
     /**
@@ -63,7 +66,7 @@ class Conexao {
     public function conectar() {
         $this->conn = null;
 
-        $port = getenv('DB_PORT') ?: '3306';
+        $port = defined('DB_PORT') ? DB_PORT : (getenv('DB_PORT') ?: '3306');
 
         try {
             $this->conn = new PDO(

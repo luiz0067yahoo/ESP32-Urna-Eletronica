@@ -118,9 +118,9 @@ try {
         echo "   • Candidatos Cadastrados: {$qtdCandidatos}\n";
         echo "   • Votos Registrados: {$qtdVotos}\n";
         echo "===================================================================\n";
-        echo "   ✔ Status: BANCO DE DADOS PRONTO PARA USO!\n";
-        echo "   👉 Urna: http://localhost:8080/frontend/index.html\n";
-        echo "   👉 Apuração: http://localhost:8080/frontend/apuracao.html\n";
+        $baseUrl = isset($_SERVER['HTTP_HOST']) ? (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] : '';
+        echo "   👉 Urna: " . ($baseUrl ? "{$baseUrl}/frontend/index.html" : "frontend/index.html") . "\n";
+        echo "   👉 Apuração: " . ($baseUrl ? "{$baseUrl}/frontend/apuracao.html" : "frontend/apuracao.html") . "\n";
         echo "===================================================================\n";
     } else {
         echo json_encode($resultado, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

@@ -22,5 +22,16 @@
     RewriteRule ^(.*)$ frontend/$1 [L]
 </IfModule>
 
-# Define a página inicial padrão apontando para frontend/index.html
-DirectoryIndex frontend/index.html index.html
+# Define a página inicial padrão apontando para o frontend ou para o index.php raiz
+DirectoryIndex frontend/index.html index.php index.html
+
+# Bloqueia acesso direto a arquivos sensíveis de ambiente
+<FilesMatch "^\.(env|git)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

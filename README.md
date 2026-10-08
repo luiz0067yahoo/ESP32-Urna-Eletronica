@@ -147,7 +147,7 @@ php db/seed.php
    ```bash
    git clone https://github.com/luiz0067yahoo/ESP32-Urna-Eletronica.git
    ```
-2. Configure o arquivo `backend/.env` (o sistema utiliza preferencialmente `backend/.env`, com fallback automático para `backend/.env.example` caso não exista):
+2. Configure o arquivo `backend/config.php` ou `backend/.env`:
    ```env
    DB_HOST=localhost
    DB_USER=root
@@ -162,6 +162,43 @@ php db/seed.php
 4. Abra o navegador em:
    - **Urna Eletrônica:** `http://localhost:8080/frontend/index.html`
    - **Apuração dos Votos:** `http://localhost:8080/frontend/apuracao.html`
+
+---
+
+## 🌐 Publicação em Hospedagem Tradicional (cPanel, Hostinger, Locaweb, etc.)
+
+O projeto foi 100% preparado para rodar em qualquer hospedagem web padrão com suporte a **HTML, CSS, JavaScript, PHP (7.4 ou 8.x) e MySQL / MariaDB**:
+
+### 1. Enviar os Arquivos
+- Faça o upload de todos os arquivos da pasta do projeto para a pasta raiz pública da sua hospedagem (geralmente `public_html/` ou `www/`) usando FTP (FileZilla) ou o **Gerenciador de Arquivos** do cPanel.
+
+### 2. Criar o Banco de Dados no cPanel
+1. Acesse o cPanel e vá em **Bancos de Dados MySQL**.
+2. Crie um novo banco (ex: `usuario_urna`).
+3. Crie um usuário com senha forte e vincule-o ao banco com **Todos os Privilégios**.
+
+### 3. Configurar a Conexão
+Crie ou edite o arquivo `backend/config.php` (você pode copiar o modelo de [`backend/config.example.php`](backend/config.example.php)) ou configure o `backend/.env`:
+```php
+<?php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'nome_do_seu_banco');
+define('DB_USER', 'nome_do_seu_usuario');
+define('DB_PASS', 'sua_senha_aqui');
+define('DB_PORT', '3306');
+```
+
+### 4. Povoar o Banco de Dados (2 Métodos Fáceis)
+- **Método A (Via phpMyAdmin - Recomendado):**
+  Abra o **phpMyAdmin**, selecione o seu banco de dados, clique na aba **Importar**, selecione o arquivo [`db/urna_eletronica.sql`](db/urna_eletronica.sql) e clique em **Executar**.
+- **Método B (Pelo Navegador):**
+  Basta acessar a URL do instalador no seu navegador:
+  `https://seusite.com.br/db/install.php`
+
+### 5. URLs de Acesso na Hospedagem
+- 🗳️ **Cabine de Votação:** `https://seusite.com.br/` (redireciona automaticamente para `frontend/index.html`)
+- 📊 **Apuração ao Vivo:** `https://seusite.com.br/apuracao.php` (ou `frontend/apuracao.html`)
+- 🧪 **API REST de Votos:** `https://seusite.com.br/backend/votos` ou `backend/votos/index.php`
 
 ---
 
