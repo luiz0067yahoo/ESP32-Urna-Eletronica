@@ -1,6 +1,6 @@
-# 🗳️ POKE Urna Eletrônica • Eleições Pokémon 2026
+# 🗳️ Urna Eletrônica Pokémon • Eleições 2026
 
-Simulador e sistema completo de **Urna Eletrônica Brasileira** com temática **Pokémon**, desenvolvido para integração com microcontrolador **POKE** e navegação web. O projeto conta com interface interativa de votação, API RESTful em PHP/MySQL para contagem de votos, e painel de apuração em tempo real inspirado em gráficos de transmissão eleitoral de televisão.
+Simulador e sistema completo de **Urna Eletrônica Brasileira** com temática **Pokémon**, desenvolvido em arquitetura 100% Web (Frontend responsivo + API RESTful em PHP/MySQL). O projeto conta com interface interativa de votação fiel ao padrão do TSE, contagem e apuração de votos em tempo real inspirada em gráficos de transmissão eleitoral de televisão, e suporte a contêineres Docker, Podman e Kubernetes.
 
 ---
 
@@ -15,7 +15,7 @@ Acesse a aplicação em produção diretamente no GitHub Pages:
 ## 📸 Capturas de Tela
 
 ### 1. Cabine de Votação (Urna Eletrônica)
-Interface fiel à urna eletrônica do TSE com visor digital, colinha eleitoral e teclado numérico interativo (compatível com POKE via teclado matricial).
+Interface fiel à urna eletrônica do TSE com visor digital, colinha eleitoral, som de confirmação e teclado numérico interativo de alta precisão.
 
 ![Urna Eletrônica](docs/urna_eletronica.png)
 
@@ -165,18 +165,18 @@ php db/seed.php
 
 ---
 
-## ⚡ Integração com POKE
-
-O backend foi projetado para receber comandos e votos tanto da interface web quanto de um microcontrolador **POKE**:
-- O POKE realiza requisições HTTP `POST` para o endpoint `/backend/votos` enviando o payload JSON:
+## ⚡ Integração via API RESTful
+ 
+O backend disponibiliza endpoints universais para registro e auditoria de votos a partir de qualquer cliente web ou aplicação externa:
+- O cliente realiza requisições HTTP `POST` para o endpoint `/backend/votos` enviando o payload JSON:
   ```json
   {
     "cargo": "PRESIDENTE",
     "numero_candidato": "65"
   }
   ```
-- O teclado físico de 12 ou 16 teclas conectado aos pinos GPIO do POKE envia os números digitados, confirmação e correção.
-- A tela de apuração reflete automaticamente a contagem a cada 5 segundos.
+- Também é suportado o envio em lote (array com todos os 6 cargos da sessão eleitoral).
+- A tela de apuração reflete automaticamente a contagem a cada 5 segundos através do endpoint `/backend/apuracao`.
 
 ---
 

@@ -2,118 +2,153 @@
 # -*- coding: utf-8 -*-
 """
 =============================================================================
-⌨️ SIMULADOR DE HARDWARE • TECLADO MATRICIAL 4x4 DO POKE
+⌨️ SIMULADOR DE TECLADO VIRTUAL & VALIDADOR DE VOTOS • URNA ELETRÔNICA
 =============================================================================
-Emula o circuito de leitura matricial e debounce de GPIOs:
-- Varredura de linhas (Output) e leitura de colunas (Input com Pull-Up)
-- Tabela de pinos GPIO reais do POKE
-- Decodificação de teclas especiais da Urna:
-    [1] [2] [3] [BRANCO]
-    [4] [5] [6] [CORRIGE]
-    [7] [8] [9] [CONFIRMA]
-    [*] [0] [#] [NULO/EXTRA]
-- Tratamento de debounce temporal (20ms) e anti-ghosting
+Emula a lógica do teclado digital de votação da Urna por software:
+- Digitação numérica (0-9) e teclas de ação (BRANCO, CORRIGE, CONFIRMA)
+- Validação de máscara de dígitos por cargo eleitoral:
+    * Deputado Estadual: 5 dígitos
+    * Deputado Federal:  4 dígitos
+    * Senador:           3 dígitos
+    * Governador:        2 dígitos
+    * Presidente:        2 dígitos
+- Tratamento de debounce de software (rejeição de duplo clique rápido)
+- Feedback sonoro e textual dos estados da cabine eleitoral
 =============================================================================
 """
 
 import time
-import random
 import sys
-import io
 
 # Garante suporte a UTF-8 no console Windows
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 
-# Mapeamento oficial dos pinos GPIO no POKE para o teclado matricial
-PINOS_LINHAS = [13, 12, 14, 27]   # GPIOs de saída (Rows)
-PINOS_COLUNAS = [26, 25, 33, 32]  # GPIOs de entrada com Pull-Up (Cols)
+# Regras de preenchimento de dígitos por cargo eleitoral oficial (TSE / Pokémon)
+REGRAS_CARGOS = {
+    "DEPUTADO ESTADUAL": {"digitos": 5, "exemplo": "11101"},
+    "DEPUTADO FEDERAL":  {"digitos": 4, "exemplo": "9101"},
+    "1º SENADOR":        {"digitos": 3, "exemplo": "701"},
+    "2º SENADOR":        {"digitos": 3, "exemplo": "751"},
+    "GOVERNADOR":        {"digitos": 2, "exemplo": "81"},
+    "PRESIDENTE":        {"digitos": 2, "exemplo": "65"}
+}
 
-# Matriz 4x4 adaptada para a Urna Eletrônica
-MAPA_TECLAS = [
+# Layout do teclado virtual da Urna Eletrônica
+LAYOUT_TECLADO = [
     ['1', '2', '3', 'BRANCO'],
     ['4', '5', '6', 'CORRIGE'],
     ['7', '8', '9', 'CONFIRMA'],
-    ['*', '0', '#', 'EXTRA']
+    [' ', '0', ' ', ' ']
 ]
 
-class TecladoMatricialPoke:
-    def __init__(self, debounce_ms=20):
+class TecladoVirtualUrna:
+    def __init__(self, debounce_ms=100):
         self.debounce_ms = debounce_ms
-        self.ultima_tecla = None
         self.ultimo_tempo = 0
-        self.buffer_digitacao = ""
+        self.buffer_voto = ""
+        self.modo_branco = False
+        self.cargo_atual = "PRESIDENTE"
 
-    def simular_varredura(self, linha_pressionada, coluna_pressionada):
-        """Simula a varredura elétrica ativando uma linha LOW por vez"""
-        leituras = {}
-        for r_idx, r_pin in enumerate(PINOS_LINHAS):
-            # No hardware real: digitalwrite(r_pin, LOW)
-            estado_linha = (r_idx == linha_pressionada)
-            for c_idx, c_pin in enumerate(PINOS_COLUNAS):
-                # Se a tecla nesta interseção estiver fechando contato, a coluna lê LOW (0)
-                if estado_linha and c_idx == coluna_pressionada:
-                    leituras[(r_pin, c_pin)] = 0  # Contato fechado (GND)
-                else:
-                    leituras[(r_pin, c_pin)] = 1  # Pull-Up (VCC / 3.3V)
-        return leituras
+    def definir_cargo(self, cargo):
+        if cargo in REGRAS_CARGOS:
+            self.cargo_atual = cargo
+            self.limpar()
 
-    def decodificar_tecla(self, linha, coluna):
+    def limpar(self):
+        self.buffer_voto = ""
+        self.modo_branco = False
+
+    def pressionar(self, tecla):
         agora = time.time() * 1000
         if (agora - self.ultimo_tempo) < self.debounce_ms:
-            return None  # Rejeitado pelo filtro de debounce
-        
-        self.ultimo_tempo = agora
-        tecla = MAPA_TECLAS[linha][coluna]
-        self.ultima_tecla = tecla
-        return tecla
+            return {"status": "IGNORADO", "motivo": "Debounce de software ativo"}
 
-    def pressionar(self, tecla_desejada):
-        """Localiza a tecla na matriz e simula o evento elétrico"""
-        for r in range(4):
-            for c in range(4):
-                if MAPA_TECLAS[r][c] == tecla_desejada:
-                    # Gera varredura
-                    leituras = self.simular_varredura(r, c)
-                    tecla_lida = self.decodificar_tecla(r, c)
-                    return {
-                        "tecla": tecla_lida,
-                        "gpio_linha": PINOS_LINHAS[r],
-                        "gpio_coluna": PINOS_COLUNAS[c],
-                        "debounce_ok": tecla_lida is not None,
-                        "leituras_circuito": leituras
-                    }
-        return None
+        self.ultimo_tempo = agora
+        tecla = str(tecla).strip().upper()
+
+        if tecla == "CORRIGE":
+            self.limpar()
+            return {"status": "CORRIGIDO", "buffer": "", "mensagem": "Buffer apagado. Digite novamente."}
+
+        if tecla == "BRANCO":
+            if len(self.buffer_voto) > 0:
+                return {"status": "AVISO", "buffer": self.buffer_voto, "mensagem": "Para votar em BRANCO, limpe os números antes com CORRIGE."}
+            self.modo_branco = True
+            return {"status": "BRANCO_SELECIONADO", "buffer": "BRANCO", "mensagem": "Voto em BRANCO pré-selecionado. Pressione CONFIRMA."}
+
+        if tecla == "CONFIRMA":
+            if self.modo_branco:
+                return {"status": "VOTO_CONFIRMADO", "valor": "BRANCO", "mensagem": "Voto em BRANCO aceito."}
+
+            max_digitos = REGRAS_CARGOS[self.cargo_atual]["digitos"]
+            if len(self.buffer_voto) < max_digitos:
+                return {
+                    "status": "INCOMPLETO",
+                    "buffer": self.buffer_voto,
+                    "mensagem": f"Cargo {self.cargo_atual} requer {max_digitos} dígitos! Faltam {max_digitos - len(self.buffer_voto)}."
+                }
+            
+            valor_voto = self.buffer_voto
+            self.limpar()
+            return {"status": "VOTO_CONFIRMADO", "valor": valor_voto, "mensagem": f"Voto {valor_voto} confirmado com sucesso!"}
+
+        if tecla.isdigit():
+            if self.modo_branco:
+                return {"status": "AVISO", "buffer": "BRANCO", "mensagem": "Pressione CORRIGE antes de digitar números."}
+
+            max_digitos = REGRAS_CARGOS[self.cargo_atual]["digitos"]
+            if len(self.buffer_voto) < max_digitos:
+                self.buffer_voto += tecla
+                return {"status": "DIGITANDO", "buffer": self.buffer_voto, "mensagem": f"Dígito [{tecla}] inserido ({len(self.buffer_voto)}/{max_digitos})"}
+            else:
+                return {"status": "CHEIO", "buffer": self.buffer_voto, "mensagem": f"Limite de {max_digitos} dígitos já atingido. Pressione CONFIRMA ou CORRIGE."}
+
+        return {"status": "INVALIDO", "mensagem": f"Tecla [{tecla}] não reconhecida."}
 
 def demonstrar_teclado():
-    print("="*65)
-    print("  ⌨️ SIMULADOR DE TECLADO MATRICIAL 4x4 (POKE GPIO SCANNER)")
-    print("="*65)
-    print(" Layout do Teclado da Urna:")
-    for linha in MAPA_TECLAS:
+    print("=" * 65)
+    print("  ⌨️ SIMULADOR DE TECLADO VIRTUAL & VALIDADOR DE ENTRADA")
+    print("=" * 65)
+    print(" Layout do Teclado Digital:")
+    for linha in LAYOUT_TECLADO:
         print("  | " + " | ".join(f"{t:8}" for t in linha) + " |")
-    print("\n Pinos Linhas (Output):  GPIO " + ", ".join(map(str, PINOS_LINHAS)))
-    print(" Pinos Colunas (Pull-Up): GPIO " + ", ".join(map(str, PINOS_COLUNAS)))
-    print("="*65 + "\n")
+    print("\n Regras Eleitorais de Dígitos por Cargo:")
+    for cargo, info in REGRAS_CARGOS.items():
+        print(f"  • {cargo:20}: {info['digitos']} dígitos (ex: {info['exemplo']})")
+    print("=" * 65 + "\n")
 
-    teclado = TecladoMatricialPoke()
-    sequencia_teste = ['6', '5', 'CONFIRMA']
+    teclado = TecladoVirtualUrna()
 
-    print("▶ Simulando digitação do voto para Presidente (Pikachu: 65)...")
-    for t in sequencia_teste:
-        evento = teclado.pressionar(t)
-        print(f" • Tecla: [{evento['tecla']:8}] | Linha: GPIO {evento['gpio_linha']} | Coluna: GPIO {evento['gpio_coluna']} | Debounce: OK")
-        time.sleep(0.15)
-
-    print("\n▶ Simulando correção (digita 63 e aperta CORRIGE)...")
-    for t in ['6', '3', 'CORRIGE', '6', '5', 'CONFIRMA']:
-        evento = teclado.pressionar(t)
-        cor = "🔴" if t == 'CORRIGE' else ("🟢" if t == 'CONFIRMA' else "⚪")
-        print(f" {cor} [{evento['tecla']:8}] -> GPIO R{evento['gpio_linha']} x C{evento['gpio_coluna']}")
+    print("▶ 1. Testando digitação e confirmação válida para Presidente (2 dígitos: 65)...")
+    teclado.definir_cargo("PRESIDENTE")
+    for t in ['6', '5', 'CONFIRMA']:
+        res = teclado.pressionar(t)
+        print(f" • Tecla [{t:8}] -> Status: {res['status']:16} | Msg: {res['mensagem']}")
         time.sleep(0.1)
 
-    print("\n✔ Emulação de leitura do teclado matricial 4x4 concluída com sucesso!\n")
+    print("\n▶ 2. Testando tentativa de confirmação com dígitos incompletos (Deputado Federal: 4 dígitos)...")
+    teclado.definir_cargo("DEPUTADO FEDERAL")
+    for t in ['9', '1', 'CONFIRMA']:
+        res = teclado.pressionar(t)
+        print(f" • Tecla [{t:8}] -> Status: {res['status']:16} | Msg: {res['mensagem']}")
+        time.sleep(0.1)
+
+    print("\n▶ 3. Corrigindo e completando com 9101:")
+    for t in ['CORRIGE', '9', '1', '0', '1', 'CONFIRMA']:
+        res = teclado.pressionar(t)
+        print(f" • Tecla [{t:8}] -> Status: {res['status']:16} | Msg: {res['mensagem']}")
+        time.sleep(0.1)
+
+    print("\n▶ 4. Testando voto em BRANCO:")
+    teclado.definir_cargo("GOVERNADOR")
+    for t in ['BRANCO', 'CONFIRMA']:
+        res = teclado.pressionar(t)
+        print(f" • Tecla [{t:8}] -> Status: {res['status']:16} | Msg: {res['mensagem']}")
+        time.sleep(0.1)
+
+    print("\n✔ Validação e emulação de teclado virtual por software concluída com sucesso!\n")
 
 if __name__ == "__main__":
     demonstrar_teclado()

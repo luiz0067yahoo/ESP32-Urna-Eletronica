@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 =============================================================================
-🤖 SIMULADOR DE FIRMWARE POKE • URNA ELETRÔNICA POKÉMON
+🗳️ SIMULADOR DE TERMINAL DE VOTAÇÃO • URNA ELETRÔNICA POKÉMON
 =============================================================================
-Emula com precisão o comportamento do microcontrolador POKE:
-- Conexão Wi-Fi (status simulado, IP e RSSI)
-- Leitura do Teclado Matricial (digitação de números, BRANCO, CORRIGE, CONFIRMA)
-- Serial / Som Buzzer (bip curto para teclas, intermitente para confirma, trissono para FIM)
-- Envio de votos via HTTP POST com payload JSON idêntico ao firmware real
+Emula a operação do terminal de votação da Urna Eletrônica:
+- Entrada de votos por teclado digital (números, BRANCO, CORRIGE, CONFIRMA)
+- Efeitos sonoros do TSE (bip de digitação, aviso de correção e trissono de FIM)
+- Transmissão de votos via HTTP POST para a API REST (/backend/votos)
+- Suporte a votação manual interativa ou sessão eleitoral automatizada (6 cargos)
 =============================================================================
 """
 
@@ -64,45 +64,36 @@ CANDIDATOS_POKE = {
     ]
 }
 
-def log_poke(msg):
+def log_terminal(msg):
     timestamp = time.strftime("%H:%M:%S")
-    print(f"[POKE | {timestamp}] {msg}")
+    print(f"[URNA | {timestamp}] {msg}")
 
 def buzzer_bip(tipo="curto"):
     sons = {
         "curto": "🔊 *BIP* (440Hz)",
         "corrige": "🔊 *BOP-BOP* (220Hz)",
-        "fim": "🔊 🎶 *TU-TU-TU-TURUUUUUU* (Buzzer TSE • FIM DA VOTAÇÃO!)"
+        "fim": "🔊 🎶 *TU-TU-TU-TURUUUUUU* (Sinal TSE • VOTAÇÃO FINALIZADA!)"
     }
     print(f"      {sons.get(tipo, '🔊 *BIP*')}")
 
-class PokeSimulator:
+class TerminalUrnaSimulator:
     def __init__(self, api_url=DEFAULT_API_URL):
         self.api_url = api_url
-        self.mac = "24:6F:28:B1:C4:A8"
-        self.ip = f"192.168.1.{random.randint(100, 250)}"
-        self.rssi = random.randint(-65, -45)
-        self.connected = False
+        self.secao = "001"
+        self.zona = "042"
 
-    def inicializar_hardware(self):
+    def inicializar_terminal(self):
         print("\n" + "="*65)
-        print("  ⚡ INICIALIZANDO POKE DUAL-CORE XTENSA LX6 • URNA ELETRÔNICA")
+        print("  🗳️ TERMINAL ELEITORAL DIGITAL • CABINE DE VOTAÇÃO")
         print("="*65)
-        log_poke("Clock: 240MHz | Flash: 4MB | Free Heap: 284KB")
-        log_poke(f"MAC Address: {self.mac}")
-        log_poke("Inicializando GPIOs do Teclado Matricial (Pinos 13, 12, 14, 27, 26, 25, 33, 32)... OK")
-        log_poke("Inicializando Buzzer PWM no GPIO 18... OK")
-        
-        # Simula conexão Wi-Fi
-        log_poke("Conectando ao Wi-Fi 'TRE-URNA-REDE-SECRETA'...")
-        time.sleep(0.6)
-        self.connected = True
-        log_poke(f"✔ Wi-Fi Conectado! IP: {self.ip} | Sinal RSSI: {self.rssi} dBm")
-        log_poke(f"Endpoint de Destino: {self.api_url}")
+        log_terminal(f"Seção Eleitoral: {self.secao} | Zona: {self.zona}")
+        log_terminal("Módulo de Teclado Digital: PRONTO")
+        log_terminal("Sintetizador Sonoro (Buzzer): PRONTO")
+        log_terminal(f"Endpoint de Votação: {self.api_url}")
         print("="*65 + "\n")
 
     def enviar_voto_http(self, cargo, numero):
-        """Envia um voto individual via HTTP POST como o POKE real"""
+        """Transmite o voto computado via HTTP POST para a API"""
         payload = {
             "cargo": cargo,
             "numero_candidato": str(numero)
@@ -110,8 +101,8 @@ class PokeSimulator:
         data_json = json.dumps(payload).encode('utf-8')
         headers = {
             "Content-Type": "application/json",
-            "User-Agent": "POKE-UrnaEletronica/1.0 (Xtend-LX6)",
-            "X-POKE-MAC": self.mac
+            "User-Agent": "TerminalUrna-ClienteWeb/2.0",
+            "X-Secao-Eleitoral": self.secao
         }
 
         req = urllib.request.Request(self.api_url, data=data_json, headers=headers, method="POST")
@@ -131,7 +122,7 @@ class PokeSimulator:
 
     def simular_eleitor_completo(self, escolha="random"):
         """Simula a votação sequencial de um eleitor por todos os 6 cargos"""
-        log_poke("▶ Novo eleitor entrou na cabine de votação.")
+        log_terminal("▶ Eleitor liberado pelo mesário. Iniciando votação...")
         cargos = list(CANDIDATOS_POKE.keys())
         votos_sessao = []
 
@@ -157,34 +148,33 @@ class PokeSimulator:
                     cand_num = candidato["numero"]
                     cand_nome = candidato["nome"]
 
-            log_poke(f"Votando para {cargo}: digitando '{cand_num}' ({cand_nome})...")
+            log_terminal(f"Cargo: {cargo} -> Digitado '{cand_num}' ({cand_nome})")
             buzzer_bip("curto")
-            time.sleep(0.2)
-            buzzer_bip("curto")
+            time.sleep(0.15)
             
-            log_poke("Pressionou [CONFIRMA]")
+            log_terminal("Eleitor pressionou [CONFIRMA]")
             buzzer_bip("curto")
             
             sucesso, status, latencia, resposta = self.enviar_voto_http(cargo, cand_num)
             if sucesso:
-                log_poke(f"   ✔ Voto para {cargo} transmitido! HTTP {status} ({latencia:.1f}ms)")
+                log_terminal(f"   ✔ Voto computado na API! HTTP {status} ({latencia:.1f}ms)")
             else:
-                log_poke(f"   ⚠️ Falha ao transmitir ({latencia:.1f}ms): Status={status} | Erro={resposta}")
+                log_terminal(f"   ⚠️ Falha ao registrar ({latencia:.1f}ms): Status={status} | Erro={resposta}")
 
             votos_sessao.append({"cargo": cargo, "numero": cand_num, "ok": sucesso})
-            time.sleep(0.3)
+            time.sleep(0.2)
 
         print("\n" + "-"*65)
-        log_poke("🎉 VOTAÇÃO CONCLUÍDA PARA TODOS OS CARGOS!")
+        log_terminal("🎉 VOTAÇÃO CONCLUÍDA PARA TODOS OS CARGOS!")
         buzzer_bip("fim")
         print("-"*65 + "\n")
         return votos_sessao
 
-def modo_interativo(sim):
-    print("=== MODO INTERATIVO POKE ===")
-    print("Escolha o tipo de teste:")
+def modo_interativo(terminal):
+    print("=== TERMINAL ELEITORAL DIGITAL ===")
+    print("Escolha a operação desejada:")
     print("1. Votar em um candidato individual")
-    print("2. Simular uma sessão eleitoral completa (6 cargos)")
+    print("2. Simular sessão eleitoral completa (6 cargos)")
     print("3. Votar BRANCO em todos os cargos")
     print("4. Votar NULO em todos os cargos")
     print("0. Sair")
@@ -198,19 +188,19 @@ def modo_interativo(sim):
         c_idx = int(input("Escolha o cargo (1-6): ")) - 1
         cargo = cargos[c_idx]
         numero = input(f"Digite o número para {cargo} (ou BRANCO/00): ").strip()
-        sucesso, status, latencia, resp = sim.enviar_voto_http(cargo, numero)
+        sucesso, status, latencia, resp = terminal.enviar_voto_http(cargo, numero)
         print(f"\nResultado: Sucesso={sucesso} | HTTP {status} | Latência={latencia:.1f}ms\nResposta: {resp}\n")
     elif escolha == "2":
-        sim.simular_eleitor_completo("random")
+        terminal.simular_eleitor_completo("random")
     elif escolha == "3":
-        sim.simular_eleitor_completo("branco")
+        terminal.simular_eleitor_completo("branco")
     elif escolha == "4":
-        sim.simular_eleitor_completo("nulo")
+        terminal.simular_eleitor_completo("nulo")
 
 if __name__ == "__main__":
     url = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_API_URL
-    simulador = PokeSimulator(api_url=url)
-    simulador.inicializar_hardware()
+    simulador = TerminalUrnaSimulator(api_url=url)
+    simulador.inicializar_terminal()
 
     if len(sys.argv) > 2 and sys.argv[2] == "--auto":
         simulador.simular_eleitor_completo("random")

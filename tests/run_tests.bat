@@ -14,9 +14,9 @@ echo.
 echo Escolha o teste ou simulador que deseja executar:
 echo.
 echo  [1] 🧪 Executar Bateria Completa de Testes de Sistema (API REST)
-echo  [2] 🤖 Executar Simulador de Firmware POKE (Votação Unitária)
+echo  [2] 🤖 Executar Simulador do Terminal Eleitoral POKE (Votação Unitária)
 echo  [3] ⚡ Executar Simulador de Eleição em Massa (Teste de Carga / 50 Eleitores)
-echo  [4] ⌨️ Executar Simulador do Teclado Matricial 4x4 (Hardware Scanner)
+echo  [4] ⌨️ Executar Simulador do Teclado Virtual & Validador de Votos
 echo  [5] 🌐 Abrir Dashboard Visual de Testes no Navegador (tests/index.html)
 echo  [0] Sair
 echo.
@@ -28,7 +28,7 @@ if "%OPCAO%"=="1" (
     python test_sistema_api.py %*
 ) else if "%OPCAO%"=="2" (
     echo.
-    echo ▶ Executando simulador de firmware POKE...
+    echo ▶ Executando simulador de terminal eleitoral POKE...
     python simulador_poke.py %*
 ) else if "%OPCAO%"=="3" (
     echo.
@@ -36,7 +36,7 @@ if "%OPCAO%"=="1" (
     python simulador_eleicao_massa.py 50 10 %*
 ) else if "%OPCAO%"=="4" (
     echo.
-    echo ▶ Executando simulador de teclado matricial...
+    echo ▶ Executando simulador de teclado virtual e validador de votos...
     python simulador_teclado_matricial.py
 ) else if "%OPCAO%"=="5" (
     echo.
