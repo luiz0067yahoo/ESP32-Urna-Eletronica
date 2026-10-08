@@ -1,41 +1,52 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# SCRIPT DE CONFIGURAÇÃO E MIGRAÇÃO DO BANCO MYSQL (SEM DOCKER)
-# Execução: bash devops/setup_db.sh [usuario] [senha] [banco]
+# MYSQL SETUP & MIGRATION (LINUX / MACOS) - WITHOUT DOCKER
+# Supports 4 Languages: English (Default), Português, Español, Italiano
 # ==============================================================================
 
+set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-# Carrega preferencialmente backend/.env, com fallback para backend/.env.example
+ARG_LANG="$(echo "$1" | tr '[:lower:]' '[:upper:]')"
+if [[ "$ARG_LANG" == "EN" || "$ARG_LANG" == "PT" || "$ARG_LANG" == "ES" || "$ARG_LANG" == "IT" ]]; then
+  APP_LANG="$ARG_LANG"
+else
+  APP_LANG="EN"
+fi
+
 ENV_FILE="${PROJECT_ROOT}/backend/.env"
 if [ ! -f "$ENV_FILE" ] && [ -f "${PROJECT_ROOT}/backend/.env.example" ]; then
-    ENV_FILE="${PROJECT_ROOT}/backend/.env.example"
+  ENV_FILE="${PROJECT_ROOT}/backend/.env.example"
 fi
 
 if [ -f "$ENV_FILE" ]; then
-    export $(grep -v '^#' "$ENV_FILE" | grep -v '^$' | xargs)
+  export $(grep -v '^#' "$ENV_FILE" | grep -v '^$' | xargs)
 fi
 
-DB_USER="${1:-${DB_USER:-root}}"
-DB_PASS="${2:-${DB_PASS:-}}"
-DB_NAME="${3:-${DB_NAME:-urna_eletronica}}"
+DB_USER="${2:-${DB_USER:-root}}"
+DB_PASS="${3:-${DB_PASS:-}}"
+DB_NAME="${4:-${DB_NAME:-urna_eletronica}}"
 DB_HOST="${DB_HOST:-localhost}"
 
-echo "=== [DEVOPS] Provisionando Banco de Dados MySQL: '${DB_NAME}' (Usando: ${ENV_FILE}) ==="
+echo "==================================================================="
+[ "$APP_LANG" = "EN" ] && echo "[DEVOPS] Provisioning MySQL Database: '${DB_NAME}'"
+[ "$APP_LANG" = "ES" ] && echo "[DEVOPS] Aprovisionando Base de Datos MySQL: '${DB_NAME}'"
+[ "$APP_LANG" = "IT" ] && echo "[DEVOPS] Provisioning Database MySQL: '${DB_NAME}'"
+[ "$APP_LANG" = "PT" ] && echo "[DEVOPS] Provisionando Banco de Dados MySQL: '${DB_NAME}'"
+echo "==================================================================="
 
-# Monta o comando de conexão mysql com ou sem senha
 MYSQL_CMD="mysql -u ${DB_USER} -h ${DB_HOST}"
 if [ -n "${DB_PASS}" ]; then
-    MYSQL_CMD="${MYSQL_CMD} -p${DB_PASS}"
+  MYSQL_CMD="${MYSQL_CMD} -p${DB_PASS}"
 fi
 
-# 1. Cria o banco de dados se não existir
-echo "1. Criando banco de dados '${DB_NAME}' (se não existir)..."
-$MYSQL_CMD -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+$MYSQL_CMD -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>/dev/null || true
 
-# 2. Executa o instalador inteligente (verifica migração e seed)
-echo "2. Executando instalador inteligente: db/install.php..."
 php "${PROJECT_ROOT}/db/install.php"
 
-echo "✔ Banco de dados '${DB_NAME}' provisionado com sucesso (sem Docker)!"
+echo ""
+[ "$APP_LANG" = "EN" ] && echo "✔ Database '${DB_NAME}' provisioned successfully!"
+[ "$APP_LANG" = "ES" ] && echo "✔ ¡Base de datos '${DB_NAME}' aprovisionada con éxito!"
+[ "$APP_LANG" = "IT" ] && echo "✔ Database '${DB_NAME}' configurato con successo!"
+[ "$APP_LANG" = "PT" ] && echo "✔ Banco de dados '${DB_NAME}' provisionado com sucesso!"
