@@ -12,7 +12,7 @@
 **Sistema completo de votação eletrônica inspirado no padrão oficial do Tribunal Superior Eleitoral (TSE) com temática Pokémon.**  
 Desenvolvido em arquitetura 100% Web (HTML5, CSS3, JavaScript Vanilla + API RESTful PHP + MySQL/MariaDB).
 
-[🌐 Acessar Demonstração Online](https://luiz0067yahoo.github.io/ESP32-Urna-Eletronica/frontend) • [📖 Guia de Hospedagem](#-implantao-em-hospedagem-tradicional-cpanel--hostinger--locaweb) • [🧪 Suíte de Testes](#-suite-de-testes--simuladores-tests) • [🔌 Documentação da API](#-documentao-da-api-restful)
+[🌐 Acessar Demonstração Online](http://urna.gamer.free) • [📖 Guia de Hospedagem](#-implantao-em-hospedagem-tradicional-cpanel--hostinger--locaweb) • [🧪 Suíte de Testes](#-suite-de-testes--simuladores-tests) • [🔌 Documentação da API](#-documentao-da-api-restful)
 
 </div>
 
@@ -336,6 +336,18 @@ Para quem deseja rodar a aplicação em contêineres ou orquestradores modernos,
 - **Podman:** Suporte a Podman Compose com `devops/podman/podman-compose.yml`.
 - **Kubernetes:** Manifestos declarativos em `devops/kubernetes/` prontos para deploy em cluster K8s.
 - **GitHub Actions CI/CD:** Pipeline automatizado em `.github/workflows/docker-ci-cd.yml` com validação de build e publicação de imagens no GitHub Container Registry (GHCR).
+
+---
+
+## 🌐 Demonstração Online
+
+Acesse e teste a Urna Eletrônica Pokémon diretamente no ambiente de produção:
+
+👉 **[http://urna.gamer.free](http://urna.gamer.free)**
+
+- 🗳️ **Cabine de Votação (Urna):** [http://urna.gamer.free](http://urna.gamer.free) *(ou [http://urna.gamer.free/frontend/index.html](http://urna.gamer.free/frontend/index.html))*
+- 📊 **Apuração em Tempo Real:** [http://urna.gamer.free/apuracao.php](http://urna.gamer.free/apuracao.php) *(ou [http://urna.gamer.free/frontend/apuracao.html](http://urna.gamer.free/frontend/apuracao.html))*
+- 🔌 **API REST de Votos:** [http://urna.gamer.free/backend/votos](http://urna.gamer.free/backend/votos)
 
 ---
 
