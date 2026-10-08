@@ -21,7 +21,7 @@ Esta pasta contém o ecossistema completo de **testes de sistema**, **simuladore
 ## 🚀 Como Executar
 
 ### 1. Pelo Dashboard Visual no Navegador (Mais Fácil e Completo)
-Abra diretamente o arquivo [`tests/index.html`](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/tests/index.html) no seu navegador (Google Chrome, Edge, Firefox):
+Abra diretamente o arquivo [`index.html`](index.html) no seu navegador (Google Chrome, Edge, Firefox):
 * Teclado interativo com exibição dos Pokémons na tela LCD.
 * Disparo de eleição em massa com slider de eleitores e gráficos em tempo real.
 * Execução da bateria de testes com visualização de status verde/vermelho por endpoint.
@@ -31,7 +31,7 @@ Abra diretamente o arquivo [`tests/index.html`](file:///c:/Users/10345/Documents
 ### 2. Pelo Menu Interativo no Terminal
 
 - **No Windows:**
-  Dê dois cliques em [`tests/run_tests.bat`](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/tests/run_tests.bat) ou execute no PowerShell/CMD:
+  Dê dois cliques em [`run_tests.bat`](run_tests.bat) ou execute no PowerShell/CMD:
   ```cmd
   tests\run_tests.bat
   ```

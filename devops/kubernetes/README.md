@@ -106,7 +106,7 @@ kubectl delete -k devops/kubernetes/
 ## 🔄 Deploy Automático via Git & GitOps
 
 ### 1. GitOps com ArgoCD (Nativo Kubernetes)
-O arquivo [gitops-argocd.yaml](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/kubernetes/gitops-argocd.yaml) configura o ArgoCD para monitorar este repositório Git. Qualquer alteração ou `git push` na branch `main` sincroniza e aplica os manifestos automaticamente no cluster, com auto-cura (`selfHeal: true`) e remoção de recursos órfãos (`prune: true`).
+O arquivo [gitops-argocd.yaml](gitops-argocd.yaml) configura o ArgoCD para monitorar este repositório Git. Qualquer alteração ou `git push` na branch `main` sincroniza e aplica os manifestos automaticamente no cluster, com auto-cura (`selfHeal: true`) e remoção de recursos órfãos (`prune: true`).
 
 Para ativar:
 ```bash
@@ -121,5 +121,5 @@ Para executar em pipelines ou no host do cluster:
 Ele atualiza o código do Git, constrói a imagem com a hash do commit, aplica os manifestos Kustomize e executa um `rollout restart` assistido com verificação de prontidão.
 
 ### 3. Via GitHub Actions CI/CD
-O workflow [.github/workflows/kubernetes-ci-cd.yml](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/.github/workflows/kubernetes-ci-cd.yml) constrói a imagem a cada push na branch `main`, publica no GitHub Packages (GHCR) e atualiza o cluster via `kubectl` caso o secret `KUBECONFIG` esteja configurado no repositório.
+O workflow [.github/workflows/kubernetes-ci-cd.yml](../../.github/workflows/kubernetes-ci-cd.yml) constrói a imagem a cada push na branch `main`, publica no GitHub Packages (GHCR) e atualiza o cluster via `kubectl` caso o secret `KUBECONFIG` esteja configurado no repositório.
 

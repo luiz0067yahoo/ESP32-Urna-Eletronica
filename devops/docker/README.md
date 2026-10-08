@@ -95,7 +95,7 @@ Para fazer deploy rodando simplesmente `git push production main`:
    mkdir -p /home/deploy/urna.git && cd /home/deploy/urna.git
    git init --bare
    ```
-2. Copie o script [git-hook-post-receive](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/docker/git-hook-post-receive) para `/home/deploy/urna.git/hooks/post-receive`:
+2. Copie o script [git-hook-post-receive](git-hook-post-receive) para `/home/deploy/urna.git/hooks/post-receive`:
    ```bash
    chmod +x /home/deploy/urna.git/hooks/post-receive
    ```
@@ -107,5 +107,5 @@ Para fazer deploy rodando simplesmente `git push production main`:
 O servidor receberá o push e atualizará os containers Docker automaticamente!
 
 ### 3. Via GitHub Actions CI/CD
-O workflow [.github/workflows/docker-ci-cd.yml](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/.github/workflows/docker-ci-cd.yml) compila a imagem Docker a cada push na branch `main`, publica no GitHub Packages (GHCR) e opcionalmente executa o deploy remoto via SSH.
+O workflow [.github/workflows/docker-ci-cd.yml](../../.github/workflows/docker-ci-cd.yml) compila a imagem Docker a cada push na branch `main`, publica no GitHub Packages (GHCR) e opcionalmente executa o deploy remoto via SSH.
 

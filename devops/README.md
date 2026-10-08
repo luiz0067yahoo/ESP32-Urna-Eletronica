@@ -6,14 +6,14 @@ Este diretório contém soluções completas de infraestrutura e orquestração 
 
 ## 📂 Pastas e Abordagens Disponíveis
 
-### 1. [🐳 Docker (`devops/docker/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/docker/README.md)
+### 1. [🐳 Docker (`devops/docker/`)](docker/README.md)
 - **Tecnologias:** Docker, Docker Compose, Apache + PHP 8.2, MariaDB 10.11, phpMyAdmin.
 - **Destaques:** Inicia tudo em 1 comando, healthchecks automáticos, inicialização inteligente com migrações e seed via `docker-entrypoint.sh`.
 - **Como rodar:**
   - Windows: `devops\docker\start.bat`
   - Linux/macOS: `./devops/docker/start.sh`
 
-### 2. [🦭 Podman (`devops/podman/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/podman/README.md)
+### 2. [🦭 Podman (`devops/podman/`)](podman/README.md)
 - **Tecnologias:** Podman (Rootless, Daemonless), `Containerfile`, Pods Nativos Podman, `podman-compose`.
 - **Destaques:** Suporte nativo a Pods compartilhando `localhost`, compatibilidade com SELinux (`:Z`), exportador para Kubernetes (`podman generate kube`).
 - **Como rodar:**
@@ -21,7 +21,7 @@ Este diretório contém soluções completas de infraestrutura e orquestração 
   - Pod Nativo (Windows): `devops\podman\start-pod.bat`
   - Podman Compose: `./devops/podman/start-compose.sh`
 
-### 3. [☸️ Kubernetes (`devops/kubernetes/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/kubernetes/README.md)
+### 3. [☸️ Kubernetes (`devops/kubernetes/`)](kubernetes/README.md)
 - **Tecnologias:** Kubernetes, Kustomize, PVC, ConfigMap, Secret, Deployments, NodePort Service, Ingress.
 - **Destaques:** Namespace isolado (`urna-eletronica`), 2 réplicas com alta disponibilidade, `initContainers` para sincronismo de banco, probes de prontidão (`readiness`) e vivacidade (`liveness`).
 - **Como rodar:**
@@ -29,7 +29,7 @@ Este diretório contém soluções completas de infraestrutura e orquestração 
   - Linux/macOS: `./devops/kubernetes/deploy.sh`
   - Manual: `kubectl apply -k devops/kubernetes/`
 
-### 4. [⚙️ Piku / Nativo (`devops/config/`)](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/config/README.md)
+### 4. [⚙️ Piku / Nativo (`devops/config/`)](config/README.md)
 - **Tecnologias:** Piku (PaaS minimalista), Nginx VHost nativo, scripts shell/batch para execução direta no host sem containers.
 - **Como rodar:**
   - Windows: `devops\config\start.bat`

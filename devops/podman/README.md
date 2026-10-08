@@ -86,8 +86,8 @@ Se você possui o utilitário `podman-compose` instalado:
 Atualiza o código do Git, reconstrói as imagens no Podman e recarrega os containers/pods sem interrupção.
 
 ### 2. Via Git Push no Servidor (Git Hook `post-receive`)
-Configure o hook [git-hook-post-receive](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/devops/podman/git-hook-post-receive) em um repositório Git Bare no servidor. A cada `git push production main`, o servidor atualizará a aplicação e os pods automaticamente.
+Configure o hook [git-hook-post-receive](git-hook-post-receive) em um repositório Git Bare no servidor. A cada `git push production main`, o servidor atualizará a aplicação e os pods automaticamente.
 
 ### 3. Via GitHub Actions CI/CD
-O workflow [.github/workflows/podman-ci-cd.yml](file:///c:/Users/10345/Documents/GitHub/ESP32%20Urna%20Eletronica/.github/workflows/podman-ci-cd.yml) compila a imagem via Podman a cada push na branch `main`, envia para o GitHub Packages (GHCR) e pode acionar deploy via SSH.
+O workflow [.github/workflows/podman-ci-cd.yml](../../.github/workflows/podman-ci-cd.yml) compila a imagem via Podman a cada push na branch `main`, envia para o GitHub Packages (GHCR) e pode acionar deploy via SSH.
 

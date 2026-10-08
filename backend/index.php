@@ -375,7 +375,7 @@ Route::add('/status', function() use ($db) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
         "status" => "online",
-        "sistema" => "ESP32 Urna Eletrônica API",
+        "sistema" => "POKE Urna Eletrônica API",
         "banco_de_dados" => $db ? "conectado" : "desconectado",
         "timestamp" => date("Y-m-d H:i:s")
     ], JSON_UNESCAPED_UNICODE);
