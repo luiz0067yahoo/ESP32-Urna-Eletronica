@@ -1,69 +1,12 @@
 -- ==============================================================================
--- URNA ELETRÔNICA POKÉMON • DUMP SQL COMPLETO (MIGRATE + SEED)
--- Este arquivo consolida todas as migrações (db/migrate/) e seeds (db/seed/).
--- Compatibilidade: MySQL 5.7+, MySQL 8.x, MariaDB 10.x+ (phpMyAdmin, cPanel, etc.)
--- Codificação: UTF-8 Unicode (utf8mb4)
+-- SEED COMPLETO • TODAS AS TABELAS
+-- Executa o povoamento de todas as tabelas em ordem
 -- ==============================================================================
 
 SET NAMES utf8mb4;
-SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
--- ==============================================================================
--- PARTE 1: MIGRAÇÃO (ESTRUTURA DAS TABELAS) • db/migrate/
--- ==============================================================================
-
--- ------------------------------------------------------------------------------
--- 1.1 Tabela: partidos (db/migrate/01_partidos.sql)
--- ------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `partidos` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `sigla` VARCHAR(20) NOT NULL UNIQUE COMMENT 'Sigla do partido (ex: POKPELE, POKPFGO)',
-    `nome` VARCHAR(150) NOT NULL COMMENT 'Nome completo do partido',
-    `slogan` VARCHAR(255) NULL COMMENT 'Slogan oficial da legenda',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ------------------------------------------------------------------------------
--- 1.2 Tabela: candidatos (db/migrate/02_candidatos.sql)
--- ------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `candidatos` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `numero` VARCHAR(20) NOT NULL UNIQUE COMMENT 'Número na urna',
-    `nome` VARCHAR(100) NOT NULL COMMENT 'Nome do Pokémon candidato',
-    `cargo` VARCHAR(100) NOT NULL COMMENT 'Cargo concorrido',
-    `partido` VARCHAR(20) NOT NULL COMMENT 'Sigla do partido coligado',
-    `foto` VARCHAR(255) NULL COMMENT 'URL da ilustração oficial PokeAPI',
-    `vice` VARCHAR(100) NULL COMMENT 'Nome do vice / suplente',
-    `foto_vice` VARCHAR(255) NULL COMMENT 'URL da foto do vice / suplente',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX `idx_cand_cargo` (`cargo`),
-    INDEX `idx_cand_partido` (`partido`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ------------------------------------------------------------------------------
--- 1.3 Tabela: votos (db/migrate/03_votos.sql)
--- ------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `votos` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `cargo` VARCHAR(100) NOT NULL COMMENT 'Cargo eletivo (ex: PRESIDENTE, GOVERNADOR, etc.)',
-    `numero_candidato` VARCHAR(20) NOT NULL COMMENT 'Número digitado ou BRANCO / NULO',
-    `data_voto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data e hora da computação do voto',
-    INDEX `idx_cargo` (`cargo`),
-    INDEX `idx_numero_candidato` (`numero_candidato`),
-    INDEX `idx_cargo_numero` (`cargo`, `numero_candidato`),
-    INDEX `idx_data_voto` (`data_voto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
--- ==============================================================================
--- PARTE 2: SEED (POVOAMENTO DE DADOS) • db/seed/
--- ==============================================================================
-
--- ------------------------------------------------------------------------------
--- 2.1 Seed: partidos (db/seed/01_partidos.sql)
--- ------------------------------------------------------------------------------
+-- 1. Partidos Políticos Pokémon
 INSERT INTO `partidos` (`sigla`, `nome`, `slogan`) VALUES
 ('POKPELE', 'Partido Organizado Karvalho Professor Elétrico', 'Energia e inovação para todos.'),
 ('POKPFGO', 'Partido Organizado Karvalho Professor Fogo', 'Chama da mudança e energia que move o país.'),
@@ -78,17 +21,15 @@ INSERT INTO `partidos` (`sigla`, `nome`, `slogan`) VALUES
 ('POKPDRA', 'Partido Organizado Karvalho Professor Dragão', 'Força e liderança estratégica.')
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`), `slogan` = VALUES(`slogan`);
 
--- ------------------------------------------------------------------------------
--- 2.2 Seed: candidatos (db/seed/02_candidatos.sql)
--- ------------------------------------------------------------------------------
--- Presidente da República
+-- 2. Candidatos Pokémon
+-- Presidente
 INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, `foto_vice`) VALUES
 ('65', 'Pikachu', 'PRESIDENTE', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png', 'Totodile', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/158.png'),
 ('63', 'Squirtle', 'PRESIDENTE', 'POKPAGU', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png', 'Bulbasaur', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png'),
 ('62', 'Charmander', 'PRESIDENTE', 'POKPFGO', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png', 'Flareon', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/136.png')
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`), `partido` = VALUES(`partido`), `foto` = VALUES(`foto`);
 
--- Governador de Estado
+-- Governador
 INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, `foto_vice`) VALUES
 ('81', 'Manectric', 'GOVERNADOR', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png', 'Ampharos', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/181.png'),
 ('82', 'Zapdos', 'GOVERNADOR', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png', 'Jolteon', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png'),
@@ -101,7 +42,7 @@ INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, 
 ('89', 'Swampert', 'GOVERNADOR', 'POKPAGU', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/260.png', 'Lapras', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png')
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`), `partido` = VALUES(`partido`), `foto` = VALUES(`foto`);
 
--- 1º e 2º Senador
+-- Senadores
 INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, `foto_vice`) VALUES
 ('701', 'Alakazam', '1º SENADOR', 'POKPPSI', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png', NULL, NULL),
 ('702', 'Gengar', '1º SENADOR', 'POKPFAN', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png', NULL, NULL),
@@ -111,7 +52,7 @@ INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, 
 ('753', 'Ho-Oh', '2º SENADOR', 'POKPFGO', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png', NULL, NULL)
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`), `partido` = VALUES(`partido`), `foto` = VALUES(`foto`);
 
--- Deputado Federal
+-- Deputados Federais
 INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, `foto_vice`) VALUES
 ('9101', 'Raichu', 'DEPUTADO FEDERAL', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png', NULL, NULL),
 ('9102', 'Jolteon', 'DEPUTADO FEDERAL', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png', NULL, NULL),
@@ -119,7 +60,7 @@ INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, 
 ('9301', 'Blastoise', 'DEPUTADO FEDERAL', 'POKPAGU', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png', NULL, NULL)
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`), `partido` = VALUES(`partido`), `foto` = VALUES(`foto`);
 
--- Deputado Estadual
+-- Deputados Estaduais
 INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, `foto_vice`) VALUES
 ('90101', 'Pichu', 'DEPUTADO ESTADUAL', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/172.png', NULL, NULL),
 ('90102', 'Mareep', 'DEPUTADO ESTADUAL', 'POKPELE', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/179.png', NULL, NULL),
@@ -127,9 +68,7 @@ INSERT INTO `candidatos` (`numero`, `nome`, `cargo`, `partido`, `foto`, `vice`, 
 ('90301', 'Totodile', 'DEPUTADO ESTADUAL', 'POKPAGU', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/158.png', NULL, NULL)
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`), `partido` = VALUES(`partido`), `foto` = VALUES(`foto`);
 
--- ------------------------------------------------------------------------------
--- 2.3 Seed: votos (db/seed/03_votos.sql)
--- ------------------------------------------------------------------------------
+-- 3. Votos de Demonstração
 INSERT INTO `votos` (`cargo`, `numero_candidato`) VALUES
 -- Presidente
 ('PRESIDENTE', '65'), ('PRESIDENTE', '65'), ('PRESIDENTE', '65'), ('PRESIDENTE', '65'), ('PRESIDENTE', '65'),

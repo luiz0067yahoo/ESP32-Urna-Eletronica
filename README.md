@@ -122,10 +122,30 @@ ESP32-Urna-Eletronica/
 │   └── apuracao/index.php        # Endpoint direto de apuração (compatível sem mod_rewrite)
 │
 ├── db/                           # 🗄️ Estrutura e Dados do Banco de Dados MySQL
-│   ├── urna_eletronica.sql       # 📥 DUMP SQL COMPLETO (Importação em 1 clique via phpMyAdmin)
-│   ├── install.php               # Instalador inteligente (executável via CLI ou navegador)
-│   ├── migrate.php               # Criação das tabelas relacionais via PHP
-│   └── seed.php                  # Povoamento inicial de partidos e candidatos oficiais
+│   ├── urna_eletronica.sql       # 📥 DUMP SQL CONSOLIDADO (Migrate + Seed em 1 arquivo)
+│   ├── install.php               # Instalador inteligente (executa migrates e seeds)
+│   ├── migrate.php               # Executor de migrações (chama db/migrate/)
+│   ├── seed.php                  # Executor de seeds (chama db/seed/)
+│   │
+│   ├── migrate/                  # 🛠️ Migrações Individuais por Tabela
+│   │   ├── 01_partidos.sql       # Criação da tabela partidos
+│   │   ├── 02_candidatos.sql     # Criação da tabela candidatos
+│   │   ├── 03_votos.sql          # Criação da tabela votos
+│   │   ├── all.sql               # Todas as migrações unificadas em SQL
+│   │   ├── partidos.php          # Script PHP de migração da tabela partidos
+│   │   ├── candidatos.php        # Script PHP de migração da tabela candidatos
+│   │   ├── votos.php             # Script PHP de migração da tabela votos
+│   │   └── index.php             # Executor geral de migrações
+│   │
+│   └── seed/                     # 🌱 Povoamentos (Seeds) Individuais por Tabela
+│       ├── 01_partidos.sql       # Povoamento da tabela partidos
+│       ├── 02_candidatos.sql     # Povoamento da tabela candidatos
+│       ├── 03_votos.sql          # Votos de demonstração inicial
+│       ├── all.sql               # Todos os seeds unificados em SQL
+│       ├── partidos.php          # Script PHP de seed da tabela partidos
+│       ├── candidatos.php        # Script PHP de seed da tabela candidatos
+│       ├── votos.php             # Script PHP de seed da tabela votos
+│       └── index.php             # Executor geral de seeds
 │
 ├── tests/                        # 🧪 Bateria de Testes, Simuladores e Auditoria
 │   ├── index.html                # Dashboard visual de testes com cabine interativa e estresse
@@ -246,6 +266,30 @@ Contém todos os concorrentes oficiais por cargo:
 
 ### 3. `votos`
 Registra individualmente cada voto recebido pela urna com data/hora e identificador do cargo.
+
+---
+
+### 📂 Execução Modular de Migrações e Seeds
+
+O banco de dados foi completamente modularizado em **migrações e seeds individuais para cada tabela**:
+
+#### A) Migrações Individuais (`db/migrate/`)
+Criam a estrutura das tabelas de forma isolada:
+- **Partidos:** [`db/migrate/01_partidos.sql`](db/migrate/01_partidos.sql) *(ou `php db/migrate/partidos.php`)*
+- **Candidatos:** [`db/migrate/02_candidatos.sql`](db/migrate/02_candidatos.sql) *(ou `php db/migrate/candidatos.php`)*
+- **Votos:** [`db/migrate/03_votos.sql`](db/migrate/03_votos.sql) *(ou `php db/migrate/votos.php`)*
+- **Todas as Migrações de uma vez:** [`db/migrate/all.sql`](db/migrate/all.sql) *(ou `php db/migrate/index.php`)*
+
+#### B) Seeds Individuais (`db/seed/`)
+Povoam os dados das tabelas de forma isolada:
+- **Partidos:** [`db/seed/01_partidos.sql`](db/seed/01_partidos.sql) *(ou `php db/seed/partidos.php`)*
+- **Candidatos:** [`db/seed/02_candidatos.sql`](db/seed/02_candidatos.sql) *(ou `php db/seed/candidatos.php`)*
+- **Votos:** [`db/seed/03_votos.sql`](db/seed/03_votos.sql) *(ou `php db/seed/votos.php`)*
+- **Todos os Seeds de uma vez:** [`db/seed/all.sql`](db/seed/all.sql) *(ou `php db/seed/index.php`)*
+
+#### C) Dump Consolidado Único
+- **Dump Completo (Migrate + Seed):** [`db/urna_eletronica.sql`](db/urna_eletronica.sql) (ideal para importar no phpMyAdmin em 1 clique).
+- **Instalador Inteligente:** `php db/install.php` (ou acesse `https://seusite.com/db/install.php` no navegador).
 
 ---
 

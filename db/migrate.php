@@ -1,61 +1,10 @@
 <?php
 /**
  * Migração do Banco de Dados - Urna Eletrônica Pokémon
- * Todo o conteúdo SQL armazenado em uma string PHP
+ * Carrega e executa todas as migrações modulares da pasta db/migrate/
  */
 
 require_once __DIR__ . '/../backend/conecta.php';
 
-$sqlMigrate = <<<SQL
--- 1. Tabela de Votos (Utilizada diretamente pelo backend da Urna Eletrônica)
-CREATE TABLE IF NOT EXISTS `votos` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `cargo` VARCHAR(100) NOT NULL COMMENT 'Cargo eletivo (ex: PRESIDENTE, GOVERNADOR, etc.)',
-    `numero_candidato` VARCHAR(20) NOT NULL COMMENT 'Número digitado ou BRANCO / NULO',
-    `data_voto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data e hora da computação do voto',
-    INDEX `idx_cargo` (`cargo`),
-    INDEX `idx_numero_candidato` (`numero_candidato`),
-    INDEX `idx_cargo_numero` (`cargo`, `numero_candidato`),
-    INDEX `idx_data_voto` (`data_voto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 2. Tabela de Partidos Pokémon
-CREATE TABLE IF NOT EXISTS `partidos` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `sigla` VARCHAR(20) NOT NULL UNIQUE COMMENT 'Sigla do partido (ex: POKPELE, POKPFGO)',
-    `nome` VARCHAR(150) NOT NULL COMMENT 'Nome completo do partido',
-    `slogan` VARCHAR(255) NULL COMMENT 'Slogan oficial da legenda',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 3. Tabela de Candidatos Pokémon
-CREATE TABLE IF NOT EXISTS `candidatos` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `numero` VARCHAR(20) NOT NULL UNIQUE COMMENT 'Número na urna',
-    `nome` VARCHAR(100) NOT NULL COMMENT 'Nome do Pokémon candidato',
-    `cargo` VARCHAR(100) NOT NULL COMMENT 'Cargo concorrido',
-    `partido` VARCHAR(20) NOT NULL COMMENT 'Sigla do partido coligado',
-    `foto` VARCHAR(255) NULL COMMENT 'URL da ilustração oficial PokeAPI',
-    `vice` VARCHAR(100) NULL COMMENT 'Nome do vice / suplente',
-    `foto_vice` VARCHAR(255) NULL COMMENT 'URL da foto do vice / suplente',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX `idx_cand_cargo` (`cargo`),
-    INDEX `idx_cand_partido` (`partido`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-SQL;
-
-// Execução caso seja chamado diretamente (CLI ou Web)
-$scriptAtual = basename($_SERVER['SCRIPT_FILENAME'] ?? $_SERVER['PHP_SELF'] ?? '');
-if ($scriptAtual === 'migrate.php') {
-    header('Content-Type: text/plain; charset=utf-8');
-    echo "=== [MIGRATE] Executando Migração do Banco de Dados ===\n";
-    try {
-        $db = Conexao::getConexao();
-        if ($db) {
-            $db->exec($sqlMigrate);
-            echo "✔ Tabelas 'votos', 'partidos' e 'candidatos' criadas com sucesso!\n";
-        }
-    } catch (PDOException $e) {
-        echo "❌ Erro ao executar migração: " . $e->getMessage() . "\n";
-    }
-}
+// Carrega todas as migrações individuais da pasta db/migrate/
+$sqlMigrate = require __DIR__ . '/migrate/index.php';
