@@ -27,13 +27,17 @@ if "%LANG_CHOICE%"=="" set LANG_CHOICE=1
 if "%LANG_CHOICE%"=="2" (set APP_LANG=PT) else if "%LANG_CHOICE%"=="3" (set APP_LANG=ES) else if "%LANG_CHOICE%"=="4" (set APP_LANG=IT) else (set APP_LANG=EN)
 
 :RUN
-if not exist .env (
-    if exist .env.example (
-        if "%APP_LANG%"=="EN" echo Creating .env file from .env.example...
-        if "%APP_LANG%"=="ES" echo Creando archivo .env desde .env.example...
-        if "%APP_LANG%"=="IT" echo Creazione file .env da .env.example...
-        if "%APP_LANG%"=="PT" echo Criando arquivo .env a partir de .env.example...
-        copy .env.example .env >nul
+pushd ..\..
+set "PROJECT_ROOT=%CD%"
+popd
+
+if not exist "%PROJECT_ROOT%\.env" (
+    if exist "%PROJECT_ROOT%\.env.example" (
+        if "%APP_LANG%"=="EN" echo Creating .env file from .env.example at project root...
+        if "%APP_LANG%"=="ES" echo Creando archivo .env desde .env.example en la raíz...
+        if "%APP_LANG%"=="IT" echo Creazione file .env da .env.example nella root...
+        if "%APP_LANG%"=="PT" echo Criando arquivo .env a partir de .env.example na raiz...
+        copy "%PROJECT_ROOT%\.env.example" "%PROJECT_ROOT%\.env" >nul
     )
 )
 
@@ -44,7 +48,7 @@ if "%APP_LANG%"=="IT" echo   🚀 AVVIO AMBIENTE DOCKER (URNA ELETTRONICA)
 if "%APP_LANG%"=="PT" echo   🚀 INICIANDO AMBIENTE DOCKER (URNA ELETRÔNICA)
 echo ==========================================================
 
-docker compose up -d --build
+docker compose --env-file "%PROJECT_ROOT%\.env" up -d --build
 
 if %ERRORLEVEL% NEQ 0 (
     echo.

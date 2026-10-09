@@ -43,15 +43,17 @@ git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
 cd "$SCRIPT_DIR"
-if [ ! -f .env ] && [ -f .env.example ]; then
-  cp .env.example .env
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+if [ ! -f "$PROJECT_ROOT/.env" ] && [ -f "$PROJECT_ROOT/.env.example" ]; then
+  cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
 fi
 
 [ "$APP_LANG" = "EN" ] && echo "2. Updating Docker containers..."
 [ "$APP_LANG" = "ES" ] && echo "2. Actualizando contenedores Docker..."
 [ "$APP_LANG" = "IT" ] && echo "2. Aggiornamento container Docker..."
 [ "$APP_LANG" = "PT" ] && echo "2. Atualizando containers Docker..."
-docker compose up -d --build --remove-orphans
+docker compose --env-file "$PROJECT_ROOT/.env" up -d --build --remove-orphans
 
 [ "$APP_LANG" = "EN" ] && echo "3. Running DB migrations via PHP..."
 [ "$APP_LANG" = "ES" ] && echo "3. Ejecutando migraciones de BD vía PHP..."

@@ -115,6 +115,7 @@ ESP32-Urna-Eletronica/
 │
 ├── start.bat                     # ⚡ Inicializador Central Windows (Docker, Podman, K8s, PHP Local)
 ├── start.sh                      # 🐧 Inicializador Central Linux/macOS
+├── .env.example                  # 🔐 Modelo centralizado de variáveis de ambiente (Root, Backend, DevOps)
 ├── .htaccess                     # ⚙️ Regras do Apache (Roteamento automático para frontend/ e segurança)
 ├── README.md                     # 📖 Documentação oficial (English)
 ├── README.pt.md                  # 📖 Documentação em Português
@@ -149,7 +150,6 @@ ESP32-Urna-Eletronica/
 │   ├── route.php                 # Motor de roteamento HTTP leve e independente
 │   ├── conecta.php               # Gerenciador de conexão PDO com MySQL (lê config.php ou .env)
 │   ├── config.example.php        # Modelo de configuração para hospedagens compartilhadas
-│   ├── .env.example              # Modelo de variáveis de ambiente
 │   ├── .htaccess                 # Reescrita para URLs amigáveis
 │   ├── votos/index.php           # Endpoint direto de votos (compatível sem mod_rewrite)
 │   └── apuracao/index.php        # Endpoint direto de apuração (compatível sem mod_rewrite)

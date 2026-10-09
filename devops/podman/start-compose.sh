@@ -26,8 +26,10 @@ else
   esac
 fi
 
-if [ ! -f .env ] && [ -f .env.example ]; then
-  cp .env.example .env
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+if [ ! -f "$PROJECT_ROOT/.env" ] && [ -f "$PROJECT_ROOT/.env.example" ]; then
+  cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
 fi
 
 echo "=========================================================="
@@ -38,9 +40,9 @@ echo "=========================================================="
 echo "=========================================================="
 
 if command -v podman-compose >/dev/null 2>&1; then
-  podman-compose -f podman-compose.yml up -d --build
+  podman-compose --env-file "$PROJECT_ROOT/.env" -f podman-compose.yml up -d --build
 else
-  podman compose -f podman-compose.yml up -d --build
+  podman compose --env-file "$PROJECT_ROOT/.env" -f podman-compose.yml up -d --build
 fi
 
 echo ""

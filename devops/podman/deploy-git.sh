@@ -43,8 +43,10 @@ git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
 cd "$SCRIPT_DIR"
-if [ ! -f .env ] && [ -f .env.example ]; then
-  cp .env.example .env
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+if [ ! -f "$PROJECT_ROOT/.env" ] && [ -f "$PROJECT_ROOT/.env.example" ]; then
+  cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
 fi
 
 [ "$APP_LANG" = "EN" ] && echo "2. Updating Podman containers..."
@@ -53,7 +55,7 @@ fi
 [ "$APP_LANG" = "PT" ] && echo "2. Atualizando containers Podman..."
 
 if command -v podman-compose >/dev/null 2>&1; then
-  podman-compose -f podman-compose.yml up -d --build
+  podman-compose --env-file "$PROJECT_ROOT/.env" -f podman-compose.yml up -d --build
   sleep 5
   podman exec urna_podman_app php db/install.php
 else

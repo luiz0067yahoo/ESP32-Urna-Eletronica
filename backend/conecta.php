@@ -14,10 +14,13 @@ class Conexao {
         if (file_exists(__DIR__ . '/config.php')) {
             require_once __DIR__ . '/config.php';
         }
-        if (file_exists(__DIR__ . '/.env')) {
+        $rootDir = dirname(__DIR__);
+        if (file_exists($rootDir . '/.env')) {
+            $this->carregarEnv($rootDir . '/.env');
+        } elseif (file_exists($rootDir . '/.env.example')) {
+            $this->carregarEnv($rootDir . '/.env.example');
+        } elseif (file_exists(__DIR__ . '/.env')) {
             $this->carregarEnv(__DIR__ . '/.env');
-        } elseif (file_exists(__DIR__ . '/.env.example')) {
-            $this->carregarEnv(__DIR__ . '/.env.example');
         }
 
         $this->host = defined('DB_HOST') ? DB_HOST : (getenv('DB_HOST') ?: 'localhost');

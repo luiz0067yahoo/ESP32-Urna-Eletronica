@@ -46,9 +46,13 @@ git fetch origin %BRANCH%
 git reset --hard origin/%BRANCH%
 
 cd /d "%~dp0"
-if not exist .env (
-    if exist .env.example (
-        copy .env.example .env >nul
+pushd ..\..
+set "PROJECT_ROOT=%CD%"
+popd
+
+if not exist "%PROJECT_ROOT%\.env" (
+    if exist "%PROJECT_ROOT%\.env.example" (
+        copy "%PROJECT_ROOT%\.env.example" "%PROJECT_ROOT%\.env" >nul
     )
 )
 
@@ -58,7 +62,7 @@ if "%APP_LANG%"=="IT" echo 2. Ricostruzione e aggiornamento container Podman...
 if "%APP_LANG%"=="PT" echo 2. Atualizando containers Podman...
 where podman-compose >nul 2>nul
 if %ERRORLEVEL% EQU 0 (
-    podman-compose -f podman-compose.yml up -d --build
+    podman-compose --env-file "%PROJECT_ROOT%\.env" -f podman-compose.yml up -d --build
     timeout /t 5 /nobreak >nul
     podman exec urna_podman_app php db/install.php
 ) else (

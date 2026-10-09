@@ -129,12 +129,12 @@ while true; do
         continue
       fi
 
-      if [ ! -f "devops/docker/.env" ] && [ -f "devops/docker/.env.example" ]; then
-        cp devops/docker/.env.example devops/docker/.env
+      if [ ! -f ".env" ] && [ -f ".env.example" ]; then
+        cp .env.example .env
       fi
 
       echo "▶ Starting Docker Compose..."
-      docker compose -f devops/docker/docker-compose.yml up -d --build
+      docker compose --env-file .env -f devops/docker/docker-compose.yml up -d --build
 
       echo ""
       echo "✔ Docker environment started / iniciado com sucesso!"
@@ -157,14 +157,14 @@ while true; do
         continue
       fi
 
-      if [ ! -f "devops/podman/.env" ] && [ -f "devops/podman/.env.example" ]; then
-        cp devops/podman/.env.example devops/podman/.env
+      if [ ! -f ".env" ] && [ -f ".env.example" ]; then
+        cp .env.example .env
       fi
 
       if command -v podman-compose >/dev/null 2>&1; then
-        podman-compose -f devops/podman/podman-compose.yml up -d --build
+        podman-compose --env-file .env -f devops/podman/podman-compose.yml up -d --build
       else
-        podman compose -f devops/podman/podman-compose.yml up -d --build
+        podman compose --env-file .env -f devops/podman/podman-compose.yml up -d --build
       fi
 
       echo ""

@@ -180,9 +180,9 @@ if %ERRORLEVEL% NEQ 0 (
     goto MENU
 )
 
-if not exist "devops\docker\.env" (
-    if exist "devops\docker\.env.example" (
-        copy "devops\docker\.env.example" "devops\docker\.env" >nul
+if not exist ".env" (
+    if exist ".env.example" (
+        copy ".env.example" ".env" >nul
     )
 )
 
@@ -190,7 +190,7 @@ if "%APP_LANG%"=="EN" echo ▶ Starting containers with Docker Compose...
 if "%APP_LANG%"=="ES" echo ▶ Levantando contenedores con Docker Compose...
 if "%APP_LANG%"=="IT" echo ▶ Avvio dei container con Docker Compose...
 if "%APP_LANG%"=="PT" echo ▶ Subindo contêineres com Docker Compose...
-docker compose -f "devops\docker\docker-compose.yml" up -d --build
+docker compose --env-file ".env" -f "devops\docker\docker-compose.yml" up -d --build
 
 if %ERRORLEVEL% EQU 0 (
     echo.
@@ -261,17 +261,17 @@ if %ERRORLEVEL% NEQ 0 (
     goto MENU
 )
 
-if not exist "devops\podman\.env" (
-    if exist "devops\podman\.env.example" (
-        copy "devops\podman\.env.example" "devops\podman\.env" >nul
+if not exist ".env" (
+    if exist ".env.example" (
+        copy ".env.example" ".env" >nul
     )
 )
 
 where podman-compose >nul 2>nul
 if %ERRORLEVEL% EQU 0 (
-    podman-compose -f "devops\podman\podman-compose.yml" up -d --build
+    podman-compose --env-file ".env" -f "devops\podman\podman-compose.yml" up -d --build
 ) else (
-    podman compose -f "devops\podman\podman-compose.yml" up -d --build
+    podman compose --env-file ".env" -f "devops\podman\podman-compose.yml" up -d --build
 )
 
 if %ERRORLEVEL% EQU 0 (

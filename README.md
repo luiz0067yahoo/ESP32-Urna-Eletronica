@@ -115,6 +115,7 @@ ESP32-Urna-Eletronica/
 │
 ├── start.bat                     # ⚡ Central Windows Launcher (Docker, Podman, K8s, Local PHP)
 ├── start.sh                      # 🐧 Central Linux/macOS Launcher
+├── .env.example                  # 🔐 Centralized environment variables template (Root, Backend, DevOps)
 ├── .htaccess                     # ⚙️ Apache Rules (URL rewrite to frontend/ and security headers)
 ├── README.md                     # 📖 Official Documentation (English)
 ├── README.pt.md                  # 📖 Portuguese Documentation
@@ -149,7 +150,6 @@ ESP32-Urna-Eletronica/
 │   ├── route.php                 # Standalone lightweight HTTP router engine
 │   ├── conecta.php               # PDO MySQL database connection manager (reads config.php / .env)
 │   ├── config.example.php        # Configuration template for shared web hosting
-│   ├── .env.example              # Environment variables template
 │   ├── .htaccess                 # Clean URL rewrite rules
 │   ├── votos/index.php           # Direct voting endpoint (compatible without mod_rewrite)
 │   └── apuracao/index.php        # Direct results endpoint (compatible without mod_rewrite)

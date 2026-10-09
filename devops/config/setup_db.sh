@@ -15,9 +15,9 @@ else
   APP_LANG="EN"
 fi
 
-ENV_FILE="${PROJECT_ROOT}/backend/.env"
-if [ ! -f "$ENV_FILE" ] && [ -f "${PROJECT_ROOT}/backend/.env.example" ]; then
-  ENV_FILE="${PROJECT_ROOT}/backend/.env.example"
+ENV_FILE="${PROJECT_ROOT}/.env"
+if [ ! -f "$ENV_FILE" ] && [ -f "${PROJECT_ROOT}/.env.example" ]; then
+  ENV_FILE="${PROJECT_ROOT}/.env.example"
 fi
 
 if [ -f "$ENV_FILE" ]; then

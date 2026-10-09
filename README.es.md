@@ -103,8 +103,7 @@ La **Urna Electrónica Pokémon** reproduce con total fidelidad la experiencia d
   6. Presidente de la República *(2 dígitos)*
 - ⌨️ **Validador de Entrada por Software:** Control estricto de máscaras numéricas, tecla `BLANCO`, anulación con `CORRIGE` y registro con `CONFIRMA`.
 - 🔊 **Efectos Sonoros Auténticos:** Audio sintetizado mediante Web Audio API que emula las pulsaciones y el acorde final oficial.
-- 📡 **Envío Resiliente de Votos:** Transmisión automática mediante solicitudes HTTP `POST` a la API, con respaldo local en caso de desconexión.
-- 🔄 **Sincronización Periódica:** La pantalla de escrutinio consulta la base de datos cada 5 segundos sin recargar la página.
+- �- 🔄 **Sincronización Periódica:** La pantalla de escrutinio consulta la base de datos cada 5 segundos sin recargar la página.
 
 ---
 
@@ -115,8 +114,9 @@ ESP32-Urna-Eletronica/
 │
 ├── start.bat                     # ⚡ Iniciador Central Windows (Docker, Podman, K8s, PHP Local)
 ├── start.sh                      # 🐧 Iniciador Central Linux/macOS
+├── .env.example                  # 🔐 Plantilla centralizada de variables de entorno (Root, Backend, DevOps)
 ├── .htaccess                     # ⚙️ Reglas de Apache (Reescritura a frontend/ y seguridad)
-├── README.md                     # 📖 Documentación oficial (Inglés)
+├── README.md                     # 📖 Documentação oficial (Inglés)
 ├── README.pt.md                  # 📖 Documentación en Portugués
 ├── README.es.md                  # 📖 Documentación en Español
 ├── README.it.md                  # 📖 Documentación en Italiano
@@ -148,6 +148,10 @@ ESP32-Urna-Eletronica/
 │   ├── index.php                 # Enrutador central (/votos, /apuracao, /status)
 │   ├── route.php                 # Motor de enrutamiento HTTP independiente y ligero
 │   ├── conecta.php               # Gestor de conexión PDO a MySQL (lee config.php o .env)
+│   ├── config.example.php        # Plantilla de configuración para hosting compartido
+│   ├── .htaccess                 # Reescritura para URLs amigables
+│   ├── votos/index.php           # Endpoint directo de votos (compatible sin mod_rewrite)
+│   └── apuracao/index.php        # Endpoint directo de escrutinio (compatible sin mod_rewrite)crutinio (compatible sin mod_rewrite)       # Gestor de conexión PDO a MySQL (lee config.php o .env)
 │   ├── config.example.php        # Plantilla de configuración para hosting compartido
 │   ├── .env.example              # Plantilla de variables de entorno
 │   ├── .htaccess                 # Reescritura para URLs amigables

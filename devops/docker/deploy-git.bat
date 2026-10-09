@@ -46,9 +46,13 @@ git fetch origin %BRANCH%
 git reset --hard origin/%BRANCH%
 
 cd /d "%~dp0"
-if not exist .env (
-    if exist .env.example (
-        copy .env.example .env >nul
+pushd ..\..
+set "PROJECT_ROOT=%CD%"
+popd
+
+if not exist "%PROJECT_ROOT%\.env" (
+    if exist "%PROJECT_ROOT%\.env.example" (
+        copy "%PROJECT_ROOT%\.env.example" "%PROJECT_ROOT%\.env" >nul
     )
 )
 
@@ -56,7 +60,7 @@ if "%APP_LANG%"=="EN" echo 2. Updating Docker containers...
 if "%APP_LANG%"=="ES" echo 2. Actualizando contenedores Docker...
 if "%APP_LANG%"=="IT" echo 2. Aggiornamento container Docker...
 if "%APP_LANG%"=="PT" echo 2. Atualizando containers Docker...
-docker compose up -d --build --remove-orphans
+docker compose --env-file "%PROJECT_ROOT%\.env" up -d --build --remove-orphans
 
 if %ERRORLEVEL% NEQ 0 (
     if "%APP_LANG%"=="EN" echo [ERROR] Failed to update Docker containers.

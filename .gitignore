@@ -1,6 +1,9 @@
 # Variáveis de ambiente e credenciais sensíveis
-backend/.env
 .env
+backend/.env
+devops/**/.env
+*.env
+!.env.example
 
 # Logs
 *.log

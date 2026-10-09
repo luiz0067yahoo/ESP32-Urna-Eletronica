@@ -16,10 +16,10 @@ if /i "%~1"=="es" (set APP_LANG=ES)
 if /i "%~1"=="it" (set APP_LANG=IT)
 if not defined APP_LANG set APP_LANG=EN
 
-set "ENV_FILE=%PROJECT_ROOT%backend\.env"
+set "ENV_FILE=%PROJECT_ROOT%.env"
 if not exist "%ENV_FILE%" (
-    if exist "%PROJECT_ROOT%backend\.env.example" (
-        set "ENV_FILE=%PROJECT_ROOT%backend\.env.example"
+    if exist "%PROJECT_ROOT%.env.example" (
+        set "ENV_FILE=%PROJECT_ROOT%.env.example"
     )
 )
 

@@ -23,9 +23,13 @@ if "%LANG_CHOICE%"=="" set LANG_CHOICE=1
 if "%LANG_CHOICE%"=="2" (set APP_LANG=PT) else if "%LANG_CHOICE%"=="3" (set APP_LANG=ES) else if "%LANG_CHOICE%"=="4" (set APP_LANG=IT) else (set APP_LANG=EN)
 
 :RUN
-if not exist .env (
-    if exist .env.example (
-        copy .env.example .env >nul
+pushd ..\..
+set "PROJECT_ROOT=%CD%"
+popd
+
+if not exist "%PROJECT_ROOT%\.env" (
+    if exist "%PROJECT_ROOT%\.env.example" (
+        copy "%PROJECT_ROOT%\.env.example" "%PROJECT_ROOT%\.env" >nul
     )
 )
 
@@ -38,9 +42,9 @@ echo ==========================================================
 
 where podman-compose >nul 2>nul
 if %ERRORLEVEL% EQU 0 (
-    podman-compose -f podman-compose.yml up -d --build
+    podman-compose --env-file "%PROJECT_ROOT%\.env" -f podman-compose.yml up -d --build
 ) else (
-    podman compose -f podman-compose.yml up -d --build
+    podman compose --env-file "%PROJECT_ROOT%\.env" -f podman-compose.yml up -d --build
 )
 
 if %ERRORLEVEL% NEQ 0 (

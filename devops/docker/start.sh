@@ -29,12 +29,14 @@ else
   esac
 fi
 
-if [ ! -f .env ] && [ -f .env.example ]; then
-  [ "$APP_LANG" = "EN" ] && echo "Creating .env file from .env.example..."
-  [ "$APP_LANG" = "ES" ] && echo "Creando archivo .env desde .env.example..."
-  [ "$APP_LANG" = "IT" ] && echo "Creazione file .env da .env.example..."
-  [ "$APP_LANG" = "PT" ] && echo "Criando arquivo .env a partir de .env.example..."
-  cp .env.example .env
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+if [ ! -f "$PROJECT_ROOT/.env" ] && [ -f "$PROJECT_ROOT/.env.example" ]; then
+  [ "$APP_LANG" = "EN" ] && echo "Creating .env file from .env.example at project root..."
+  [ "$APP_LANG" = "ES" ] && echo "Creando archivo .env desde .env.example en la raíz..."
+  [ "$APP_LANG" = "IT" ] && echo "Creazione file .env da .env.example nella root..."
+  [ "$APP_LANG" = "PT" ] && echo "Criando arquivo .env a partir de .env.example na raiz..."
+  cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
 fi
 
 echo "=========================================================="
@@ -44,7 +46,7 @@ echo "=========================================================="
 [ "$APP_LANG" = "PT" ] && echo "  🚀 INICIANDO AMBIENTE DOCKER"
 echo "=========================================================="
 
-docker compose up -d --build
+docker compose --env-file "$PROJECT_ROOT/.env" up -d --build
 
 echo ""
 if [ "$APP_LANG" = "EN" ]; then

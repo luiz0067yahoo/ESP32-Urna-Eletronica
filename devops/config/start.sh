@@ -33,9 +33,9 @@ if [ -f "${SCRIPT_DIR}/ENV" ]; then
   export $(grep -v '^#' "${SCRIPT_DIR}/ENV" | grep -v '^$' | xargs)
 fi
 
-ENV_FILE="${PROJECT_ROOT}/backend/.env"
-if [ ! -f "$ENV_FILE" ] && [ -f "${PROJECT_ROOT}/backend/.env.example" ]; then
-  ENV_FILE="${PROJECT_ROOT}/backend/.env.example"
+ENV_FILE="${PROJECT_ROOT}/.env"
+if [ ! -f "$ENV_FILE" ] && [ -f "${PROJECT_ROOT}/.env.example" ]; then
+  ENV_FILE="${PROJECT_ROOT}/.env.example"
 fi
 
 if [ -f "$ENV_FILE" ]; then
